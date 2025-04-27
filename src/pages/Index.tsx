@@ -74,8 +74,8 @@ const Index = () => {
           <div>
             <h3 className="font-bold mb-4">Contato</h3>
             <ul className="space-y-2">
-              <li>123 Medical Center Dr</li>
-              <li>contato@cjrs.care</li>
+              <li>Jerime Soares</li>
+              <li>jerimeregosoares@gmail.com</li>
               <li>(91)985958042</li>
             </ul>
           </div>
