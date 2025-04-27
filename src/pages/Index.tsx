@@ -10,7 +10,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Logo />
           <div className="space-x-6">
-            <a href="#services" className="hover:text-primary">Serviços</a>
+            <a href="#services" className="hover:text-primary mx-0 my-0 px-[2px] py-0">Serviços</a>
             <a href="#about" className="hover:text-primary">Sobre</a>
             <Button variant="default">Agendar Consulta</Button>
           </div>
@@ -23,7 +23,7 @@ const Index = () => {
           <div>
             <h1 className="font-bold mb-6 my-0 mx-0 px-0 py-0 text-3xl">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
             <p className="mb-8 text-muted-foreground text-xl">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care)  de última geração para diagnóstico e tratamento precisos.</p>
-            <Button size="lg" className="mr-4 text-base font-bold text-zinc-50 bg-lime-800 hover:bg-lime-700 text-left px-[7px] py-[12px] my-0 mx-0">Agendar Consulta</Button>
+            <Button size="lg" className="mr-4 text-base font-bold text-zinc-50 bg-lime-800 hover:bg-lime-700 text-left px-[7px] py-[12px] my-0 mx-0">Agendar Atendimento</Button>
             <Button variant="outline" size="lg">Saiba Mais</Button>
           </div>
           <div className="rounded-2xl overflow-hidden">

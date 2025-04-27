@@ -12,7 +12,7 @@ const ServiceCard = ({
   return <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
         <div className="w-12 h-12 text-primary mb-4">{icon}</div>
-        <CardTitle className="mb-2 text-xl">{title}</CardTitle>
+        <CardTitle className="mb-2 font-bold text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
     </Card>;
