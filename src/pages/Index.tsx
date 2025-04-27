@@ -13,9 +13,9 @@ const Index = () => {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Logo />
           <div className="space-x-6">
-            <a href="#services" className="hover:text-primary">Services</a>
-            <a href="#about" className="hover:text-primary">About</a>
-            <Button variant="default">Book Consultation</Button>
+            <a href="#services" className="hover:text-primary">Serviços</a>
+            <a href="#about" className="hover:text-primary">Sobre</a>
+            <Button variant="default">Agendar Consulta</Button>
           </div>
         </div>
       </nav>
@@ -24,15 +24,15 @@ const Index = () => {
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-5xl font-bold mb-6">Advanced Nursing Care with POCUS Technology</h1>
-            <p className="text-xl mb-8 text-muted-foreground">Expert nursing consultations and procedures utilizing state-of-the-art ultrasound technology for precise diagnostics and treatment.</p>
-            <Button size="lg" className="mr-4">Schedule Appointment</Button>
-            <Button variant="outline" size="lg">Learn More</Button>
+            <h1 className="text-5xl font-bold mb-6">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
+            <p className="text-xl mb-8 text-muted-foreground">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom de última geração para diagnóstico e tratamento precisos.</p>
+            <Button size="lg" className="mr-4">Agendar Consulta</Button>
+            <Button variant="outline" size="lg">Saiba Mais</Button>
           </div>
           <div className="rounded-2xl overflow-hidden">
             <img 
               src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
-              alt="Medical Professional"
+              alt="Profissional de Saúde"
               className="w-full h-[500px] object-cover"
             />
           </div>
@@ -42,22 +42,22 @@ const Index = () => {
       {/* Services Section */}
       <section id="services" className="py-20 px-6 bg-secondary/10">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center">Our Services</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center">Nossos Serviços</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ServiceCard
               icon={<Search />}
-              title="POCUS Ultrasound"
-              description="Advanced ultrasound diagnostics for obstetrics, gynecology, prostate, and full abdomen examinations."
+              title="Ultrassom POCUS"
+              description="Diagnóstico avançado por ultrassom para exames obstétricos, ginecológicos, de próstata e abdômen completo."
             />
             <ServiceCard
               icon={<Clipboard />}
-              title="Consultations"
-              description="Comprehensive nursing consultations with experienced practitioners."
+              title="Consultas"
+              description="Consultas de enfermagem abrangentes com profissionais experientes."
             />
             <ServiceCard
               icon={<Syringe />}
-              title="Medical Procedures"
-              description="Professional dressing changes, wart removal, and injectable treatments."
+              title="Procedimentos Médicos"
+              description="Troca de curativos profissional, remoção de verrugas e tratamentos injetáveis."
             />
           </div>
         </div>
@@ -66,22 +66,22 @@ const Index = () => {
       {/* Testimonials */}
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center">Patient Testimonials</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center">Depoimentos de Pacientes</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <TestimonialCard
-              content="The POCUS ultrasound technology made my examination much more comfortable and precise."
+              content="A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso."
               author="Sarah Johnson"
-              role="Patient"
+              role="Paciente"
             />
             <TestimonialCard
-              content="Exceptional care and attention to detail. The staff is highly professional."
+              content="Cuidado e atenção excepcionais aos detalhes. A equipe é altamente profissional."
               author="Michael Chen"
-              role="Patient"
+              role="Paciente"
             />
             <TestimonialCard
-              content="The most thorough consultation I've ever had. Highly recommended!"
+              content="A consulta mais completa que já tive. Altamente recomendado!"
               author="Emily Rodriguez"
-              role="Patient"
+              role="Paciente"
             />
           </div>
         </div>
@@ -92,30 +92,30 @@ const Index = () => {
         <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
           <div>
             <Logo />
-            <p className="mt-4">Advanced nursing care with cutting-edge technology.</p>
+            <p className="mt-4">Cuidados de enfermagem avançados com tecnologia de ponta.</p>
           </div>
           <div>
-            <h3 className="font-bold mb-4">Services</h3>
+            <h3 className="font-bold mb-4">Serviços</h3>
             <ul className="space-y-2">
-              <li>POCUS Ultrasound</li>
-              <li>Consultations</li>
-              <li>Medical Procedures</li>
+              <li>Ultrassom POCUS</li>
+              <li>Consultas</li>
+              <li>Procedimentos Médicos</li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold mb-4">Contact</h3>
+            <h3 className="font-bold mb-4">Contato</h3>
             <ul className="space-y-2">
               <li>123 Medical Center Dr</li>
-              <li>contact@cjrs.care</li>
+              <li>contato@cjrs.care</li>
               <li>(555) 123-4567</li>
             </ul>
           </div>
           <div>
-            <h3 className="font-bold mb-4">Hours</h3>
+            <h3 className="font-bold mb-4">Horário de Funcionamento</h3>
             <ul className="space-y-2">
-              <li>Mon-Fri: 9am - 6pm</li>
-              <li>Sat: 10am - 4pm</li>
-              <li>Sun: Closed</li>
+              <li>Seg-Sex: 9h - 18h</li>
+              <li>Sáb: 10h - 16h</li>
+              <li>Dom: Fechado</li>
             </ul>
           </div>
         </div>
