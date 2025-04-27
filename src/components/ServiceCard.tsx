@@ -9,8 +9,8 @@ const ServiceCard = ({
   description,
   icon
 }: ServiceCardProps) => {
-  return <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
+  return <Card className="hover:shadow-lg transition-shadow rounded-full">
+      <CardHeader className="bg-gray-50">
         <div className="w-12 h-12 text-primary mb-4">{icon}</div>
         <CardTitle className="mb-2 font-bold text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
