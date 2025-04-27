@@ -21,8 +21,8 @@ const Index = () => {
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-5xl font-bold mb-6">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
-            <p className="text-xl mb-8 text-muted-foreground">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care)  de última geração para diagnóstico e tratamento precisos.</p>
+            <h1 className="font-bold mb-6 my-0 mx-0 px-0 py-0 text-3xl">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
+            <p className="mb-8 text-muted-foreground text-xl">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care)  de última geração para diagnóstico e tratamento precisos.</p>
             <Button size="lg" className="mr-4 text-base font-bold text-zinc-50 bg-lime-800 hover:bg-lime-700 text-left px-[7px] py-[12px] my-0 mx-0">Agendar Consulta</Button>
             <Button variant="outline" size="lg">Saiba Mais</Button>
           </div>
