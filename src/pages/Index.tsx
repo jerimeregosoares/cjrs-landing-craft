@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import ServiceCard from "@/components/ServiceCard";
 import TestimonialCard from "@/components/TestimonialCard";
-import { Heart, Search, Injection, Clipboard } from "lucide-react";
+import { Heart, Search, Syringe, Clipboard } from "lucide-react";
 
 const Index = () => {
   return (
@@ -55,7 +55,7 @@ const Index = () => {
               description="Comprehensive nursing consultations with experienced practitioners."
             />
             <ServiceCard
-              icon={<Injection />}
+              icon={<Syringe />}
               title="Medical Procedures"
               description="Professional dressing changes, wart removal, and injectable treatments."
             />
