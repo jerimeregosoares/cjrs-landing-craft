@@ -27,7 +27,7 @@ const Index = () => {
             <Button variant="outline" size="lg">Saiba Mais</Button>
           </div>
           <div className="rounded-2xl overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="Profissional de Saúde" className="w-full h-[500px] object-cover" />
+            <img alt="Profissional de Saúde" className="w-full h-[500px] object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
           </div>
         </div>
       </section>
