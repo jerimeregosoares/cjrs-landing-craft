@@ -76,14 +76,14 @@ const Index = () => {
             <ul className="space-y-2">
               <li>123 Medical Center Dr</li>
               <li>contato@cjrs.care</li>
-              <li>(555) 123-4567</li>
+              <li>(91)985958042</li>
             </ul>
           </div>
           <div>
             <h3 className="font-bold mb-4">Horário de Funcionamento</h3>
             <ul className="space-y-2">
               <li>Seg-Sex: 9h - 18h</li>
-              <li>Sáb: 10h - 16h</li>
+              <li>Sáb: Fechado</li>
               <li>Dom: Fechado</li>
             </ul>
           </div>
