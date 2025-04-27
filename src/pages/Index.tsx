@@ -18,13 +18,13 @@ const Index = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-amber-200">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="font-bold mb-6 my-0 mx-0 px-0 py-0 text-3xl">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
             <p className="mb-8 text-muted-foreground text-xl">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care)  de última geração para diagnóstico e tratamento precisos.</p>
             <Button size="lg" className="mr-4 text-base font-bold text-zinc-50 bg-lime-800 hover:bg-lime-700 text-left px-[7px] py-[12px] my-0 mx-0">Agendar Atendimento</Button>
-            <Button variant="outline" size="lg">Saiba Mais</Button>
+            <Button variant="outline" size="lg" className="my-[9px] px-[18px] py-0 mx-[47px] text-base font-thin text-stone-50 bg-red-900 hover:bg-red-800">Sobre o Profissional</Button>
           </div>
           <div className="rounded-2xl overflow-hidden">
             <img alt="Profissional de Saúde" className="w-full h-[500px] object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
@@ -33,7 +33,7 @@ const Index = () => {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 px-6 bg-secondary/10">
+      <section id="services" className="py-20 px-6 bg-lime-700">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center">Nossos Serviços</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
