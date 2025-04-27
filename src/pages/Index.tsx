@@ -12,7 +12,7 @@ const Index = () => {
           <div className="space-x-6">
             <a href="#services" className="hover:text-primary mx-0 my-0 px-[2px] py-0">Serviços</a>
             <a href="#about" className="hover:text-primary">Sobre</a>
-            <Button variant="default">Agendar Consulta</Button>
+            <Button variant="default">Agendar Atendimento</Button>
           </div>
         </div>
       </nav>
