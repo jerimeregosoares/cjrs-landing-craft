@@ -68,7 +68,7 @@ const Index = () => {
             <ul className="space-y-2">
               <li>Ultrassom POCUS</li>
               <li>Consultas</li>
-              <li>Procedimentos Médicos</li>
+              <li>Procedimentos de Enfermagem</li>
             </ul>
           </div>
           <div>
