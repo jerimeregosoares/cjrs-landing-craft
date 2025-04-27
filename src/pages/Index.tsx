@@ -1,13 +1,10 @@
-
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import ServiceCard from "@/components/ServiceCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import { Heart, Search, Syringe, Clipboard } from "lucide-react";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Navigation */}
       <nav className="py-4 px-6 border-b">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -25,16 +22,12 @@ const Index = () => {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-5xl font-bold mb-6">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
-            <p className="text-xl mb-8 text-muted-foreground">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom de última geração para diagnóstico e tratamento precisos.</p>
+            <p className="text-xl mb-8 text-muted-foreground">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care)  de última geração para diagnóstico e tratamento precisos.</p>
             <Button size="lg" className="mr-4">Agendar Consulta</Button>
             <Button variant="outline" size="lg">Saiba Mais</Button>
           </div>
           <div className="rounded-2xl overflow-hidden">
-            <img 
-              src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
-              alt="Profissional de Saúde"
-              className="w-full h-[500px] object-cover"
-            />
+            <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="Profissional de Saúde" className="w-full h-[500px] object-cover" />
           </div>
         </div>
       </section>
@@ -44,21 +37,9 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center">Nossos Serviços</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ServiceCard
-              icon={<Search />}
-              title="Ultrassom POCUS"
-              description="Diagnóstico avançado por ultrassom para exames obstétricos, ginecológicos, de próstata e abdômen completo."
-            />
-            <ServiceCard
-              icon={<Clipboard />}
-              title="Consultas"
-              description="Consultas de enfermagem abrangentes com profissionais experientes."
-            />
-            <ServiceCard
-              icon={<Syringe />}
-              title="Procedimentos Médicos"
-              description="Troca de curativos profissional, remoção de verrugas e tratamentos injetáveis."
-            />
+            <ServiceCard icon={<Search />} title="Ultrassom POCUS" description="Diagnóstico avançado por ultrassom para exames obstétricos, ginecológicos, de próstata e abdômen completo." />
+            <ServiceCard icon={<Clipboard />} title="Consultas" description="Consultas de enfermagem abrangentes com profissionais experientes." />
+            <ServiceCard icon={<Syringe />} title="Procedimentos Médicos" description="Troca de curativos profissional, remoção de verrugas e tratamentos injetáveis." />
           </div>
         </div>
       </section>
@@ -68,21 +49,9 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center">Depoimentos de Pacientes</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <TestimonialCard
-              content="A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso."
-              author="Sarah Johnson"
-              role="Paciente"
-            />
-            <TestimonialCard
-              content="Cuidado e atenção excepcionais aos detalhes. A equipe é altamente profissional."
-              author="Michael Chen"
-              role="Paciente"
-            />
-            <TestimonialCard
-              content="A consulta mais completa que já tive. Altamente recomendado!"
-              author="Emily Rodriguez"
-              role="Paciente"
-            />
+            <TestimonialCard content="A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso." author="Sarah Johnson" role="Paciente" />
+            <TestimonialCard content="Cuidado e atenção excepcionais aos detalhes. A equipe é altamente profissional." author="Michael Chen" role="Paciente" />
+            <TestimonialCard content="A consulta mais completa que já tive. Altamente recomendado!" author="Emily Rodriguez" role="Paciente" />
           </div>
         </div>
       </section>
@@ -120,8 +89,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
