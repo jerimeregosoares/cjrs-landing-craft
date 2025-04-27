@@ -45,9 +45,9 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-lime-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center">Depoimentos de Pacientes</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center text-gray-50">Depoimentos de Pacientes</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <TestimonialCard content="A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso." author="Sarah Johnson" role="Paciente" />
             <TestimonialCard content="Cuidado e atenção excepcionais aos detalhes. A equipe é altamente profissional." author="Michael Chen" role="Paciente" />
