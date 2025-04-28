@@ -4,10 +4,8 @@ import ServiceCard from "@/components/ServiceCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import { TestimonialForm } from "@/components/TestimonialForm";
 import { Heart, Search, Syringe, Clipboard } from "lucide-react";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen">
+  return <div className="min-h-screen">
       {/* Navigation */}
       <nav className="py-4 px-6 border-b">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -75,9 +73,126 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-8 text-center">Sobre o Profissional</h2>
           <div className="max-w-3xl mx-auto">
-            <p className="text-lg text-center leading-relaxed">
-              O enfermeiro Jérime tem pós graduado em ginecologia, obstetrícia, infectologia e ultrassonografia POCUS. Graduado pela UFPA trabalha há mais de 20 anos na assistência em saúde.
-            </p>
+            <p className="text-lg leading-relaxed mx-0 py-0 my-px px-[3px] text-center">📚 Formaç​ão Acadêmica
+
+Graduação: Enfermagem pela Universidade Federal do Pará (UFPA)  
+Pós-Graduação:  
+Ginecologia  
+Obstetrícia  
+Infectologia  
+Ultrassonografia POCUS
+
+
+
+
+💼 Experiência Profissional e Legado
+🔸 Mais de 20 anos de atuação na assistência à saúde  
+
+Com décadas de dedicação, Jérime acumulou experiência em diferentes áreas da saúde, sempre atuando com amor e compromisso.
+
+🔸 Conquistas e Aprovações  
+
+Aprovado em diversos concursos públicos e ocupando posições em hospitais federais de grande relevância.
+
+🔸 Herói da Pandemia de COVID-19  
+
+Atuou na linha de frente do combate à pandemia em um hospital de referência para atendimento à COVID-19.  
+Passou por momentos desafiadores e dolorosos, enfrentando riscos e perdas de colegas da enfermagem, mas jamais desistiu de salvar vidas.
+
+
+🌍 Atuação Atual
+Jérime Soares dedica seu talento e vocação à UBS Fluvial no município de Anajás, prestando atendimento humanizado às comunidades ribeirinhas. Com orgulho, ele acolhe e cuida daqueles que mais precisam com excelência e dedicação.  
+
+✨ Destaques Pessoais
+
+Compromisso: Acolher e cuidar com amor e respeito. ❤️  
+Missão: Promover saúde em áreas remotas, garantindo atendimento digno e acessível a todos.  
+Inspiração: Superar desafios em prol de salvar vidas e inspirar outros profissionais da saúde.
+
+
+Jérime Soares é mais do que um enfermeiro — é um exemplo de coragem, superação e dedicação. 🙌  
+Segue uma sugestão de ficha criativa e visualmente atraente com as informações que você forneceu:  
+
+Ficha Profissional: Jérime Soares
+🌟 Enfermeiro, Pós-Graduado e Herói da Linha de Frente 🌟  
+
+📚 Formaç​ão Acadêmica
+
+Graduação: Enfermagem pela Universidade Federal do Pará (UFPA)  
+Pós-Graduação:  
+Ginecologia  
+Obstetrícia  
+Infectologia  
+Ultrassonografia POCUS
+
+
+
+
+💼 Experiência Profissional e Legado
+🔸 Mais de 20 anos de atuação na assistência à saúde  
+
+Com décadas de dedicação, Jérime acumulou experiência em diferentes áreas da saúde, sempre atuando com amor e compromisso.
+
+🔸 Conquistas e Aprovações  
+
+Aprovado em diversos concursos públicos e ocupando posições em hospitais federais de grande relevância.
+
+🔸 Herói da Pandemia de COVID-19  
+
+Atuou na linha de frente do combate à pandemia em um hospital de referência para atendimento à COVID-19.  
+Passou por momentos desafiadores e dolorosos, enfrentando riscos e perdas de colegas da enfermagem, mas jamais desistiu de salvar vidas.
+
+
+🌍 Atuação Atual
+Jérime Soares dedica seu talento e vocação à UBS Fluvial no município de Anajás, prestando atendimento humanizado às comunidades ribeirinhas. Com orgulho, ele acolhe e cuida daqueles que mais precisam com excelência e dedicação.  
+
+✨ Destaques Pessoais
+
+Compromisso: Acolher e cuidar com amor e respeito. ❤️  
+Missão: Promover saúde em áreas remotas, garantindo atendimento digno e acessível a todos.  
+Inspiração: Superar desafios em prol de salvar vidas e inspirar outros profissionais da saúde.
+
+
+Jérime Soares é mais do que um enfermeiro — é um exemplo de coragem, superação e dedicação. 🙌  
+
+Segue uma sugestão de ficha criativa e visualmente atraente com as informações que você forneceu:
+
+Ficha Profissional: Jérime Soares
+🌟 Enfermeiro, Pós-Graduado e Herói da Linha de Frente 🌟
+
+📚 Formaç​ão Acadêmica
+Graduação: Enfermagem pela Universidade Federal do Pará (UFPA)
+Pós-Graduação:
+Ginecologia
+Obstetrícia
+Infectologia
+Ultrassonografia POCUS
+💼 Experiência Profissional e Legado
+🔸 Mais de 20 anos de atuação na assistência à saúde
+
+Com décadas de dedicação, Jérime acumulou experiência em diferentes áreas da saúde, sempre atuando com amor e compromisso.
+🔸 Conquistas e Aprovações
+
+Aprovado em diversos concursos públicos e ocupando posições em hospitais federais de grande relevância.
+🔸 Herói da Pandemia de COVID-19
+
+Atuou na linha de frente do combate à pandemia em um hospital de referência para atendimento à COVID-19.
+Passou por momentos desafiadores e dolorosos, enfrentando riscos e perdas de colegas da enfermagem, mas jamais desistiu de salvar vidas.
+🌍 Atuação Atual
+Jérime Soares dedica seu talento e vocação à UBS Fluvial no município de Anajás, prestando atendimento humanizado às comunidades ribeirinhas. Com orgulho, ele acolhe e cuida daqueles que mais precisam com excelência e dedicação.
+
+✨ Destaques Pessoais
+Compromisso: Acolher e cuidar com amor e respeito. ❤️
+Missão: Promover saúde em áreas remotas, garantindo atendimento digno e acessível a todos.
+Inspiração: Superar desafios em prol de salvar vidas e inspirar outros profissionais da saúde.
+
+&quot;Promovendo cuidado humanizado e saúde integral, levando esperança onde mais precisam.&quot;
+
+
+
+
+
+          </p>
           </div>
         </div>
       </section>
@@ -115,8 +230,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
