@@ -3,6 +3,7 @@ import Logo from "@/components/Logo";
 import ServiceCard from "@/components/ServiceCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import { Heart, Search, Syringe, Clipboard } from "lucide-react";
+
 const Index = () => {
   return <div className="min-h-screen">
       {/* Navigation */}
@@ -12,7 +13,9 @@ const Index = () => {
           <div className="space-x-6">
             <a href="#services" className="hover:text-primary py-0 px-[8px] my-[17px] mx-[25px]">Serviços</a>
             <a href="#about" className="hover:text-primary my-[5px] py-0 px-0 mx-0">Sobre</a>
-            <Button variant="default" className="px-[5px] mx-[35px]">Agendar WhatsApp</Button>
+            <Button variant="default" className="px-[5px] mx-[35px]" asChild>
+              <a href="https://wa.me/559191953465?text=GOSTARIA%20DE%20FAZER%20MEU%20AGENDAMENTO">Agendar WhatsApp</a>
+            </Button>
           </div>
         </div>
       </nav>
@@ -22,9 +25,13 @@ const Index = () => {
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="font-bold mb-6 px-0 py-0 text-3xl my-[5px] mx-[4px]">Cuidados de Enfermagem Avançados com Tecnologia POCUS</h1>
-            <p className="mb-8 text-muted-foreground text-xl">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care)  de última geração para diagnóstico e tratamento precisos.</p>
-            <Button size="lg" className="mr-4 text-base text-zinc-50 bg-lime-800 hover:bg-lime-700 py-[12px] my-0 text-center font-medium px-[8px] mx-[63px]">Agendar Atendimento</Button>
-            <Button variant="outline" size="lg" className="text-base text-stone-50 bg-red-900 hover:bg-red-800 text-center my-[13px] mx-[63px] px-[16px] font-thin py-0">Sobre o Profissional</Button>
+            <p className="mb-8 text-muted-foreground text-xl">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos.</p>
+            <Button size="lg" className="mr-4 text-base text-zinc-50 bg-lime-800 hover:bg-lime-700 py-[12px] my-0 text-center font-medium px-[8px] mx-[63px]" asChild>
+              <a href="https://painelconsult.servicoscjrs.com.br/a/jerime-soares">Agendar Atendimento</a>
+            </Button>
+            <Button variant="outline" size="lg" className="text-base text-stone-50 bg-red-900 hover:bg-red-800 text-center my-[13px] mx-[63px] px-[16px] font-thin py-0" asChild>
+              <a href="#about">Sobre o Profissional</a>
+            </Button>
           </div>
           <div className="rounded-2xl overflow-hidden">
             <img alt="Profissional de Saúde" className="w-full h-[500px] object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
@@ -52,6 +59,18 @@ const Index = () => {
             <TestimonialCard content="A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso." author="Sarah Johnson" role="Paciente" />
             <TestimonialCard content="Cuidado e atenção excepcionais aos detalhes. A equipe é altamente profissional." author="Michael Chen" role="Paciente" />
             <TestimonialCard content="A consulta mais completa que já tive. Altamente recomendado!" author="Emily Rodriguez" role="Paciente" />
+          </div>
+        </div>
+      </section>
+
+      {/* About Professional Section */}
+      <section id="about" className="py-20 px-6 bg-stone-100">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold mb-8 text-center">Sobre o Profissional</h2>
+          <div className="max-w-3xl mx-auto">
+            <p className="text-lg text-center leading-relaxed">
+              O enfermeiro Jérime tem pós graduado em ginecologia, obstetrícia, infectologia e ultrassonografia POCUS. Graduado pela UFPA trabalha há mais de 20 anos na assistência em saúde.
+            </p>
           </div>
         </div>
       </section>
@@ -91,4 +110,5 @@ const Index = () => {
       </footer>
     </div>;
 };
+
 export default Index;
