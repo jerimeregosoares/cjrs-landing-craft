@@ -69,7 +69,7 @@ const Index = () => {
       </section>
 
       {/* About Professional Section */}
-      <section id="about" className="py-20 px-6 bg-stone-100">
+      <section id="about" className="bg-stone-100 py-0 px-0 mx-0 my-0 font-thin">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-8 text-center">📚 Formaç​ão Acadêmica Graduação: Enfermagem pela Universidade Federal do Pará (UFPA) Pós-Graduação: Ginecologia Obstetrícia Infectologia Ultrassonografia POCUS.
 
