@@ -73,7 +73,33 @@ const Index = () => {
       </section>
 
       {/* About Professional Section */}
-      
+      <section id="about" className="py-20 px-6 bg-emerald-950">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl font-bold mb-12 text-center text-green-50">Sobre o Profissional</h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="rounded-2xl overflow-hidden order-2 md:order-1">
+              <img alt="Enfermeiro Jérime" className="w-full h-auto object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
+            </div>
+            
+            <div className="order-1 md:order-2">
+              <h3 className="text-2xl font-bold mb-6 text-green-50">Enfermeiro Jérime Soares</h3>
+              <div className="space-y-4 text-green-100">
+                <p>Graduado pela Universidade Federal do Pará.</p>
+                <p>Pós graduado em ginecologia, obstetrícia, infectologia e ultrassonografia POCUS.</p>
+                <p>Atuou na linha de frente prestando assistência direta aos acometidos pelo corona vírus no hospital federal João de Barros Barreto.</p>
+                <p>Ao longo de sua carreira, o Enfermeiro Jérime ocupou diversos cargos de responsabilidade, desenvolvendo habilidades técnicas e experiência clínica de excelência.</p>
+              </div>
+              
+              <div className="mt-8">
+                <Button className="bg-green-700 hover:bg-green-600 text-white" asChild>
+                  <a href="https://wa.me/559191953465?text=GOSTARIA%20DE%20FAZER%20MEU%20AGENDAMENTO">Agende sua Consulta</a>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="bg-black text-white py-12 px-6">
