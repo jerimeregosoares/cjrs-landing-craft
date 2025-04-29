@@ -1,6 +1,5 @@
-
-import { useEffect, useState } from "react";
-import { ArrowLeft, ArrowRight, Pause, Play } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TestimonialCard from "./TestimonialCard";
 import { useTestimonials, Testimonial } from "@/context/TestimonialContext";
@@ -16,17 +15,45 @@ export const TestimonialCarousel = () => {
   const { testimonials } = useTestimonials();
   const [isPaused, setIsPaused] = useState(false);
   const [api, setApi] = useState<any | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Função para avançar para o próximo slide ou reiniciar
+  const advanceSlide = useCallback(() => {
+    if (!api) return;
+    
+    // Se estiver no último slide, voltar para o primeiro
+    if (currentIndex >= testimonials.length - 1) {
+      api.scrollTo(0);
+    } else {
+      api.scrollNext();
+    }
+  }, [api, currentIndex, testimonials.length]);
+  
+  // Atualiza o índice atual quando o carrossel muda
+  useEffect(() => {
+    if (!api) return;
+    
+    const handleSelect = () => {
+      setCurrentIndex(api.selectedScrollSnap());
+    };
+    
+    api.on("select", handleSelect);
+    
+    return () => {
+      api.off("select", handleSelect);
+    };
+  }, [api]);
   
   // Auto-rotate testimonials every 10 seconds
   useEffect(() => {
     if (!api || isPaused) return;
     
     const interval = setInterval(() => {
-      api.scrollNext();
+      advanceSlide();
     }, 10000); // 10 seconds
     
     return () => clearInterval(interval);
-  }, [api, isPaused]);
+  }, [api, isPaused, advanceSlide]);
 
   const togglePause = () => {
     setIsPaused(!isPaused);
