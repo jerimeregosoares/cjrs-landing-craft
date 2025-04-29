@@ -17,13 +17,13 @@ export const TestimonialCarousel = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [api, setApi] = useState<any | null>(null);
   
-  // Auto-rotate testimonials every 90 seconds
+  // Auto-rotate testimonials every 10 seconds
   useEffect(() => {
     if (!api || isPaused) return;
     
     const interval = setInterval(() => {
       api.scrollNext();
-    }, 90000); // 90 seconds
+    }, 10000); // 10 seconds
     
     return () => clearInterval(interval);
   }, [api, isPaused]);
