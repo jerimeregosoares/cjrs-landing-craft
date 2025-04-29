@@ -1,9 +1,12 @@
+
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import ServiceCard from "@/components/ServiceCard";
-import TestimonialCard from "@/components/TestimonialCard";
 import { TestimonialForm } from "@/components/TestimonialForm";
 import { Heart, Search, Syringe, Clipboard } from "lucide-react";
+import { TestimonialProvider } from "@/context/TestimonialContext";
+import { TestimonialCarousel } from "@/components/TestimonialCarousel";
+
 const Index = () => {
   return <div className="min-h-screen">
       {/* Navigation */}
@@ -55,16 +58,17 @@ const Index = () => {
       <section className="py-20 px-6 bg-lime-900">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold mb-12 text-center text-gray-50">Depoimentos de Pacientes</h2>
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <TestimonialCard content="A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso." author="Sarah Johnson" role="Paciente" rating={5} />
-            <TestimonialCard content="Cuidado e atenção excepcionais aos detalhes. A equipe é altamente profissional." author="Michael Chen" role="Paciente" rating={4} />
-            <TestimonialCard content="A consulta mais completa que já tive. Altamente recomendado!" author="Emily Rodriguez" role="Paciente" rating={5} />
-          </div>
           
-          <div className="mt-16">
-            <h3 className="text-3xl font-bold mb-8 text-center text-gray-50">Deixe seu Depoimento</h3>
-            <TestimonialForm />
-          </div>
+          <TestimonialProvider>
+            <div className="mb-16">
+              <TestimonialCarousel />
+            </div>
+            
+            <div className="mt-16">
+              <h3 className="text-3xl font-bold mb-8 text-center text-gray-50">Deixe seu Depoimento</h3>
+              <TestimonialForm />
+            </div>
+          </TestimonialProvider>
         </div>
       </section>
 

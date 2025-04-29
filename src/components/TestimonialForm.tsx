@@ -8,6 +8,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { StarRating } from "./StarRating";
 import { useToast } from "@/hooks/use-toast";
+import { useTestimonials } from "@/context/TestimonialContext";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "O nome deve ter pelo menos 2 caracteres" }),
@@ -17,6 +18,8 @@ const formSchema = z.object({
 
 export const TestimonialForm = () => {
   const { toast } = useToast();
+  const { addTestimonial } = useTestimonials();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,6 +30,14 @@ export const TestimonialForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
+    // Add the new testimonial to our context
+    addTestimonial({
+      content: data.comment,
+      author: data.name,
+      role: "Paciente",
+      rating: data.rating,
+    });
+    
     console.log("Testimonial submitted:", data);
     toast({
       title: "Depoimento enviado!",
