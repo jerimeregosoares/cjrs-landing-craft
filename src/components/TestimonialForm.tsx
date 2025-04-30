@@ -1,3 +1,4 @@
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -8,6 +9,8 @@ import { Textarea } from "./ui/textarea";
 import { StarRating } from "./StarRating";
 import { useToast } from "@/hooks/use-toast";
 import { useTestimonials } from "@/context/TestimonialContext";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "O nome deve ter pelo menos 2 caracteres"
@@ -19,13 +22,12 @@ const formSchema = z.object({
     message: "Por favor, selecione uma avaliação"
   })
 });
+
 export const TestimonialForm = () => {
-  const {
-    toast
-  } = useToast();
-  const {
-    addTestimonial
-  } = useTestimonials();
+  const { toast } = useToast();
+  const { addTestimonial } = useTestimonials();
+  const isMobile = useIsMobile();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,6 +36,7 @@ export const TestimonialForm = () => {
       rating: 0
     }
   });
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     // Add the new testimonial to our context
     addTestimonial({
@@ -42,48 +45,81 @@ export const TestimonialForm = () => {
       role: "Paciente",
       rating: data.rating
     });
+    
     console.log("Testimonial submitted:", data);
+    
     toast({
       title: "Depoimento enviado!",
       description: "Obrigado por compartilhar sua experiência."
     });
+    
     form.reset();
   };
-  return <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 bg-[#1E3A8A] p-6 rounded-lg max-w-2xl mx-auto">
-        <FormField control={form.control} name="name" render={({
-        field
-      }) => <FormItem>
-              <FormLabel className="text-white">Nome</FormLabel>
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 bg-[#1E3A8A] p-4 md:p-6 rounded-lg max-w-2xl mx-auto">
+        <FormField 
+          control={form.control} 
+          name="name" 
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-white text-sm md:text-base">Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Seu nome" {...field} className="bg-white" />
+                <Input 
+                  placeholder="Seu nome" 
+                  {...field} 
+                  className="bg-white text-sm md:text-base py-5" 
+                />
               </FormControl>
               <FormMessage />
-            </FormItem>} />
+            </FormItem>
+          )}
+        />
 
-        <FormField control={form.control} name="comment" render={({
-        field
-      }) => <FormItem>
-              <FormLabel className="text-white">Depoimento</FormLabel>
+        <FormField 
+          control={form.control} 
+          name="comment" 
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-white text-sm md:text-base">Depoimento</FormLabel>
               <FormControl>
-                <Textarea placeholder="Compartilhe sua experiência" {...field} className="bg-white" />
+                <Textarea 
+                  placeholder="Compartilhe sua experiência" 
+                  {...field} 
+                  className="bg-white text-sm md:text-base min-h-[100px]" 
+                />
               </FormControl>
-              <FormMessage className="text-base text-rose-400" />
-            </FormItem>} />
+              <FormMessage className="text-sm md:text-base text-rose-400" />
+            </FormItem>
+          )}
+        />
 
-        <FormField control={form.control} name="rating" render={({
-        field
-      }) => <FormItem>
-              <FormLabel className="text-white">Avaliação</FormLabel>
+        <FormField 
+          control={form.control} 
+          name="rating" 
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-white text-sm md:text-base">Avaliação</FormLabel>
               <FormControl>
-                <StarRating value={field.value} onChange={field.onChange} />
+                <StarRating 
+                  value={field.value} 
+                  onChange={field.onChange} 
+                  size={isMobile ? 20 : 24}
+                />
               </FormControl>
               <FormMessage />
-            </FormItem>} />
+            </FormItem>
+          )}
+        />
 
-        <Button type="submit" className="w-full bg-[#FFD700] text-[#1E3A8A] hover:bg-[#FFD700]/90">
+        <Button 
+          type="submit" 
+          className="w-full bg-[#FFD700] text-[#1E3A8A] hover:bg-[#FFD700]/90 py-5 text-base md:text-lg font-medium"
+        >
           Enviar Depoimento
         </Button>
       </form>
-    </Form>;
+    </Form>
+  );
 };

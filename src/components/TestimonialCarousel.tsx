@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useCallback } from "react";
 import { Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,18 +11,20 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const TestimonialCarousel = () => {
   const { testimonials } = useTestimonials();
   const [isPaused, setIsPaused] = useState(false);
   const [api, setApi] = useState<any | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isMobile = useIsMobile();
   
-  // Função para avançar para o próximo slide ou reiniciar
+  // Function to advance to the next slide or restart
   const advanceSlide = useCallback(() => {
     if (!api) return;
     
-    // Se estiver no último slide, voltar para o primeiro
+    // If at the last slide, go back to the first
     if (currentIndex >= testimonials.length - 1) {
       api.scrollTo(0);
     } else {
@@ -29,7 +32,7 @@ export const TestimonialCarousel = () => {
     }
   }, [api, currentIndex, testimonials.length]);
   
-  // Atualiza o índice atual quando o carrossel muda
+  // Update the current index when the carousel changes
   useEffect(() => {
     if (!api) return;
     
@@ -79,17 +82,17 @@ export const TestimonialCarousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-0" />
-        <CarouselNext className="right-0" />
+        <CarouselPrevious className={isMobile ? "-left-3 h-8 w-8 opacity-70" : "left-0"} />
+        <CarouselNext className={isMobile ? "-right-3 h-8 w-8 opacity-70" : "right-0"} />
       </Carousel>
       
       <Button 
         variant="outline" 
         size="icon"
         onClick={togglePause}
-        className="absolute bottom-0 right-0 bg-transparent border-none hover:bg-slate-800/30 text-white"
+        className={`absolute ${isMobile ? 'bottom-1 right-1 h-8 w-8' : 'bottom-0 right-0'} bg-transparent border-none hover:bg-slate-800/30 text-white`}
       >
-        {isPaused ? <Play className="h-5 w-5" /> : <Pause className="h-5 w-5" />}
+        {isPaused ? <Play className={isMobile ? "h-4 w-4" : "h-5 w-5"} /> : <Pause className={isMobile ? "h-4 w-4" : "h-5 w-5"} />}
         <span className="sr-only">{isPaused ? "Play" : "Pause"} carousel</span>
       </Button>
     </div>
