@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { X, Menu } from "lucide-react";
 import Logo from './Logo';
+import { useAdmin } from "@/context/AdminContext";
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { siteContent } = useAdmin();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -64,7 +66,7 @@ const MobileNav = () => {
             className="mt-4 w-full" 
             asChild
           >
-            <a href="https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento">
+            <a href={siteContent.links.whatsapp}>
               Agendar WhatsApp
             </a>
           </Button>
