@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface Testimonial {
   id: string;
@@ -10,8 +10,8 @@ export interface Testimonial {
   timestamp: Date;
 }
 
-// Sample initial testimonials
-const initialTestimonials: Testimonial[] = [
+// Sample initial testimonials (fallback if localStorage is empty)
+const sampleTestimonials: Testimonial[] = [
   {
     id: '1',
     content: "A tecnologia de ultrassom POCUS tornou meu exame muito mais confortável e preciso.",
@@ -46,7 +46,45 @@ interface TestimonialContextType {
 const TestimonialContext = createContext<TestimonialContextType | undefined>(undefined);
 
 export const TestimonialProvider = ({ children }: { children: ReactNode }) => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialTestimonials);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  
+  // Load testimonials from localStorage on component mount
+  useEffect(() => {
+    const loadTestimonials = () => {
+      try {
+        const storedTestimonials = localStorage.getItem('testimonials');
+        if (storedTestimonials) {
+          // Parse the stored JSON and convert timestamp strings back to Date objects
+          const parsedTestimonials = JSON.parse(storedTestimonials).map((item: any) => ({
+            ...item,
+            timestamp: new Date(item.timestamp)
+          }));
+          setTestimonials(parsedTestimonials);
+        } else {
+          // If no testimonials in localStorage, use sample testimonials
+          setTestimonials(sampleTestimonials);
+          // Save sample testimonials to localStorage
+          localStorage.setItem('testimonials', JSON.stringify(sampleTestimonials));
+        }
+      } catch (error) {
+        console.error('Error loading testimonials:', error);
+        setTestimonials(sampleTestimonials);
+      }
+    };
+
+    loadTestimonials();
+  }, []);
+
+  // Save testimonials to localStorage whenever they change
+  useEffect(() => {
+    if (testimonials.length > 0) {
+      try {
+        localStorage.setItem('testimonials', JSON.stringify(testimonials));
+      } catch (error) {
+        console.error('Error saving testimonials:', error);
+      }
+    }
+  }, [testimonials]);
 
   const addTestimonial = (newTestimonial: Omit<Testimonial, 'id' | 'timestamp'>) => {
     const testimonial: Testimonial = {

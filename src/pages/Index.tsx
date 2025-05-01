@@ -24,7 +24,7 @@ const Index = () => {
             <a href="#services" className="hover:text-primary py-2 px-3 transition-colors">Serviços</a>
             <a href="#about" className="hover:text-primary py-2 px-3 transition-colors">Sobre</a>
             <Button variant="default" className="px-4" asChild>
-              <a href="https://wa.me/559191953465?text=GOSTARIA%20DE%20FAZER%20MEU%20AGENDAMENTO">Agendar WhatsApp</a>
+              <a href="https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento">Agendar WhatsApp</a>
             </Button>
           </div>
           
@@ -41,7 +41,7 @@ const Index = () => {
             <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos.</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size={isMobile ? "default" : "lg"} className="text-zinc-50 bg-lime-800 hover:bg-lime-700 w-full sm:w-auto font-medium" asChild>
-                <a href="https://painelconsult.servicoscjrs.com.br/a/jerime-soares">Agendar Atendimento</a>
+                <a href="https://painelconsult.servicoscjrs.com.br/a/jerime-r-soares">Agendar Atendimento</a>
               </Button>
               <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
                 <a href="#about">Sobre o Profissional</a>
@@ -105,7 +105,7 @@ const Index = () => {
               
               <div className="mt-6 md:mt-8">
                 <Button className="bg-green-700 hover:bg-green-600 text-white w-full sm:w-auto" asChild>
-                  <a href="https://wa.me/559191953465?text=GOSTARIA%20DE%20FAZER%20MEU%20AGENDAMENTO">Agende sua Consulta</a>
+                  <a href="https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento">Agende sua Consulta</a>
                 </Button>
               </div>
             </div>

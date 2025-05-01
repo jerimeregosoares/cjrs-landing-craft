@@ -64,7 +64,7 @@ const MobileNav = () => {
             className="mt-4 w-full" 
             asChild
           >
-            <a href="https://wa.me/559191953465?text=GOSTARIA%20DE%20FAZER%20MEU%20AGENDAMENTO">
+            <a href="https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento">
               Agendar WhatsApp
             </a>
           </Button>
