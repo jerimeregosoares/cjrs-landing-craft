@@ -88,8 +88,6 @@ const Index = () => {
       </section>
 
       {/* About Professional Section */}
-  // ... (importações e início do componente)
-
 const Index = () => {
   const isMobile = useIsMobile();
   const { siteContent } = useAdmin(); // Assumindo que siteContent agora contém siteContent.about.videoUrl
