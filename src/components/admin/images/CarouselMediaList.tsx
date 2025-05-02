@@ -1,6 +1,6 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CarouselMedia } from "@/context/AdminContext";
+import { CarouselMedia } from "@/types/admin";
 import CarouselMediaItem from "./CarouselMediaItem";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

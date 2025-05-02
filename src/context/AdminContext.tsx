@@ -1,6 +1,13 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-// Define types
+import React, { createContext, useContext, useEffect } from 'react';
+import { SiteContent, CarouselMedia, Testimonial } from '@/types/admin';
+import { defaultContent } from './adminDefaults';
+import { useAuthManagement } from '@/hooks/useAuthManagement';
+import { useContentManagement } from '@/hooks/useContentManagement';
+import { useMediaManagement } from '@/hooks/useMediaManagement';
+import { useTestimonialManagement } from '@/hooks/useTestimonialManagement';
+
+// Define context type
 interface AdminContextType {
   isAuthenticated: boolean;
   login: (password: string) => boolean;
@@ -17,84 +24,17 @@ interface AdminContextType {
   reorderMedia: (id: string, newOrder: number) => void;
 }
 
-export interface SiteContent {
-  hero: {
-    title: string;
-    description: string;
-  };
-  services: {
-    title: string;
-  };
-  about: {
-    title: string;
-    subtitle: string;
-    description: string[];
-  };
-  testimonials: {
-    title: string;
-  };
-  links: {
-    scheduleAppointment: string;
-    whatsapp: string;
-  };
-}
-
-export interface Testimonial {
-  id: string;
-  content: string;
-  author: string;
-  role: string;
-  rating: number;
-  timestamp: Date;
-}
-
-export interface CarouselMedia {
-  id: string;
-  file_path: string;
-  file_type: 'image' | 'video';
-  file_name: string;
-  created_at: Date;
-  order: number;
-  active: boolean;
-}
-
-// Default admin password
-const DEFAULT_PASSWORD = "admin123";
-
-// Initialize default content
-const defaultContent: SiteContent = {
-  hero: {
-    title: "Cuidados de Enfermagem Avançados com Tecnologia POCUS",
-    description: "Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos."
-  },
-  services: {
-    title: "Nossos Serviços"
-  },
-  about: {
-    title: "Sobre o Profissional",
-    subtitle: "Enfermeiro Jérime Soares",
-    description: [
-      "Graduado pela Universidade Federal do Pará.",
-      "Pós graduado em ginecologia, obstetrícia, infectologia e ultrassonografia POCUS.",
-      "Atuou na linha de frente prestando assistência direta aos acometidos pelo corona vírus no hospital federal João de Barros Barreto.",
-      "Ao longo de sua carreira, o Enfermeiro Jérime ocupou diversos cargos de responsabilidade, desenvolvendo habilidades técnicas e experiência clínica de excelência."
-    ]
-  },
-  testimonials: {
-    title: "Depoimentos de Pacientes"
-  },
-  links: {
-    scheduleAppointment: "https://painelconsult.servicoscjrs.com.br/a/jerime-r-soares",
-    whatsapp: "https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento"
-  }
-};
+// Export type references for convenience
+export type { SiteContent, CarouselMedia, Testimonial };
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
-export const AdminProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [siteContent, setSiteContent] = useState<SiteContent>(defaultContent);
-  const [carouselMedia, setCarouselMedia] = useState<CarouselMedia[]>([]);
+export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
+  // Use custom hooks for different concerns
+  const { isAuthenticated, setIsAuthenticated, login, logout } = useAuthManagement();
+  const { siteContent, setSiteContent, updateContent, updateLink } = useContentManagement(defaultContent);
+  const { carouselMedia, setCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
+  const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   
   // Load stored data on component mount
   useEffect(() => {
@@ -130,116 +70,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('carouselMedia', JSON.stringify(carouselMedia));
     }
   }, [carouselMedia, isAuthenticated]);
-  
-  const login = (password: string): boolean => {
-    // In a real application, you'd want to use a more secure authentication method
-    if (password === DEFAULT_PASSWORD) {
-      setIsAuthenticated(true);
-      localStorage.setItem('adminAuthenticated', 'true');
-      return true;
-    }
-    return false;
-  };
-  
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('adminAuthenticated');
-  };
-  
-  const updateContent = (section: string, field: string, value: string) => {
-    setSiteContent(prev => ({
-      ...prev,
-      [section]: {
-        ...prev[section as keyof SiteContent],
-        [field]: value
-      }
-    }));
-  };
-  
-  const updateLink = (id: string, newUrl: string) => {
-    setSiteContent(prev => ({
-      ...prev,
-      links: {
-        ...prev.links,
-        [id]: newUrl
-      }
-    }));
-  };
-  
-  const deleteTestimonial = (id: string) => {
-    // This will require access to the TestimonialContext
-    const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
-    const updatedTestimonials = testimonials.filter((t: any) => t.id !== id);
-    localStorage.setItem('testimonials', JSON.stringify(updatedTestimonials));
-    
-    // Force a refresh by updating a timestamp
-    setSiteContent(prev => ({...prev}));
-  };
-  
-  const addTestimonial = (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => {
-    const newTestimonial = {
-      ...testimonial,
-      id: Date.now().toString(),
-      timestamp: new Date()
-    };
-    
-    const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
-    const updatedTestimonials = [newTestimonial, ...testimonials];
-    localStorage.setItem('testimonials', JSON.stringify(updatedTestimonials));
-    
-    // Force a refresh
-    setSiteContent(prev => ({...prev}));
-  };
-  
-  const editTestimonial = (id: string, testimonialUpdate: Partial<Testimonial>) => {
-    const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
-    const updatedTestimonials = testimonials.map((t: any) => 
-      t.id === id ? {...t, ...testimonialUpdate} : t
-    );
-    localStorage.setItem('testimonials', JSON.stringify(updatedTestimonials));
-    
-    // Force a refresh
-    setSiteContent(prev => ({...prev}));
-  };
-  
-  // New functions for media management
-  const addMedia = (media: Omit<CarouselMedia, 'id'>) => {
-    const newMedia = {
-      ...media,
-      id: Date.now().toString(),
-    };
-    
-    // Check limits (15 images, 10 videos)
-    const existingImages = carouselMedia.filter(m => m.file_type === 'image').length;
-    const existingVideos = carouselMedia.filter(m => m.file_type === 'video').length;
-    
-    if (media.file_type === 'image' && existingImages >= 15) {
-      throw new Error('Limite de 15 imagens atingido');
-    }
-    
-    if (media.file_type === 'video' && existingVideos >= 10) {
-      throw new Error('Limite de 10 vídeos atingido');
-    }
-    
-    setCarouselMedia(prev => [...prev, newMedia]);
-  };
-  
-  const deleteMedia = (id: string) => {
-    setCarouselMedia(prev => prev.filter(media => media.id !== id));
-  };
-  
-  const reorderMedia = (id: string, newOrder: number) => {
-    const mediaToMove = carouselMedia.find(media => media.id === id);
-    if (!mediaToMove) return;
-    
-    const updatedMedia = carouselMedia.filter(media => media.id !== id);
-    const newMedia = [...updatedMedia.slice(0, newOrder), mediaToMove, ...updatedMedia.slice(newOrder)];
-    
-    setCarouselMedia(newMedia.map((media, index) => ({
-      ...media,
-      order: index
-    })));
-  };
 
   return (
     <AdminContext.Provider 
