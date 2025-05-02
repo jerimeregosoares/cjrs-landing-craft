@@ -88,45 +88,15 @@ const Index = () => {
       </section>
 
       {/* About Professional Section */}
-const Index = () => {
-  const isMobile = useIsMobile();
-  const { siteContent } = useAdmin(); // Assumindo que siteContent agora contém siteContent.about.videoUrl
-
-  return (
-    <div className="min-h-screen">
-      {/* ... (Navegação, Hero, Serviços, Depoimentos) ... */}
-
-      {/* About Professional Section - MODIFICADO */}
       <section id="about" className="py-12 md:py-20 px-4 md:px-6 bg-emerald-950">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-green-50">{siteContent.about.title}</h2>
-
+          
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            {/* --- Início da Modificação --- */}
             <div className="rounded-2xl overflow-hidden order-2 md:order-1">
-              {/* Verifica se a URL do vídeo existe antes de renderizar */}
-              {siteContent.about.videoUrl ? (
-                <video
-                  controls // Adiciona controles padrões (play/pause, volume, etc.)
-                  className="w-full h-auto max-h-[350px] md:max-h-none object-cover" // Reutilize ou ajuste as classes de estilo conforme necessário
-                  src={siteContent.about.videoUrl} // USA A URL PÚBLICA DO SUPABASE
-                  // Opcional: Adicionar uma imagem de pôster enquanto o vídeo carrega
-                  // poster="/caminho/para/imagem-poster.jpg"
-                  // Opcional: Título para acessibilidade
-                  title={`Vídeo sobre ${siteContent.about.subtitle || 'o profissional'}`}
-                >
-                  {/* Mensagem para navegadores que não suportam vídeo */}
-                  Seu navegador não suporta o elemento de vídeo.
-                </video>
-              ) : (
-                // Opcional: Mostrar um placeholder ou nada se não houver URL de vídeo
-                <div className="w-full h-[350px] bg-gray-800 flex items-center justify-center text-gray-400 rounded-2xl">
-                  (Vídeo indisponível)
-                </div>
-              )}
+              <img alt="Enfermeiro Jérime" className="w-full h-auto max-h-[350px] md:max-h-none object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
             </div>
-            {/* --- Fim da Modificação --- */}
-
+            
             <div className="order-1 md:order-2">
               <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-50">{siteContent.about.subtitle}</h3>
               <div className="space-y-3 md:space-y-4 text-green-100 text-sm md:text-base">
@@ -134,7 +104,7 @@ const Index = () => {
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
-
+              
               <div className="mt-6 md:mt-8">
                 <Button className="bg-green-700 hover:bg-green-600 text-white w-full sm:w-auto" asChild>
                   <a href={siteContent.links.whatsapp}>Agende sua Consulta</a>
@@ -144,13 +114,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* ... (Footer) ... */}
-    </div>
-  );
-};
-export default Index;
-
 
       {/* Footer */}
       <footer className="bg-black text-white py-8 md:py-12 px-4 md:px-6">
