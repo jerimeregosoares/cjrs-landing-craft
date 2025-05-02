@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 // Define types
@@ -7,11 +6,15 @@ interface AdminContextType {
   login: (password: string) => boolean;
   logout: () => void;
   siteContent: SiteContent;
+  carouselMedia: CarouselMedia[];
   updateContent: (section: string, field: string, value: string) => void;
   updateLink: (id: string, newUrl: string) => void;
   deleteTestimonial: (id: string) => void;
   addTestimonial: (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => void;
   editTestimonial: (id: string, testimonial: Partial<Testimonial>) => void;
+  addMedia: (media: Omit<CarouselMedia, 'id'>) => void;
+  deleteMedia: (id: string) => void;
+  reorderMedia: (id: string, newOrder: number) => void;
 }
 
 export interface SiteContent {
@@ -43,6 +46,16 @@ export interface Testimonial {
   role: string;
   rating: number;
   timestamp: Date;
+}
+
+export interface CarouselMedia {
+  id: string;
+  file_path: string;
+  file_type: 'image' | 'video';
+  file_name: string;
+  created_at: Date;
+  order: number;
+  active: boolean;
 }
 
 // Default admin password
@@ -81,6 +94,7 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 export const AdminProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [siteContent, setSiteContent] = useState<SiteContent>(defaultContent);
+  const [carouselMedia, setCarouselMedia] = useState<CarouselMedia[]>([]);
   
   // Load stored data on component mount
   useEffect(() => {
@@ -95,6 +109,12 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     if (storedContent) {
       setSiteContent(JSON.parse(storedContent));
     }
+    
+    // Load saved carousel media
+    const storedMedia = localStorage.getItem('carouselMedia');
+    if (storedMedia) {
+      setCarouselMedia(JSON.parse(storedMedia));
+    }
   }, []);
   
   // Save content whenever it changes
@@ -103,6 +123,13 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem('siteContent', JSON.stringify(siteContent));
     }
   }, [siteContent, isAuthenticated]);
+  
+  // Save media whenever it changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem('carouselMedia', JSON.stringify(carouselMedia));
+    }
+  }, [carouselMedia, isAuthenticated]);
   
   const login = (password: string): boolean => {
     // In a real application, you'd want to use a more secure authentication method
@@ -174,6 +201,45 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
     // Force a refresh
     setSiteContent(prev => ({...prev}));
   };
+  
+  // New functions for media management
+  const addMedia = (media: Omit<CarouselMedia, 'id'>) => {
+    const newMedia = {
+      ...media,
+      id: Date.now().toString(),
+    };
+    
+    // Check limits (15 images, 10 videos)
+    const existingImages = carouselMedia.filter(m => m.file_type === 'image').length;
+    const existingVideos = carouselMedia.filter(m => m.file_type === 'video').length;
+    
+    if (media.file_type === 'image' && existingImages >= 15) {
+      throw new Error('Limite de 15 imagens atingido');
+    }
+    
+    if (media.file_type === 'video' && existingVideos >= 10) {
+      throw new Error('Limite de 10 vídeos atingido');
+    }
+    
+    setCarouselMedia(prev => [...prev, newMedia]);
+  };
+  
+  const deleteMedia = (id: string) => {
+    setCarouselMedia(prev => prev.filter(media => media.id !== id));
+  };
+  
+  const reorderMedia = (id: string, newOrder: number) => {
+    const mediaToMove = carouselMedia.find(media => media.id === id);
+    if (!mediaToMove) return;
+    
+    const updatedMedia = carouselMedia.filter(media => media.id !== id);
+    const newMedia = [...updatedMedia.slice(0, newOrder), mediaToMove, ...updatedMedia.slice(newOrder)];
+    
+    setCarouselMedia(newMedia.map((media, index) => ({
+      ...media,
+      order: index
+    })));
+  };
 
   return (
     <AdminContext.Provider 
@@ -182,11 +248,15 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
         login, 
         logout, 
         siteContent, 
+        carouselMedia,
         updateContent,
         updateLink,
         deleteTestimonial,
         addTestimonial,
-        editTestimonial
+        editTestimonial,
+        addMedia,
+        deleteMedia,
+        reorderMedia
       }}
     >
       {children}

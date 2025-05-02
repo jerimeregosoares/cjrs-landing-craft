@@ -9,7 +9,7 @@ const AdminButton = () => {
       <Button
         variant="outline"
         size="icon"
-        className="fixed bottom-4 right-4 rounded-full z-50 bg-slate-800 text-white hover:bg-slate-700 border-none shadow-lg"
+        className="fixed bottom-4 right-4 rounded-full z-50 bg-slate-800 text-white hover:bg-slate-700 border-none shadow-lg animate-pulse"
       >
         <Settings className="h-5 w-5" />
       </Button>

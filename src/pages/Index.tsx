@@ -9,6 +9,7 @@ import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import MobileNav from "@/components/MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAdmin } from "@/context/AdminContext";
+import HeroCarousel from "@/components/HeroCarousel";
 
 const Index = () => {
   const isMobile = useIsMobile();
@@ -51,7 +52,7 @@ const Index = () => {
             </div>
           </div>
           <div className="rounded-2xl overflow-hidden mt-6 md:mt-0">
-            <img alt="Profissional de Saúde" className="w-full h-[250px] md:h-[500px] object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
+            <HeroCarousel />
           </div>
         </div>
       </section>
