@@ -9,7 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      carousel_media: {
+        Row: {
+          active: boolean
+          created_at: string | null
+          file_name: string
+          file_path: string
+          file_type: string
+          id: string
+          order: number
+          storage_path: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string | null
+          file_name: string
+          file_path: string
+          file_type: string
+          id?: string
+          order?: number
+          storage_path: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string | null
+          file_name?: string
+          file_path?: string
+          file_type?: string
+          id?: string
+          order?: number
+          storage_path?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

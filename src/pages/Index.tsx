@@ -9,7 +9,7 @@ import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import MobileNav from "@/components/MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAdmin } from "@/context/AdminContext";
-import HeroCarousel from "@/components/HeroCarousel";
+import MediaCarousel from "@/components/MediaCarousel";
 
 const Index = () => {
   const isMobile = useIsMobile();
@@ -52,7 +52,11 @@ const Index = () => {
             </div>
           </div>
           <div className="rounded-2xl overflow-hidden mt-6 md:mt-0">
-            <HeroCarousel />
+            <MediaCarousel 
+              section="hero" 
+              fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"
+              height="h-[250px] md:h-[500px]"
+            />
           </div>
         </div>
       </section>
@@ -94,7 +98,11 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="rounded-2xl overflow-hidden order-2 md:order-1">
-              <img alt="Enfermeiro Jérime" className="w-full h-auto max-h-[350px] md:max-h-none object-cover" src="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" />
+              <MediaCarousel 
+                section="about" 
+                fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" 
+                height="h-[350px] md:h-[450px]"
+              />
             </div>
             
             <div className="order-1 md:order-2">

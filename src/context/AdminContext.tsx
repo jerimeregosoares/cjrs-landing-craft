@@ -6,6 +6,7 @@ import { useAuthManagement } from '@/hooks/useAuthManagement';
 import { useContentManagement } from '@/hooks/useContentManagement';
 import { useMediaManagement } from '@/hooks/useMediaManagement';
 import { useTestimonialManagement } from '@/hooks/useTestimonialManagement';
+import { supabase } from '@/integrations/supabase/client';
 
 // Define context type
 interface AdminContextType {
@@ -22,6 +23,7 @@ interface AdminContextType {
   addMedia: (media: Omit<CarouselMedia, 'id'>) => void;
   deleteMedia: (id: string) => void;
   reorderMedia: (id: string, newOrder: number) => void;
+  loading: boolean;
 }
 
 // Export type references for convenience
@@ -33,7 +35,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   // Use custom hooks for different concerns
   const { isAuthenticated, setIsAuthenticated, login, logout } = useAuthManagement();
   const { siteContent, setSiteContent, updateContent, updateLink } = useContentManagement(defaultContent);
-  const { carouselMedia, setCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
+  const { carouselMedia, setCarouselMedia, addMedia, deleteMedia, reorderMedia, loading } = useMediaManagement([]);
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   
   // Load stored data on component mount
@@ -49,12 +51,6 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedContent) {
       setSiteContent(JSON.parse(storedContent));
     }
-    
-    // Load saved carousel media
-    const storedMedia = localStorage.getItem('carouselMedia');
-    if (storedMedia) {
-      setCarouselMedia(JSON.parse(storedMedia));
-    }
   }, []);
   
   // Save content whenever it changes
@@ -63,13 +59,6 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem('siteContent', JSON.stringify(siteContent));
     }
   }, [siteContent, isAuthenticated]);
-  
-  // Save media whenever it changes
-  useEffect(() => {
-    if (isAuthenticated) {
-      localStorage.setItem('carouselMedia', JSON.stringify(carouselMedia));
-    }
-  }, [carouselMedia, isAuthenticated]);
 
   return (
     <AdminContext.Provider 
@@ -86,7 +75,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         editTestimonial,
         addMedia,
         deleteMedia,
-        reorderMedia
+        reorderMedia,
+        loading
       }}
     >
       {children}

@@ -35,7 +35,9 @@ export interface CarouselMedia {
   file_path: string;
   file_type: 'image' | 'video';
   file_name: string;
+  storage_path: string;
   created_at: Date;
   order: number;
   active: boolean;
+  section?: 'hero' | 'about';
 }

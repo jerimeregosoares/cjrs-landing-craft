@@ -1,5 +1,5 @@
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Upload } from "lucide-react";
@@ -11,6 +11,7 @@ interface CarouselMediaUploadProps {
   onUpload: (files: File[]) => void;
   uploading: boolean;
   progress: number;
+  title?: string;
 }
 
 const CarouselMediaUpload = ({ 
@@ -19,7 +20,8 @@ const CarouselMediaUpload = ({
   maxCount, 
   onUpload, 
   uploading, 
-  progress 
+  progress,
+  title
 }: CarouselMediaUploadProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   
@@ -49,7 +51,7 @@ const CarouselMediaUpload = ({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg">
-          {type === 'image' ? 'Imagens do Carrossel' : 'Vídeos do Carrossel'}
+          {title || (type === 'image' ? 'Imagens do Carrossel' : 'Vídeos do Carrossel')}
         </CardTitle>
         <CardDescription>
           {type === 'image' 
@@ -63,14 +65,14 @@ const CarouselMediaUpload = ({
             <input
               ref={inputRef}
               type="file"
-              id={`carousel-${type}s`}
+              id={`carousel-${type}s-${title ? title.replace(/\s+/g, '-').toLowerCase() : 'default'}`}
               accept={type === 'image' ? "image/png,image/jpeg,image/jpg" : "video/mp4"}
               multiple
               onChange={handleFileUpload}
               className="sr-only"
             />
             <label
-              htmlFor={`carousel-${type}s`}
+              htmlFor={`carousel-${type}s-${title ? title.replace(/\s+/g, '-').toLowerCase() : 'default'}`}
               className="cursor-pointer py-2 px-4 rounded-md bg-slate-50 hover:bg-slate-100 border text-sm font-medium flex items-center"
             >
               <Upload className="mr-2 h-4 w-4" />
