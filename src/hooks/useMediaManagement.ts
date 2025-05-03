@@ -23,7 +23,15 @@ export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
         }
         
         if (data) {
-          setCarouselMedia(data);
+          // Ensure the data is properly typed
+          const typedData: CarouselMedia[] = data.map(item => ({
+            ...item,
+            file_type: item.file_type as 'image' | 'video',
+            created_at: new Date(item.created_at || Date.now()),
+            section: item.section as 'hero' | 'about' | undefined
+          }));
+          
+          setCarouselMedia(typedData);
         }
       } catch (error) {
         console.error('Error fetching carousel media:', error);
@@ -56,10 +64,16 @@ export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
         throw new Error(`Limite de 10 vídeos atingido para ${media.section === 'hero' ? 'carrossel principal' : 'seção sobre'}`);
       }
       
+      // Format the data for Supabase
+      const mediaToInsert = {
+        ...media,
+        created_at: media.created_at.toISOString(),
+      };
+      
       // Insert into Supabase
       const { data, error } = await supabase
         .from('carousel_media')
-        .insert(media)
+        .insert(mediaToInsert)
         .select()
         .single();
         
@@ -68,8 +82,16 @@ export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
       }
       
       if (data) {
-        setCarouselMedia(prev => [...prev, data]);
-        return data;
+        // Convert the response to match our type
+        const newMedia: CarouselMedia = {
+          ...data,
+          file_type: data.file_type as 'image' | 'video',
+          created_at: new Date(data.created_at || Date.now()),
+          section: data.section as 'hero' | 'about' | undefined
+        };
+        
+        setCarouselMedia(prev => [...prev, newMedia]);
+        return newMedia;
       }
       
       throw new Error('Falha ao adicionar mídia');
@@ -133,7 +155,11 @@ export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
       // Update all media items with new order
       const updates = orderedMedia.map(media => ({
         id: media.id,
-        order: media.order
+        order: media.order,
+        file_name: media.file_name,
+        file_path: media.file_path,
+        file_type: media.file_type,
+        storage_path: media.storage_path
       }));
       
       const { error } = await supabase

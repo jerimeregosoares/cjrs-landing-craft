@@ -3,10 +3,10 @@ import { useState } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { useToast } from "@/hooks/use-toast";
 import { useAdmin } from "@/context/AdminContext";
-import { CarouselMedia } from "@/context/AdminContext";
-import HeroImageUpload from "@/components/admin/images/HeroImageUpload";
+import { supabase } from "@/integrations/supabase/client";
 import CarouselMediaUpload from "@/components/admin/images/CarouselMediaUpload";
 import CarouselMediaList from "@/components/admin/images/CarouselMediaList";
+import HeroImageUpload from "@/components/admin/images/HeroImageUpload";
 
 const ImageManager = () => {
   const { toast } = useToast();

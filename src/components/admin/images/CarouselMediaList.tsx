@@ -8,9 +8,25 @@ interface CarouselMediaListProps {
   media: CarouselMedia[];
   onMove: (id: string, direction: 'up' | 'down') => void;
   onDelete: (id: string, type: string) => void;
+  loading?: boolean;
 }
 
-const CarouselMediaList = ({ media, onMove, onDelete }: CarouselMediaListProps) => {
+const CarouselMediaList = ({ media, onMove, onDelete, loading = false }: CarouselMediaListProps) => {
+  if (loading) {
+    return (
+      <Card className="border-dashed">
+        <CardHeader>
+          <CardTitle>Mídias do Carrossel</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-center text-gray-500 py-8">
+            Carregando mídia...
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="border-dashed">
       <CardHeader>
