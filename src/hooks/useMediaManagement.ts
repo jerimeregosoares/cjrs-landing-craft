@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { CarouselMedia } from '@/types/admin';
 import { supabase } from '@/integrations/supabase/client';
 
-export const useMediaManagement = () => {
+export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
   // These functions handle carousel media operations
-  const [carouselMedia, setCarouselMedia] = useState<CarouselMedia[]>([]);
+  const [carouselMedia, setCarouselMedia] = useState<CarouselMedia[]>(initialMedia);
+  const [loading, setLoading] = useState(false);
   
   // Fetch all carousel media from Supabase
   const fetchCarouselMedia = async () => {
+    setLoading(true);
     try {
       const { data, error } = await supabase
         .from('carousel_media')
@@ -33,11 +35,14 @@ export const useMediaManagement = () => {
       }
     } catch (error) {
       console.error('Error fetching carousel media:', error);
+    } finally {
+      setLoading(false);
     }
   };
   
   // Add new carousel media to Supabase
-  const addCarouselMedia = async (media: Omit<CarouselMedia, 'id'>) => {
+  const addMedia = async (media: Omit<CarouselMedia, 'id'>) => {
+    setLoading(true);
     try {
       // Check if we reached the limit for this type
       const existingByType = carouselMedia.filter(
@@ -90,11 +95,14 @@ export const useMediaManagement = () => {
     } catch (error) {
       console.error('Error adding carousel media:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
   
   // Delete carousel media from Supabase
-  const deleteCarouselMedia = async (id: string) => {
+  const deleteMedia = async (id: string) => {
+    setLoading(true);
     try {
       const { error } = await supabase
         .from('carousel_media')
@@ -110,65 +118,61 @@ export const useMediaManagement = () => {
     } catch (error) {
       console.error('Error deleting carousel media:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
   
   // Update the order of carousel media
-  const updateCarouselMediaOrder = async (id: string, direction: 'up' | 'down') => {
+  const reorderMedia = async (id: string, newIndex: number) => {
+    setLoading(true);
     try {
-      // Find the current item and its order
-      const currentItem = carouselMedia.find(item => item.id === id);
-      if (!currentItem) {
+      // Find the current item
+      const currentIndex = carouselMedia.findIndex(item => item.id === id);
+      if (currentIndex === -1) {
         throw new Error('Mídia não encontrada');
       }
       
-      // Find the item to swap with
-      const swapWithIndex = direction === 'up' 
-        ? carouselMedia.findIndex(item => item.order === currentItem.order - 1)
-        : carouselMedia.findIndex(item => item.order === currentItem.order + 1);
-        
-      if (swapWithIndex === -1) {
-        console.warn('Nenhum item para trocar');
-        return;
-      }
-      
-      // Swap the orders
+      // Create new array with reordered items
       const newOrder = [...carouselMedia];
-      const temp = newOrder[swapWithIndex].order;
-      newOrder[swapWithIndex].order = currentItem.order;
-      newOrder[carouselMedia.findIndex(item => item.id === id)].order = temp;
+      const [movedItem] = newOrder.splice(currentIndex, 1);
+      newOrder.splice(newIndex, 0, movedItem);
       
-      // Update the state
-      setCarouselMedia(newOrder);
-      
-      // Prepare updates for Supabase
-      const orderedMedia = [...newOrder].sort((a, b) => a.order - b.order);
-      
-      // Update all media items with new order
-      const updates = orderedMedia.map(media => ({
-        id: media.id,
-        order: media.order
+      // Update all items with new order indices
+      const updatedMedia = newOrder.map((media, index) => ({
+        ...media,
+        order: index
       }));
       
-      const { error } = await supabase
-        .from('carousel_media')
-        .upsert(updates);
-        
-      if (error) {
-        console.error('Error updating carousel media order:', error);
-        throw error;
+      // Update local state
+      setCarouselMedia(updatedMedia);
+      
+      // Prepare updates for each item
+      for (const media of updatedMedia) {
+        const { error } = await supabase
+          .from('carousel_media')
+          .update({ order: media.order })
+          .eq('id', media.id);
+          
+        if (error) {
+          console.error('Error updating carousel media order:', error);
+          throw error;
+        }
       }
     } catch (error) {
-      console.error('Error updating carousel media order:', error);
+      console.error('Error reordering carousel media:', error);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   return {
     carouselMedia,
+    loading,
     fetchCarouselMedia,
-    addCarouselMedia,
-    deleteCarouselMedia,
-    updateCarouselMediaOrder
+    addMedia,
+    deleteMedia,
+    reorderMedia
   };
 };

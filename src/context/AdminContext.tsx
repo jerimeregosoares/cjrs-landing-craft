@@ -35,7 +35,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   // Use custom hooks for different concerns
   const { isAuthenticated, setIsAuthenticated, login, logout } = useAuthManagement();
   const { siteContent, setSiteContent, updateContent, updateLink } = useContentManagement(defaultContent);
-  const { carouselMedia, setCarouselMedia, addMedia, deleteMedia, reorderMedia, loading } = useMediaManagement([]);
+  const { carouselMedia, loading, fetchCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   
   // Load stored data on component mount
@@ -51,6 +51,9 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     if (storedContent) {
       setSiteContent(JSON.parse(storedContent));
     }
+    
+    // Carregar mídia do carrossel
+    fetchCarouselMedia();
   }, []);
   
   // Save content whenever it changes
