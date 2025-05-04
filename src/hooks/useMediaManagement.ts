@@ -1,66 +1,57 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CarouselMedia } from '@/types/admin';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from './use-toast';
 
-export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
-  const [carouselMedia, setCarouselMedia] = useState<CarouselMedia[]>(initialMedia);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-
-  // Fetch media from Supabase on mount
-  useEffect(() => {
-    const fetchMedia = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('carousel_media')
-          .select('*')
-          .order('order');
-        
-        if (error) {
-          throw error;
-        }
-        
-        if (data) {
-          // Ensure the data is properly typed
-          const typedData: CarouselMedia[] = data.map(item => ({
-            ...item,
-            file_type: item.file_type as 'image' | 'video',
-            created_at: new Date(item.created_at || Date.now()),
-            section: item.section as 'hero' | 'about' | undefined
-          }));
-          
-          setCarouselMedia(typedData);
-        }
-      } catch (error) {
-        console.error('Error fetching carousel media:', error);
-        toast({
-          variant: "destructive",
-          title: "Erro ao carregar mídia",
-          description: error instanceof Error ? error.message : "Erro desconhecido"
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchMedia();
-  }, []);
-
-  // Add new media to Supabase
-  const addMedia = async (media: Omit<CarouselMedia, 'id'>) => {
+export const useMediaManagement = () => {
+  // These functions handle carousel media operations
+  const [carouselMedia, setCarouselMedia] = useState<CarouselMedia[]>([]);
+  
+  // Fetch all carousel media from Supabase
+  const fetchCarouselMedia = async () => {
     try {
-      // Check limits (15 images, 10 videos per section)
-      const sectionMedia = carouselMedia.filter(m => m.section === media.section);
-      const sectionImages = sectionMedia.filter(m => m.file_type === 'image').length;
-      const sectionVideos = sectionMedia.filter(m => m.file_type === 'video').length;
-      
-      if (media.file_type === 'image' && sectionImages >= 15) {
-        throw new Error(`Limite de 15 imagens atingido para ${media.section === 'hero' ? 'carrossel principal' : 'seção sobre'}`);
+      const { data, error } = await supabase
+        .from('carousel_media')
+        .select('*')
+        .order('order', { ascending: true });
+        
+      if (error) {
+        console.error('Error fetching carousel media:', error);
+        throw error;
       }
       
-      if (media.file_type === 'video' && sectionVideos >= 10) {
+      if (data) {
+        // Ensure the data is properly typed
+        const typedData: CarouselMedia[] = data.map(item => ({
+          ...item,
+          file_type: item.file_type as 'image' | 'video',
+          created_at: new Date(item.created_at || Date.now()),
+          section: item.section as 'hero' | 'about' | undefined
+        }));
+        
+        setCarouselMedia(typedData);
+      }
+    } catch (error) {
+      console.error('Error fetching carousel media:', error);
+    }
+  };
+  
+  // Add new carousel media to Supabase
+  const addCarouselMedia = async (media: Omit<CarouselMedia, 'id'>) => {
+    try {
+      // Check if we reached the limit for this type
+      const existingByType = carouselMedia.filter(
+        item => 
+          item.file_type === media.file_type && 
+          item.active &&
+          ((!media.section && !item.section) || (media.section === item.section))
+      );
+      
+      if (media.file_type === 'image' && existingByType.length >= 10) {
+        throw new Error(`Limite de 10 imagens atingido para ${media.section === 'hero' ? 'carrossel principal' : 'seção sobre'}`);
+      }
+      
+      if (media.file_type === 'video' && existingByType.length >= 3) {
         throw new Error(`Limite de 10 vídeos atingido para ${media.section === 'hero' ? 'carrossel principal' : 'seção sobre'}`);
       }
       
@@ -78,6 +69,7 @@ export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
         .single();
         
       if (error) {
+        console.error('Error adding carousel media:', error);
         throw error;
       }
       
@@ -96,93 +88,87 @@ export const useMediaManagement = (initialMedia: CarouselMedia[] = []) => {
       
       throw new Error('Falha ao adicionar mídia');
     } catch (error) {
-      console.error('Error adding media:', error);
+      console.error('Error adding carousel media:', error);
       throw error;
     }
   };
   
-  // Delete media from Supabase
-  const deleteMedia = async (id: string) => {
+  // Delete carousel media from Supabase
+  const deleteCarouselMedia = async (id: string) => {
     try {
-      // First, find the media to get storage path
-      const mediaToDelete = carouselMedia.find(media => media.id === id);
-      if (!mediaToDelete) return;
-      
-      // Delete from database
-      const { error: dbError } = await supabase
+      const { error } = await supabase
         .from('carousel_media')
         .delete()
         .eq('id', id);
-      
-      if (dbError) {
-        throw dbError;
+        
+      if (error) {
+        console.error('Error deleting carousel media:', error);
+        throw error;
       }
       
-      // Delete from storage
-      const bucketId = mediaToDelete.file_type === 'image' ? 'carousel-images' : 'carousel-videos';
-      const { error: storageError } = await supabase
-        .storage
-        .from(bucketId)
-        .remove([mediaToDelete.storage_path]);
-      
-      if (storageError) {
-        console.error('Error removing file from storage:', storageError);
-        // Continue even if storage deletion fails
-      }
-      
-      // Update state
-      setCarouselMedia(prev => prev.filter(media => media.id !== id));
+      setCarouselMedia(prev => prev.filter(item => item.id !== id));
     } catch (error) {
-      console.error('Error deleting media:', error);
+      console.error('Error deleting carousel media:', error);
       throw error;
     }
   };
   
-  // Reorder media in Supabase
-  const reorderMedia = async (id: string, newOrder: number) => {
+  // Update the order of carousel media
+  const updateCarouselMediaOrder = async (id: string, direction: 'up' | 'down') => {
     try {
-      const mediaToMove = carouselMedia.find(media => media.id === id);
-      if (!mediaToMove) return;
+      // Find the current item and its order
+      const currentItem = carouselMedia.find(item => item.id === id);
+      if (!currentItem) {
+        throw new Error('Mídia não encontrada');
+      }
       
-      const updatedMedia = carouselMedia.filter(media => media.id !== id);
-      const newMedia = [...updatedMedia.slice(0, newOrder), mediaToMove, ...updatedMedia.slice(newOrder)];
+      // Find the item to swap with
+      const swapWithIndex = direction === 'up' 
+        ? carouselMedia.findIndex(item => item.order === currentItem.order - 1)
+        : carouselMedia.findIndex(item => item.order === currentItem.order + 1);
+        
+      if (swapWithIndex === -1) {
+        console.warn('Nenhum item para trocar');
+        return;
+      }
       
-      const orderedMedia = newMedia.map((media, index) => ({
-        ...media,
-        order: index
-      }));
+      // Swap the orders
+      const newOrder = [...carouselMedia];
+      const temp = newOrder[swapWithIndex].order;
+      newOrder[swapWithIndex].order = currentItem.order;
+      newOrder[carouselMedia.findIndex(item => item.id === id)].order = temp;
+      
+      // Update the state
+      setCarouselMedia(newOrder);
+      
+      // Prepare updates for Supabase
+      const orderedMedia = [...newOrder].sort((a, b) => a.order - b.order);
       
       // Update all media items with new order
       const updates = orderedMedia.map(media => ({
         id: media.id,
-        order: media.order,
-        file_name: media.file_name,
-        file_path: media.file_path,
-        file_type: media.file_type,
-        storage_path: media.storage_path
+        order: media.order
       }));
       
       const { error } = await supabase
         .from('carousel_media')
         .upsert(updates);
-      
+        
       if (error) {
+        console.error('Error updating carousel media order:', error);
         throw error;
       }
-      
-      setCarouselMedia(orderedMedia);
     } catch (error) {
-      console.error('Error reordering media:', error);
+      console.error('Error updating carousel media order:', error);
       throw error;
     }
   };
 
   return {
     carouselMedia,
-    setCarouselMedia,
-    addMedia,
-    deleteMedia,
-    reorderMedia,
-    loading
+    fetchCarouselMedia,
+    addCarouselMedia,
+    deleteCarouselMedia,
+    updateCarouselMediaOrder
   };
 };

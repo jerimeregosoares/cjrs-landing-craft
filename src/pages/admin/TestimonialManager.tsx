@@ -1,15 +1,14 @@
-
 import { useState, useEffect } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Testimonial } from "@/context/AdminContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { StarRating } from "@/components/StarRating";
-import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Testimonial } from "@/types/admin";
 import {
   Dialog,
   DialogContent,
@@ -31,11 +30,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Edit, Trash2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTestimonialManagement } from "@/hooks/useTestimonialManagement";
 
 const TestimonialManager = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
-  const { deleteTestimonial, addTestimonial, editTestimonial } = useAdmin();
+  const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
@@ -59,33 +59,52 @@ const TestimonialManager = () => {
     loadTestimonials();
   }, []);
 
-  const loadTestimonials = () => {
+  const loadTestimonials = async () => {
+    setLoading(true);
     try {
-      const storedTestimonials = localStorage.getItem("testimonials");
-      if (storedTestimonials) {
-        const parsedTestimonials = JSON.parse(storedTestimonials).map((item: any) => ({
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('timestamp', { ascending: false });
+        
+      if (error) {
+        console.error("Erro ao carregar depoimentos:", error);
+        return;
+      }
+      
+      if (data) {
+        const parsedTestimonials = data.map(item => ({
           ...item,
           timestamp: new Date(item.timestamp),
         }));
         setTestimonials(parsedTestimonials);
       }
     } catch (error) {
-      console.error("Error loading testimonials:", error);
+      console.error("Erro ao carregar depoimentos:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = (id: string) => {
-    deleteTestimonial(id);
-    loadTestimonials();
-    toast({
-      title: "Depoimento excluído",
-      description: "O depoimento foi removido com sucesso.",
-    });
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteTestimonial(id);
+      await loadTestimonials();
+      toast({
+        title: "Depoimento excluído",
+        description: "O depoimento foi removido com sucesso.",
+      });
+    } catch (error) {
+      console.error("Erro ao excluir depoimento:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro ao excluir depoimento",
+        description: "Ocorreu um erro ao tentar excluir o depoimento.",
+      });
+    }
   };
 
-  const handleAddTestimonial = () => {
+  const handleAddTestimonial = async () => {
     if (newTestimonial.content.length < 10 || newTestimonial.author.length < 2) {
       toast({
         variant: "destructive",
@@ -95,38 +114,56 @@ const TestimonialManager = () => {
       return;
     }
 
-    addTestimonial(newTestimonial);
-    setNewTestimonial({
-      content: "",
-      author: "",
-      role: "Paciente",
-      rating: 5,
-    });
-    loadTestimonials();
-    
-    toast({
-      title: "Depoimento adicionado",
-      description: "O depoimento foi adicionado com sucesso.",
-    });
+    try {
+      await addTestimonial(newTestimonial);
+      setNewTestimonial({
+        content: "",
+        author: "",
+        role: "Paciente",
+        rating: 5,
+      });
+      await loadTestimonials();
+      
+      toast({
+        title: "Depoimento adicionado",
+        description: "O depoimento foi adicionado com sucesso.",
+      });
+    } catch (error) {
+      console.error("Erro ao adicionar depoimento:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro ao adicionar depoimento",
+        description: "Ocorreu um erro ao tentar adicionar o depoimento.",
+      });
+    }
   };
 
-  const handleUpdateTestimonial = () => {
+  const handleUpdateTestimonial = async () => {
     if (!editingTestimonial) return;
     
-    editTestimonial(editingTestimonial.id, {
-      content: editingTestimonial.content,
-      author: editingTestimonial.author,
-      role: editingTestimonial.role,
-      rating: editingTestimonial.rating,
-    });
-    
-    setEditingTestimonial(null);
-    loadTestimonials();
-    
-    toast({
-      title: "Depoimento atualizado",
-      description: "O depoimento foi atualizado com sucesso.",
-    });
+    try {
+      await editTestimonial(editingTestimonial.id, {
+        content: editingTestimonial.content,
+        author: editingTestimonial.author,
+        role: editingTestimonial.role,
+        rating: editingTestimonial.rating,
+      });
+      
+      setEditingTestimonial(null);
+      await loadTestimonials();
+      
+      toast({
+        title: "Depoimento atualizado",
+        description: "O depoimento foi atualizado com sucesso.",
+      });
+    } catch (error) {
+      console.error("Erro ao atualizar depoimento:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro ao atualizar depoimento",
+        description: "Ocorreu um erro ao tentar atualizar o depoimento.",
+      });
+    }
   };
 
   const formatDate = (date: Date) => {

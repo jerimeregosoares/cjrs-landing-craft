@@ -1,48 +1,92 @@
 
 import { useState } from 'react';
 import { Testimonial } from '@/types/admin';
+import { supabase } from '@/integrations/supabase/client';
 
 export const useTestimonialManagement = () => {
-  // These functions handle testimonial operations
-  const deleteTestimonial = (id: string) => {
-    // This will require access to the TestimonialContext
-    const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
-    const updatedTestimonials = testimonials.filter((t: any) => t.id !== id);
-    localStorage.setItem('testimonials', JSON.stringify(updatedTestimonials));
-    
-    // Return a timestamp to force a refresh in the parent component
-    return new Date();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const deleteTestimonial = async (id: string) => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase
+        .from('testimonials')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Erro ao excluir depoimento:', error);
+        throw error;
+      }
+      
+      return new Date(); // Retornar timestamp para forçar atualização
+    } catch (error) {
+      console.error('Erro ao excluir depoimento:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
   
-  const addTestimonial = (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => {
-    const newTestimonial = {
-      ...testimonial,
-      id: Date.now().toString(),
-      timestamp: new Date()
-    };
-    
-    const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
-    const updatedTestimonials = [newTestimonial, ...testimonials];
-    localStorage.setItem('testimonials', JSON.stringify(updatedTestimonials));
-    
-    // Return a timestamp to force a refresh
-    return new Date();
+  const addTestimonial = async (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .insert([{
+          content: testimonial.content,
+          author: testimonial.author,
+          role: testimonial.role,
+          rating: testimonial.rating
+        }])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Erro ao adicionar depoimento:', error);
+        throw error;
+      }
+      
+      return new Date(); // Retornar timestamp para forçar atualização
+    } catch (error) {
+      console.error('Erro ao adicionar depoimento:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
   
-  const editTestimonial = (id: string, testimonialUpdate: Partial<Testimonial>) => {
-    const testimonials = JSON.parse(localStorage.getItem('testimonials') || '[]');
-    const updatedTestimonials = testimonials.map((t: any) => 
-      t.id === id ? {...t, ...testimonialUpdate} : t
-    );
-    localStorage.setItem('testimonials', JSON.stringify(updatedTestimonials));
-    
-    // Return a timestamp to force a refresh
-    return new Date();
+  const editTestimonial = async (id: string, testimonialUpdate: Partial<Testimonial>) => {
+    setIsLoading(true);
+    try {
+      const { error } = await supabase
+        .from('testimonials')
+        .update({
+          content: testimonialUpdate.content,
+          author: testimonialUpdate.author,
+          role: testimonialUpdate.role,
+          rating: testimonialUpdate.rating
+        })
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Erro ao atualizar depoimento:', error);
+        throw error;
+      }
+      
+      return new Date(); // Retornar timestamp para forçar atualização
+    } catch (error) {
+      console.error('Erro ao atualizar depoimento:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return {
     deleteTestimonial,
     addTestimonial,
-    editTestimonial
+    editTestimonial,
+    isLoading
   };
 };

@@ -18,6 +18,7 @@ export type Database = {
           file_type: string
           id: string
           order: number
+          section: string | null
           storage_path: string
         }
         Insert: {
@@ -28,6 +29,7 @@ export type Database = {
           file_type: string
           id?: string
           order?: number
+          section?: string | null
           storage_path: string
         }
         Update: {
@@ -38,7 +40,35 @@ export type Database = {
           file_type?: string
           id?: string
           order?: number
+          section?: string | null
           storage_path?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author: string
+          content: string
+          id: string
+          rating: number
+          role: string
+          timestamp: string
+        }
+        Insert: {
+          author: string
+          content: string
+          id?: string
+          rating?: number
+          role?: string
+          timestamp?: string
+        }
+        Update: {
+          author?: string
+          content?: string
+          id?: string
+          rating?: number
+          role?: string
+          timestamp?: string
         }
         Relationships: []
       }

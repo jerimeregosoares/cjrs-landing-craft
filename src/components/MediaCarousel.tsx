@@ -84,11 +84,13 @@ export const MediaCarousel = ({ section, fallbackImageSrc, height = "h-[250px] m
   // Return default image if no media
   if (orderedMedia.length === 0) {
     return (
-      <img 
-        alt="Imagem padrão" 
-        className={`w-full ${height} object-cover rounded-2xl`}
-        src={fallbackImageSrc || "/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"}
-      />
+      <div className={`w-full ${height} overflow-hidden rounded-2xl`}>
+        <img 
+          alt="Imagem padrão" 
+          className="w-full h-full object-cover"
+          src={fallbackImageSrc || "/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"}
+        />
+      </div>
     );
   }
 
@@ -97,20 +99,21 @@ export const MediaCarousel = ({ section, fallbackImageSrc, height = "h-[250px] m
       <Carousel setApi={setApi} className="w-full">
         <CarouselContent>
           {orderedMedia.map((media) => (
-            <CarouselItem key={media.id}>
+            <CarouselItem key={media.id} className="overflow-hidden">
               <div className={`w-full ${height}`}>
                 {media.file_type === 'image' ? (
                   <img 
                     src={media.file_path}
                     alt={media.file_name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                   />
                 ) : (
                   <video 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover object-center"
                     autoPlay={!isPaused}
                     muted
                     loop
+                    playsInline
                   >
                     <source src={media.file_path} type="video/mp4" />
                     Seu navegador não suporta vídeos.
