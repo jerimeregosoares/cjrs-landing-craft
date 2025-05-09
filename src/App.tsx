@@ -15,33 +15,37 @@ import TestimonialManager from "./pages/admin/TestimonialManager";
 import LinkManager from "./pages/admin/LinkManager";
 import ImageManager from "./pages/admin/ImageManager";
 import AdminButton from "./components/AdminButton";
+import { useState } from "react";
 
-const queryClient = new QueryClient();
+const App = () => {
+  // Create QueryClient inside the component
+  const [queryClient] = useState(() => new QueryClient());
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AdminProvider>
-        <TestimonialProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/content" element={<ContentEditor />} />
-              <Route path="/admin/testimonials" element={<TestimonialManager />} />
-              <Route path="/admin/links" element={<LinkManager />} />
-              <Route path="/admin/images" element={<ImageManager />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <AdminButton />
-          </BrowserRouter>
-        </TestimonialProvider>
-      </AdminProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AdminProvider>
+          <TestimonialProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/admin/content" element={<ContentEditor />} />
+                <Route path="/admin/testimonials" element={<TestimonialManager />} />
+                <Route path="/admin/links" element={<LinkManager />} />
+                <Route path="/admin/images" element={<ImageManager />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <AdminButton />
+            </BrowserRouter>
+          </TestimonialProvider>
+        </AdminProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
