@@ -5,12 +5,14 @@ interface ServiceCardProps {
   title: string;
   description: string;
   icon: React.ReactNode;
+  price?: string;
 }
 
 const ServiceCard = ({
   title,
   description,
-  icon
+  icon,
+  price
 }: ServiceCardProps) => {
   return (
     <Card className="hover:shadow-lg transition-shadow rounded-none h-full">
@@ -22,6 +24,11 @@ const ServiceCard = ({
         <CardDescription className="font-medium text-sm md:text-base text-neutral-50">
           {description}
         </CardDescription>
+        {price && (
+          <div className="mt-4 bg-red-900/50 p-2 rounded text-white text-sm font-medium">
+            {price}
+          </div>
+        )}
       </CardHeader>
     </Card>
   );

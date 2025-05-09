@@ -11,7 +11,30 @@ export const defaultContent: SiteContent = {
     description: "Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos."
   },
   services: {
-    title: "Nossos Serviços"
+    title: "Nossos Serviços",
+    items: [
+      {
+        id: "service-1",
+        title: "Ultrassom POCUS",
+        description: "Diagnóstico avançado por ultrassom para exames obstétricos, ginecológicos, de próstata e abdômen completo.",
+        icon: "search",
+        price: "A partir de R$150"
+      },
+      {
+        id: "service-2",
+        title: "Consultas",
+        description: "Consultas de enfermagem abrangentes com profissionais experientes.",
+        icon: "clipboard",
+        price: "R$100"
+      },
+      {
+        id: "service-3",
+        title: "Procedimentos Médicos",
+        description: "Troca de curativos profissional, remoção de verrugas e tratamentos injetáveis.",
+        icon: "syringe",
+        price: "A partir de R$80"
+      }
+    ]
   },
   about: {
     title: "Sobre o Profissional",

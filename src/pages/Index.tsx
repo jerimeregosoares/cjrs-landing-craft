@@ -3,13 +3,22 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import ServiceCard from "@/components/ServiceCard";
 import { TestimonialForm } from "@/components/TestimonialForm";
-import { Heart, Search, Syringe, Clipboard } from "lucide-react";
+import { Heart, Search, Syringe, Clipboard, Activity } from "lucide-react";
 import { TestimonialProvider } from "@/context/TestimonialContext";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import MobileNav from "@/components/MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAdmin } from "@/context/AdminContext";
 import MediaCarousel from "@/components/MediaCarousel";
+
+// Map string icon names to Lucide components
+const iconMap = {
+  search: Search,
+  clipboard: Clipboard,
+  syringe: Syringe, 
+  heart: Heart,
+  activity: Activity
+};
 
 const Index = () => {
   const isMobile = useIsMobile();
@@ -68,9 +77,18 @@ const Index = () => {
         <div className="max-w-7xl mx-auto rounded-md bg-stone-950">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-orange-50">{siteContent.services.title}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            <ServiceCard icon={<Search className="h-6 w-6 md:h-8 md:w-8" />} title="Ultrassom POCUS" description="Diagnóstico avançado por ultrassom para exames obstétricos, ginecológicos, de próstata e abdômen completo." />
-            <ServiceCard icon={<Clipboard className="h-6 w-6 md:h-8 md:w-8" />} title="Consultas" description="Consultas de enfermagem abrangentes com profissionais experientes." />
-            <ServiceCard icon={<Syringe className="h-6 w-6 md:h-8 md:w-8" />} title="Procedimentos Médicos" description="Troca de curativos profissional, remoção de verrugas e tratamentos injetáveis." />
+            {siteContent.services.items.map((service) => {
+              const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Search;
+              return (
+                <ServiceCard 
+                  key={service.id}
+                  icon={<IconComponent className="h-6 w-6 md:h-8 md:w-8" />} 
+                  title={service.title} 
+                  description={service.description}
+                  price={service.price}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
@@ -137,9 +155,9 @@ const Index = () => {
           <div>
             <h3 className="font-bold mb-4 text-base md:text-lg">Serviços</h3>
             <ul className="space-y-2 text-sm md:text-base">
-              <li>Ultrassom POCUS</li>
-              <li>Consultas</li>
-              <li>Procedimentos de Enfermagem</li>
+              {siteContent.services.items.slice(0, 3).map((service) => (
+                <li key={service.id}>{service.title}</li>
+              ))}
             </ul>
           </div>
           <div>

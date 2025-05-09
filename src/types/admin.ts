@@ -6,6 +6,7 @@ export interface SiteContent {
   };
   services: {
     title: string;
+    items: Service[];
   };
   about: {
     title: string;
@@ -19,6 +20,14 @@ export interface SiteContent {
     scheduleAppointment: string;
     whatsapp: string;
   };
+}
+
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  price?: string;
 }
 
 export interface Testimonial {
