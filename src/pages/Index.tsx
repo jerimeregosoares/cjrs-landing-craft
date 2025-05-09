@@ -56,6 +56,8 @@ const Index = () => {
               section="hero" 
               fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"
               height="h-[250px] md:h-[500px]"
+              objectFit="contain"
+              aspectRatio={16/9}
             />
           </div>
         </div>
@@ -102,6 +104,8 @@ const Index = () => {
                 section="about" 
                 fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" 
                 height="h-[350px] md:h-[450px]"
+                objectFit="contain"
+                aspectRatio={4/3}
               />
             </div>
             

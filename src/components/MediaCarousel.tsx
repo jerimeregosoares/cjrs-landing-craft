@@ -11,14 +11,23 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface MediaCarouselProps {
   section: 'hero' | 'about';
   fallbackImageSrc?: string;
   height?: string;
+  objectFit?: "cover" | "contain" | "fill" | "scale-down";
+  aspectRatio?: number; // Aspect ratio for the container (width/height)
 }
 
-export const MediaCarousel = ({ section, fallbackImageSrc, height = "h-[250px] md:h-[500px]" }: MediaCarouselProps) => {
+export const MediaCarousel = ({ 
+  section, 
+  fallbackImageSrc, 
+  height = "h-[250px] md:h-[500px]", 
+  objectFit = "contain", 
+  aspectRatio = 16/9 
+}: MediaCarouselProps) => {
   const { carouselMedia } = useAdmin();
   const [isPaused, setIsPaused] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,11 +94,13 @@ export const MediaCarousel = ({ section, fallbackImageSrc, height = "h-[250px] m
   if (orderedMedia.length === 0) {
     return (
       <div className={`w-full ${height} overflow-hidden rounded-2xl`}>
-        <img 
-          alt="Imagem padrão" 
-          className="w-full h-full object-cover"
-          src={fallbackImageSrc || "/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"}
-        />
+        <AspectRatio ratio={aspectRatio} className="w-full h-full">
+          <img 
+            alt="Imagem padrão" 
+            className="w-full h-full object-contain"
+            src={fallbackImageSrc || "/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"}
+          />
+        </AspectRatio>
       </div>
     );
   }
@@ -101,24 +112,26 @@ export const MediaCarousel = ({ section, fallbackImageSrc, height = "h-[250px] m
           {orderedMedia.map((media) => (
             <CarouselItem key={media.id} className="overflow-hidden">
               <div className={`w-full ${height}`}>
-                {media.file_type === 'image' ? (
-                  <img 
-                    src={media.file_path}
-                    alt={media.file_name}
-                    className="w-full h-full object-cover object-center"
-                  />
-                ) : (
-                  <video 
-                    className="w-full h-full object-cover object-center"
-                    autoPlay={!isPaused}
-                    muted
-                    loop
-                    playsInline
-                  >
-                    <source src={media.file_path} type="video/mp4" />
-                    Seu navegador não suporta vídeos.
-                  </video>
-                )}
+                <AspectRatio ratio={aspectRatio} className="w-full h-full">
+                  {media.file_type === 'image' ? (
+                    <img 
+                      src={media.file_path}
+                      alt={media.file_name}
+                      className={`w-full h-full object-${objectFit}`}
+                    />
+                  ) : (
+                    <video 
+                      className={`w-full h-full object-${objectFit}`}
+                      autoPlay={!isPaused}
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src={media.file_path} type="video/mp4" />
+                      Seu navegador não suporta vídeos.
+                    </video>
+                  )}
+                </AspectRatio>
               </div>
             </CarouselItem>
           ))}
