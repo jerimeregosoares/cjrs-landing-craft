@@ -10,6 +10,7 @@ import MobileNav from "@/components/MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAdmin } from "@/context/AdminContext";
 import MediaCarousel from "@/components/MediaCarousel";
+import { useEffect } from "react";
 
 // Map string icon names to Lucide components
 const iconMap = {
@@ -27,6 +28,17 @@ const Index = () => {
   // Check if siteContent or its properties are undefined and provide fallbacks
   const services = siteContent?.services?.items || [];
   const aboutDescription = siteContent?.about?.description || [];
+
+  // Apply theme colors
+  useEffect(() => {
+    if (siteContent?.theme) {
+      document.documentElement.style.setProperty('--primary', siteContent.theme.primaryColor || "#4CAF50");
+      document.documentElement.style.setProperty('--secondary', siteContent.theme.secondaryColor || "#A5D6A7");
+      document.documentElement.style.setProperty('--accent', siteContent.theme.accentColor || "#1A1A1A");
+      document.documentElement.style.setProperty('--text', siteContent.theme.textColor || "#333333");
+      document.documentElement.style.setProperty('--background', siteContent.theme.backgroundColor || "#FFFFFF");
+    }
+  }, [siteContent]);
   
   return <div className="min-h-screen">
       {/* Navigation */}
@@ -40,7 +52,7 @@ const Index = () => {
             <a href="#services" className="hover:text-primary py-2 px-3 transition-colors">Serviços</a>
             <a href="#about" className="hover:text-primary py-2 px-3 transition-colors">Sobre</a>
             <Button variant="default" className="px-4" asChild>
-              <a href={siteContent?.links?.whatsapp || "#"}>Agendar WhatsApp</a>
+              <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agendar WhatsApp</a>
             </Button>
           </div>
           
@@ -57,7 +69,7 @@ const Index = () => {
             <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">{siteContent?.hero?.description || "Descrição"}</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size={isMobile ? "default" : "lg"} className="text-zinc-50 bg-lime-800 hover:bg-lime-700 w-full sm:w-auto font-medium" asChild>
-                <a href={siteContent?.links?.scheduleAppointment || "#"}>Agendar Atendimento</a>
+                <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">Agendar Atendimento</a>
               </Button>
               <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
                 <a href="#about">Sobre o Profissional</a>
@@ -141,7 +153,7 @@ const Index = () => {
               
               <div className="mt-6 md:mt-8">
                 <Button className="bg-green-700 hover:bg-green-600 text-white w-full sm:w-auto" asChild>
-                  <a href={siteContent?.links?.whatsapp || "#"}>Agende sua Consulta</a>
+                  <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agende sua Consulta</a>
                 </Button>
               </div>
             </div>

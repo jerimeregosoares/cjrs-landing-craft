@@ -20,6 +20,15 @@ export interface SiteContent {
     scheduleAppointment: string;
     whatsapp: string;
   };
+  theme?: {
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    textColor: string;
+    backgroundColor: string;
+    adminPrimaryColor: string;
+    adminBackgroundColor: string;
+  };
 }
 
 export interface Service {

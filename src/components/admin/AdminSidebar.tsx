@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/context/AdminContext";
 import { Link, useLocation } from "react-router-dom";
-import { Settings, FileText, MessageSquare, Link as LinkIcon, Image, X } from "lucide-react";
+import { Settings, FileText, MessageSquare, Link as LinkIcon, Image, X, Palette } from "lucide-react";
 
 interface NavItemProps {
   to: string;
@@ -79,6 +79,12 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
             icon={<Image className="h-5 w-5" />}
             label="Imagens"
             isActive={location.pathname === "/admin/images"}
+          />
+          <NavItem
+            to="/admin/colors"
+            icon={<Palette className="h-5 w-5" />}
+            label="Cores"
+            isActive={location.pathname === "/admin/colors"}
           />
         </div>
 

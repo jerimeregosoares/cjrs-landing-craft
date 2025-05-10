@@ -1,9 +1,19 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SiteContent, Service } from '@/types/admin';
 
 export const useContentManagement = (initialContent: SiteContent) => {
   const [siteContent, setSiteContent] = useState<SiteContent>(initialContent);
+  
+  // Save to localStorage whenever content changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('siteContent', JSON.stringify(siteContent));
+      console.log("Content saved to localStorage:", siteContent);
+    } catch (error) {
+      console.error("Error saving content to localStorage:", error);
+    }
+  }, [siteContent]);
   
   // Content management functions
   const updateContent = (section: string, field: string, value: string | string[] | Service[]) => {
@@ -29,26 +39,22 @@ export const useContentManagement = (initialContent: SiteContent) => {
   
   const updateLink = (id: string, newUrl: string) => {
     setSiteContent(prev => {
-      // Make sure prev.links is properly initialized
-      const links = prev.links || initialContent.links;
+      // Create a deep copy of the previous state
+      const updated = JSON.parse(JSON.stringify(prev));
       
-      // Create a new object to ensure the reference changes
-      const newLinks = {
-        ...links,
-        [id]: newUrl
-      };
+      // Make sure links object exists
+      if (!updated.links) {
+        updated.links = {};
+      }
       
-      // Create a new content object with updated links
-      const updatedContent = {
-        ...prev,
-        links: newLinks
-      };
+      // Update the specific link
+      updated.links[id] = newUrl;
       
       // Log for debugging
       console.log(`Link updated - ID: ${id}, New URL: ${newUrl}`);
-      console.log("Updated content:", updatedContent);
+      console.log("Updated content:", updated);
       
-      return updatedContent;
+      return updated;
     });
   };
 

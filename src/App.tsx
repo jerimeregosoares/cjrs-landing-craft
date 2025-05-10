@@ -14,12 +14,32 @@ import ContentEditor from "./pages/admin/ContentEditor";
 import TestimonialManager from "./pages/admin/TestimonialManager";
 import LinkManager from "./pages/admin/LinkManager";
 import ImageManager from "./pages/admin/ImageManager";
+import ColorManager from "./pages/admin/ColorManager";
 import AdminButton from "./components/AdminButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const App = () => {
   // Create QueryClient inside the component
   const [queryClient] = useState(() => new QueryClient());
+
+  // Apply theme colors on app load
+  useEffect(() => {
+    const siteContent = localStorage.getItem('siteContent');
+    if (siteContent) {
+      try {
+        const parsedContent = JSON.parse(siteContent);
+        if (parsedContent.theme) {
+          document.documentElement.style.setProperty('--primary', parsedContent.theme.primaryColor || "#4CAF50");
+          document.documentElement.style.setProperty('--secondary', parsedContent.theme.secondaryColor || "#A5D6A7");
+          document.documentElement.style.setProperty('--accent', parsedContent.theme.accentColor || "#1A1A1A");
+          document.documentElement.style.setProperty('--text', parsedContent.theme.textColor || "#333333");
+          document.documentElement.style.setProperty('--background', parsedContent.theme.backgroundColor || "#FFFFFF");
+        }
+      } catch (error) {
+        console.error("Error parsing theme:", error);
+      }
+    }
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -37,6 +57,7 @@ const App = () => {
                 <Route path="/admin/testimonials" element={<TestimonialManager />} />
                 <Route path="/admin/links" element={<LinkManager />} />
                 <Route path="/admin/images" element={<ImageManager />} />
+                <Route path="/admin/colors" element={<ColorManager />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <AdminButton />

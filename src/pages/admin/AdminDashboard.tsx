@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "@/context/AdminContext";
-import { FileText, MessageSquare, Link, Image } from "lucide-react";
+import { FileText, MessageSquare, Link, Image, Palette } from "lucide-react";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -123,6 +123,31 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
         </div>
+        
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Aparência</CardTitle>
+            <CardDescription>
+              Personalize a aparência do seu site
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">Cores do Site</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Personalize as cores do site e do painel administrativo
+                  </p>
+                </div>
+                <Button onClick={() => navigate("/admin/colors")}>
+                  <Palette className="mr-2 h-4 w-4" />
+                  Gerenciar Cores
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         
         <Card>
           <CardHeader>

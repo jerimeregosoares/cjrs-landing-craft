@@ -101,7 +101,7 @@ const LinkManager = () => {
                 variant="outline"
                 onClick={() => {
                   if (links.scheduleAppointment) {
-                    window.open(links.scheduleAppointment, '_blank');
+                    window.open(links.scheduleAppointment, '_blank', 'noopener,noreferrer');
                   } else {
                     toast({
                       variant: "destructive", 
@@ -145,7 +145,7 @@ const LinkManager = () => {
                 variant="outline"
                 onClick={() => {
                   if (links.whatsapp) {
-                    window.open(links.whatsapp, '_blank');
+                    window.open(links.whatsapp, '_blank', 'noopener,noreferrer');
                   } else {
                     toast({
                       variant: "destructive", 

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminGuard from "./AdminGuard";
 import AdminSidebar from "./AdminSidebar";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,15 @@ interface AdminLayoutProps {
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const isMobile = useIsMobile();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  // Add admin-panel class to body
+  useEffect(() => {
+    document.body.classList.add('admin-panel');
+    
+    return () => {
+      document.body.classList.remove('admin-panel');
+    };
+  }, []);
 
   return (
     <AdminGuard>
