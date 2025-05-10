@@ -6,21 +6,48 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const LinkManager = () => {
   const { siteContent, updateLink } = useAdmin();
   const { toast } = useToast();
   const [links, setLinks] = useState({
-    scheduleAppointment: siteContent.links.scheduleAppointment,
-    whatsapp: siteContent.links.whatsapp,
+    scheduleAppointment: "",
+    whatsapp: "",
   });
+
+  // Load current links when component mounts or siteContent changes
+  useEffect(() => {
+    if (siteContent && siteContent.links) {
+      setLinks({
+        scheduleAppointment: siteContent.links.scheduleAppointment || "",
+        whatsapp: siteContent.links.whatsapp || "",
+      });
+    }
+  }, [siteContent]);
 
   const handleSave = (linkId: string, value: string) => {
     // Simple URL validation
     try {
+      if (!value.trim()) {
+        throw new Error("URL não pode estar vazia");
+      }
+      
+      // Check if URL starts with http:// or https://
+      if (!/^https?:\/\//i.test(value)) {
+        value = 'https://' + value;
+      }
+      
       new URL(value); // Will throw error if not valid URL
+      
       updateLink(linkId, value);
+      
+      // Update local state to reflect changes
+      setLinks(prev => ({
+        ...prev,
+        [linkId]: value
+      }));
+      
       toast({
         title: "Link atualizado",
         description: "A URL foi atualizada com sucesso.",
@@ -73,7 +100,15 @@ const LinkManager = () => {
               <Button
                 variant="outline"
                 onClick={() => {
-                  window.open(links.scheduleAppointment, '_blank');
+                  if (links.scheduleAppointment) {
+                    window.open(links.scheduleAppointment, '_blank');
+                  } else {
+                    toast({
+                      variant: "destructive", 
+                      title: "Link não definido", 
+                      description: "Por favor, salve um link válido primeiro."
+                    });
+                  }
                 }}
               >
                 Testar Link
@@ -109,7 +144,15 @@ const LinkManager = () => {
               <Button
                 variant="outline"
                 onClick={() => {
-                  window.open(links.whatsapp, '_blank');
+                  if (links.whatsapp) {
+                    window.open(links.whatsapp, '_blank');
+                  } else {
+                    toast({
+                      variant: "destructive", 
+                      title: "Link não definido", 
+                      description: "Por favor, salve um link válido primeiro."
+                    });
+                  }
                 }}
               >
                 Testar Link

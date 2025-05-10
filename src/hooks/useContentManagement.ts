@@ -32,13 +32,23 @@ export const useContentManagement = (initialContent: SiteContent) => {
       // Make sure prev.links is properly initialized
       const links = prev.links || initialContent.links;
       
-      return {
-        ...prev,
-        links: {
-          ...links,
-          [id]: newUrl
-        }
+      // Create a new object to ensure the reference changes
+      const newLinks = {
+        ...links,
+        [id]: newUrl
       };
+      
+      // Create a new content object with updated links
+      const updatedContent = {
+        ...prev,
+        links: newLinks
+      };
+      
+      // Log for debugging
+      console.log(`Link updated - ID: ${id}, New URL: ${newUrl}`);
+      console.log("Updated content:", updatedContent);
+      
+      return updatedContent;
     });
   };
 

@@ -17,9 +17,9 @@ interface AdminContextType {
   carouselMedia: CarouselMedia[];
   updateContent: (section: string, field: string, value: string | string[] | Service[]) => void;
   updateLink: (id: string, newUrl: string) => void;
-  deleteTestimonial: (id: string) => void;
-  addTestimonial: (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => void;
-  editTestimonial: (id: string, testimonial: Partial<Testimonial>) => void;
+  deleteTestimonial: (id: string) => Promise<boolean>;
+  addTestimonial: (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => Promise<any>;
+  editTestimonial: (id: string, testimonial: Partial<Testimonial>) => Promise<boolean>;
   addMedia: (media: Omit<CarouselMedia, 'id'>) => void;
   deleteMedia: (id: string) => void;
   reorderMedia: (id: string, newOrder: number) => void;
@@ -96,9 +96,10 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   
   // Save content whenever it changes
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && siteContent) {
       try {
         localStorage.setItem('siteContent', JSON.stringify(siteContent));
+        console.log("Content saved to localStorage:", siteContent);
       } catch (error) {
         console.error("Error saving content to localStorage:", error);
       }

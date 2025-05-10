@@ -19,7 +19,7 @@ export const useTestimonialManagement = () => {
         throw error;
       }
       
-      return new Date(); // Retornar timestamp para forçar atualização
+      return true;
     } catch (error) {
       console.error('Erro ao excluir depoimento:', error);
       throw error;
@@ -47,7 +47,7 @@ export const useTestimonialManagement = () => {
         throw error;
       }
       
-      return new Date(); // Retornar timestamp para forçar atualização
+      return data;
     } catch (error) {
       console.error('Erro ao adicionar depoimento:', error);
       throw error;
@@ -74,7 +74,7 @@ export const useTestimonialManagement = () => {
         throw error;
       }
       
-      return new Date(); // Retornar timestamp para forçar atualização
+      return true;
     } catch (error) {
       console.error('Erro ao atualizar depoimento:', error);
       throw error;

@@ -13,7 +13,9 @@ export interface Testimonial {
 
 interface TestimonialContextType {
   testimonials: Testimonial[];
-  addTestimonial: (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => void;
+  addTestimonial: (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => Promise<void>;
+  isLoading: boolean;
+  refreshTestimonials: () => Promise<void>;
 }
 
 const TestimonialContext = createContext<TestimonialContextType | undefined>(undefined);
@@ -22,39 +24,42 @@ export const TestimonialProvider = ({ children }: { children: ReactNode }) => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Carregar depoimentos do Supabase ao montar o componente
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('testimonials')
-          .select('*')
-          .order('timestamp', { ascending: false });
-        
-        if (error) {
-          console.error('Erro ao carregar depoimentos:', error);
-          return;
-        }
-        
-        if (data) {
-          // Converter timestamp de string para objeto Date
-          const parsedTestimonials = data.map((item) => ({
-            ...item,
-            timestamp: new Date(item.timestamp)
-          }));
-          
-          setTestimonials(parsedTestimonials);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar depoimentos:', error);
-      } finally {
-        setLoading(false);
+  // Function to fetch testimonials
+  const fetchTestimonials = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('timestamp', { ascending: false });
+      
+      if (error) {
+        console.error('Erro ao carregar depoimentos:', error);
+        return;
       }
-    };
+      
+      if (data) {
+        // Converter timestamp de string para objeto Date
+        const parsedTestimonials = data.map((item) => ({
+          ...item,
+          timestamp: new Date(item.timestamp)
+        }));
+        
+        setTestimonials(parsedTestimonials);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar depoimentos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // Load testimonials initially
+  useEffect(() => {
     fetchTestimonials();
   }, []);
 
+  // Function to add a new testimonial
   const addTestimonial = async (newTestimonial: Omit<Testimonial, 'id' | 'timestamp'>) => {
     try {
       const { data, error } = await supabase
@@ -87,8 +92,18 @@ export const TestimonialProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Function to refresh testimonials data
+  const refreshTestimonials = async () => {
+    await fetchTestimonials();
+  };
+
   return (
-    <TestimonialContext.Provider value={{ testimonials, addTestimonial }}>
+    <TestimonialContext.Provider value={{ 
+      testimonials, 
+      addTestimonial, 
+      isLoading: loading,
+      refreshTestimonials 
+    }}>
       {children}
     </TestimonialContext.Provider>
   );

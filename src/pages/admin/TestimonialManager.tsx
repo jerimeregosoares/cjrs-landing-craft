@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +10,7 @@ import { StarRating } from "@/components/StarRating";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Testimonial } from "@/types/admin";
+import { useTestimonials } from "@/context/TestimonialContext";
 import {
   Dialog,
   DialogContent,
@@ -38,6 +40,7 @@ const TestimonialManager = () => {
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const { refreshTestimonials } = useTestimonials();
 
   // Form state
   const [newTestimonial, setNewTestimonial] = useState({
@@ -90,6 +93,9 @@ const TestimonialManager = () => {
     try {
       await deleteTestimonial(id);
       await loadTestimonials();
+      // Also refresh the TestimonialContext
+      await refreshTestimonials();
+      
       toast({
         title: "Depoimento excluído",
         description: "O depoimento foi removido com sucesso.",
@@ -123,6 +129,8 @@ const TestimonialManager = () => {
         rating: 5,
       });
       await loadTestimonials();
+      // Also refresh the TestimonialContext
+      await refreshTestimonials();
       
       toast({
         title: "Depoimento adicionado",
@@ -151,6 +159,8 @@ const TestimonialManager = () => {
       
       setEditingTestimonial(null);
       await loadTestimonials();
+      // Also refresh the TestimonialContext
+      await refreshTestimonials();
       
       toast({
         title: "Depoimento atualizado",
