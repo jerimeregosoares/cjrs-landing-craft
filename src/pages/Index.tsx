@@ -24,6 +24,10 @@ const Index = () => {
   const isMobile = useIsMobile();
   const { siteContent } = useAdmin();
   
+  // Check if siteContent or its properties are undefined and provide fallbacks
+  const services = siteContent?.services?.items || [];
+  const aboutDescription = siteContent?.about?.description || [];
+  
   return <div className="min-h-screen">
       {/* Navigation */}
       <nav className="py-4 px-4 md:px-6 border-b sticky top-0 bg-white z-30">
@@ -36,7 +40,7 @@ const Index = () => {
             <a href="#services" className="hover:text-primary py-2 px-3 transition-colors">Serviços</a>
             <a href="#about" className="hover:text-primary py-2 px-3 transition-colors">Sobre</a>
             <Button variant="default" className="px-4" asChild>
-              <a href={siteContent.links.whatsapp}>Agendar WhatsApp</a>
+              <a href={siteContent?.links?.whatsapp || "#"}>Agendar WhatsApp</a>
             </Button>
           </div>
           
@@ -49,11 +53,11 @@ const Index = () => {
       <section className="py-12 md:py-20 px-4 md:px-6 bg-amber-200">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <h1 className="font-bold text-2xl md:text-3xl mb-4 md:mb-6">{siteContent.hero.title}</h1>
-            <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">{siteContent.hero.description}</p>
+            <h1 className="font-bold text-2xl md:text-3xl mb-4 md:mb-6">{siteContent?.hero?.title || "Título"}</h1>
+            <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">{siteContent?.hero?.description || "Descrição"}</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size={isMobile ? "default" : "lg"} className="text-zinc-50 bg-lime-800 hover:bg-lime-700 w-full sm:w-auto font-medium" asChild>
-                <a href={siteContent.links.scheduleAppointment}>Agendar Atendimento</a>
+                <a href={siteContent?.links?.scheduleAppointment || "#"}>Agendar Atendimento</a>
               </Button>
               <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
                 <a href="#about">Sobre o Profissional</a>
@@ -75,9 +79,9 @@ const Index = () => {
       {/* Services Section */}
       <section id="services" className="py-12 md:py-16 px-4 md:px-6 bg-slate-950">
         <div className="max-w-7xl mx-auto rounded-md bg-stone-950">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-orange-50">{siteContent.services.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-orange-50">{siteContent?.services?.title || "Nossos Serviços"}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {siteContent.services.items.map((service) => {
+            {services.map((service) => {
               const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Search;
               return (
                 <ServiceCard 
@@ -96,7 +100,7 @@ const Index = () => {
       {/* Testimonials */}
       <section className="py-12 md:py-20 px-4 md:px-6 bg-lime-900">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-gray-50">{siteContent.testimonials.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-gray-50">{siteContent?.testimonials?.title || "Depoimentos"}</h2>
           
           <TestimonialProvider>
             <div className="mb-12 md:mb-16">
@@ -114,7 +118,7 @@ const Index = () => {
       {/* About Professional Section */}
       <section id="about" className="py-12 md:py-20 px-4 md:px-6 bg-emerald-950">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-green-50">{siteContent.about.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-green-50">{siteContent?.about?.title || "Sobre"}</h2>
           
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             <div className="rounded-2xl overflow-hidden order-2 md:order-1">
@@ -128,16 +132,16 @@ const Index = () => {
             </div>
             
             <div className="order-1 md:order-2">
-              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-50">{siteContent.about.subtitle}</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-50">{siteContent?.about?.subtitle || "Subtítulo"}</h3>
               <div className="space-y-3 md:space-y-4 text-green-100 text-sm md:text-base">
-                {siteContent.about.description.map((paragraph, index) => (
+                {aboutDescription.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
               
               <div className="mt-6 md:mt-8">
                 <Button className="bg-green-700 hover:bg-green-600 text-white w-full sm:w-auto" asChild>
-                  <a href={siteContent.links.whatsapp}>Agende sua Consulta</a>
+                  <a href={siteContent?.links?.whatsapp || "#"}>Agende sua Consulta</a>
                 </Button>
               </div>
             </div>
@@ -155,7 +159,7 @@ const Index = () => {
           <div>
             <h3 className="font-bold mb-4 text-base md:text-lg">Serviços</h3>
             <ul className="space-y-2 text-sm md:text-base">
-              {siteContent.services.items.slice(0, 3).map((service) => (
+              {services.slice(0, 3).map((service) => (
                 <li key={service.id}>{service.title}</li>
               ))}
             </ul>

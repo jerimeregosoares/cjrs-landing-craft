@@ -51,19 +51,57 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
     
     // Load saved content if it exists
-    const storedContent = localStorage.getItem('siteContent');
-    if (storedContent) {
-      setSiteContent(JSON.parse(storedContent));
+    try {
+      const storedContent = localStorage.getItem('siteContent');
+      if (storedContent) {
+        const parsedContent = JSON.parse(storedContent);
+        // Ensure all required fields exist
+        const validatedContent = {
+          hero: {
+            title: parsedContent?.hero?.title || defaultContent.hero.title,
+            description: parsedContent?.hero?.description || defaultContent.hero.description
+          },
+          services: {
+            title: parsedContent?.services?.title || defaultContent.services.title,
+            items: Array.isArray(parsedContent?.services?.items) 
+              ? parsedContent.services.items 
+              : defaultContent.services.items
+          },
+          about: {
+            title: parsedContent?.about?.title || defaultContent.about.title,
+            subtitle: parsedContent?.about?.subtitle || defaultContent.about.subtitle,
+            description: Array.isArray(parsedContent?.about?.description) 
+              ? parsedContent.about.description 
+              : defaultContent.about.description
+          },
+          testimonials: {
+            title: parsedContent?.testimonials?.title || defaultContent.testimonials.title
+          },
+          links: {
+            scheduleAppointment: parsedContent?.links?.scheduleAppointment || defaultContent.links.scheduleAppointment,
+            whatsapp: parsedContent?.links?.whatsapp || defaultContent.links.whatsapp
+          }
+        };
+        setSiteContent(validatedContent as SiteContent);
+      }
+    } catch (error) {
+      console.error("Error parsing stored content:", error);
+      // Use default content in case of parsing error
+      setSiteContent(defaultContent);
     }
     
-    // Carregar mídia do carrossel
+    // Load carousel media
     fetchCarouselMedia();
   }, []);
   
   // Save content whenever it changes
   useEffect(() => {
     if (isAuthenticated) {
-      localStorage.setItem('siteContent', JSON.stringify(siteContent));
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(siteContent));
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
+      }
     }
   }, [siteContent, isAuthenticated]);
 
