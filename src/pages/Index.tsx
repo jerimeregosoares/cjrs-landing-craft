@@ -153,7 +153,7 @@ const Index = () => {
               
               <div className="mt-6 md:mt-8">
                 <Button className="bg-green-700 hover:bg-green-600 text-white w-full sm:w-auto" asChild>
-                  <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agende sua Consulta</a>
+                  <a href={siteContent?.links?.bookConsultation || siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agende sua Consulta</a>
                 </Button>
               </div>
             </div>

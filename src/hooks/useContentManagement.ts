@@ -5,6 +5,20 @@ import { SiteContent, Service } from '@/types/admin';
 export const useContentManagement = (initialContent: SiteContent) => {
   const [siteContent, setSiteContent] = useState<SiteContent>(initialContent);
   
+  // Load from localStorage when component mounts
+  useEffect(() => {
+    try {
+      const savedContent = localStorage.getItem('siteContent');
+      if (savedContent) {
+        const parsedContent = JSON.parse(savedContent);
+        setSiteContent(parsedContent);
+        console.log("Content loaded from localStorage:", parsedContent);
+      }
+    } catch (error) {
+      console.error("Error loading content from localStorage:", error);
+    }
+  }, []);
+  
   // Save to localStorage whenever content changes
   useEffect(() => {
     try {
@@ -22,7 +36,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
       const prevContent = prev || initialContent;
       
       // Create a deep copy to avoid modification of nested objects
-      const updated = { ...prevContent };
+      const updated = JSON.parse(JSON.stringify(prevContent));
       
       // Make sure the section exists
       if (!updated[section as keyof SiteContent]) {

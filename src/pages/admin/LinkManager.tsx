@@ -1,4 +1,5 @@
 
+import React, { useState, useEffect } from "react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
 
 const LinkManager = () => {
   const { siteContent, updateLink } = useAdmin();
@@ -14,6 +14,7 @@ const LinkManager = () => {
   const [links, setLinks] = useState({
     scheduleAppointment: "",
     whatsapp: "",
+    bookConsultation: "",
   });
 
   // Load current links when component mounts or siteContent changes
@@ -22,6 +23,7 @@ const LinkManager = () => {
       setLinks({
         scheduleAppointment: siteContent.links.scheduleAppointment || "",
         whatsapp: siteContent.links.whatsapp || "",
+        bookConsultation: siteContent.links.bookConsultation || "",
       });
     }
   }, [siteContent]);
@@ -117,7 +119,7 @@ const LinkManager = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="mb-6">
           <CardHeader>
             <CardTitle>WhatsApp</CardTitle>
           </CardHeader>
@@ -137,7 +139,7 @@ const LinkManager = () => {
                   </Button>
                 </div>
                 <p className="text-sm text-gray-500 mt-1">
-                  Este link é usado nos botões de "Agendar WhatsApp" e "Agende sua Consulta" no site.
+                  Este link é usado nos botões de "Agendar WhatsApp" no site.
                 </p>
               </div>
               
@@ -146,6 +148,50 @@ const LinkManager = () => {
                 onClick={() => {
                   if (links.whatsapp) {
                     window.open(links.whatsapp, '_blank', 'noopener,noreferrer');
+                  } else {
+                    toast({
+                      variant: "destructive", 
+                      title: "Link não definido", 
+                      description: "Por favor, salve um link válido primeiro."
+                    });
+                  }
+                }}
+              >
+                Testar Link
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Agende sua Consulta</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="bookConsultation">URL</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="bookConsultation"
+                    value={links.bookConsultation}
+                    onChange={(e) => handleChange('bookConsultation', e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={() => handleSave('bookConsultation', links.bookConsultation)}>
+                    Salvar
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  Este link é usado no botão "Agende sua Consulta" na seção Sobre.
+                </p>
+              </div>
+              
+              <Button
+                variant="outline"
+                onClick={() => {
+                  if (links.bookConsultation) {
+                    window.open(links.bookConsultation, '_blank', 'noopener,noreferrer');
                   } else {
                     toast({
                       variant: "destructive", 

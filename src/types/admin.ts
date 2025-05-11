@@ -19,6 +19,7 @@ export interface SiteContent {
   links: {
     scheduleAppointment: string;
     whatsapp: string;
+    bookConsultation: string;
   };
   theme?: {
     primaryColor: string;
