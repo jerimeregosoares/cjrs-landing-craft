@@ -51,7 +51,8 @@ export const defaultContent: SiteContent = {
   },
   links: {
     scheduleAppointment: "https://painelconsult.servicoscjrs.com.br/a/jerime-r-soares",
-    whatsapp: "https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento"
+    whatsapp: "https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento",
+    bookConsultation: "https://painelconsult.servicoscjrs.com.br/a/jerime-r-soares"
   },
   theme: {
     primaryColor: "#4CAF50",
