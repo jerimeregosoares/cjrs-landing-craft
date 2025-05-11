@@ -1,4 +1,5 @@
 
+import React, { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,7 +17,6 @@ import LinkManager from "./pages/admin/LinkManager";
 import ImageManager from "./pages/admin/ImageManager";
 import ColorManager from "./pages/admin/ColorManager";
 import AdminButton from "./components/AdminButton";
-import { useState, useEffect } from "react";
 
 const App = () => {
   // Create QueryClient inside the component
