@@ -26,6 +26,7 @@ const ColorManager = () => {
   // Load current colors when component mounts or siteContent changes
   useEffect(() => {
     if (siteContent && siteContent.theme) {
+      console.log("Loading colors from siteContent.theme:", siteContent.theme);
       setColors({
         primaryColor: siteContent.theme.primaryColor || "#4CAF50",
         secondaryColor: siteContent.theme.secondaryColor || "#A5D6A7",
@@ -46,6 +47,18 @@ const ColorManager = () => {
   };
 
   const saveColors = () => {
+    // Save all colors at once to theme object
+    const theme = {
+      primaryColor: colors.primaryColor,
+      secondaryColor: colors.secondaryColor,
+      accentColor: colors.accentColor,
+      textColor: colors.textColor,
+      backgroundColor: colors.backgroundColor,
+      adminPrimaryColor: colors.adminPrimaryColor,
+      adminBackgroundColor: colors.adminBackgroundColor
+    };
+    
+    // Update the entire theme object at once
     updateContent('theme', 'primaryColor', colors.primaryColor);
     updateContent('theme', 'secondaryColor', colors.secondaryColor);
     updateContent('theme', 'accentColor', colors.accentColor);
@@ -54,13 +67,15 @@ const ColorManager = () => {
     updateContent('theme', 'adminPrimaryColor', colors.adminPrimaryColor);
     updateContent('theme', 'adminBackgroundColor', colors.adminBackgroundColor);
     
-    // Apply colors to site
+    // Apply colors to CSS variables
     applyColors();
     
     toast({
       title: "Cores atualizadas",
       description: "As cores do site foram atualizadas com sucesso."
     });
+    
+    console.log("Colors saved:", theme);
   };
 
   const applyColors = () => {
@@ -76,11 +91,15 @@ const ColorManager = () => {
       document.documentElement.style.setProperty('--admin-primary', colors.adminPrimaryColor);
       document.documentElement.style.setProperty('--admin-background', colors.adminBackgroundColor);
     }
+    
+    console.log("Colors applied to CSS variables:", colors);
   };
 
   // Apply colors on component mount
   useEffect(() => {
-    applyColors();
+    if (siteContent && siteContent.theme) {
+      applyColors();
+    }
   }, []);
 
   return (

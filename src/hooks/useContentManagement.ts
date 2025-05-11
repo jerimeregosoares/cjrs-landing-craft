@@ -10,24 +10,20 @@ export const useContentManagement = (initialContent: SiteContent) => {
     try {
       const savedContent = localStorage.getItem('siteContent');
       if (savedContent) {
+        // We'll parse the content but we won't immediately set the state
+        // This prevents double-loading with AdminContext
         const parsedContent = JSON.parse(savedContent);
-        setSiteContent(parsedContent);
-        console.log("Content loaded from localStorage:", parsedContent);
+        
+        // Only set the state if we didn't get this from props (initialContent)
+        if (JSON.stringify(initialContent) === JSON.stringify({ hero: {}, services: {}, about: {}, testimonials: {}, links: {} })) {
+          setSiteContent(parsedContent);
+          console.log("Content loaded from localStorage in useContentManagement:", parsedContent);
+        }
       }
     } catch (error) {
       console.error("Error loading content from localStorage:", error);
     }
   }, []);
-  
-  // Save to localStorage whenever content changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('siteContent', JSON.stringify(siteContent));
-      console.log("Content saved to localStorage:", siteContent);
-    } catch (error) {
-      console.error("Error saving content to localStorage:", error);
-    }
-  }, [siteContent]);
   
   // Content management functions
   const updateContent = (section: string, field: string, value: string | string[] | Service[]) => {
@@ -47,6 +43,15 @@ export const useContentManagement = (initialContent: SiteContent) => {
       const sectionObj = updated[section as keyof SiteContent] as any;
       sectionObj[field] = value;
       
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(updated));
+        console.log(`Content updated in ${section}.${field}:`, value);
+        console.log("Updated content saved to localStorage:", updated);
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
+      }
+      
       return updated;
     });
   };
@@ -64,9 +69,14 @@ export const useContentManagement = (initialContent: SiteContent) => {
       // Update the specific link
       updated.links[id] = newUrl;
       
-      // Log for debugging
-      console.log(`Link updated - ID: ${id}, New URL: ${newUrl}`);
-      console.log("Updated content:", updated);
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(updated));
+        console.log(`Link updated - ID: ${id}, New URL: ${newUrl}`);
+        console.log("Updated content saved to localStorage:", updated);
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
+      }
       
       return updated;
     });
@@ -78,13 +88,24 @@ export const useContentManagement = (initialContent: SiteContent) => {
       const services = prev.services || { title: "Nossos Serviços", items: [] };
       const items = Array.isArray(services.items) ? services.items : [];
       
-      return {
+      const updated = {
         ...prev,
         services: {
           ...services,
           items: [...items, service]
         }
       };
+      
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(updated));
+        console.log("Service added:", service);
+        console.log("Updated content saved to localStorage:", updated);
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
+      }
+      
+      return updated;
     });
   };
 
@@ -94,7 +115,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
       const services = prev.services || { title: "Nossos Serviços", items: [] };
       const items = Array.isArray(services.items) ? services.items : [];
       
-      return {
+      const updated = {
         ...prev,
         services: {
           ...services,
@@ -103,6 +124,17 @@ export const useContentManagement = (initialContent: SiteContent) => {
           )
         }
       };
+      
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(updated));
+        console.log("Service updated:", id, updatedService);
+        console.log("Updated content saved to localStorage:", updated);
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
+      }
+      
+      return updated;
     });
   };
 
@@ -112,24 +144,48 @@ export const useContentManagement = (initialContent: SiteContent) => {
       const services = prev.services || { title: "Nossos Serviços", items: [] };
       const items = Array.isArray(services.items) ? services.items : [];
       
-      return {
+      const updated = {
         ...prev,
         services: {
           ...services,
           items: items.filter(service => service.id !== id)
         }
       };
+      
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(updated));
+        console.log("Service deleted:", id);
+        console.log("Updated content saved to localStorage:", updated);
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
+      }
+      
+      return updated;
     });
   };
 
   const reorderServices = (newOrder: Service[]) => {
-    setSiteContent(prev => ({
-      ...prev,
-      services: {
-        ...prev.services,
-        items: newOrder
+    setSiteContent(prev => {
+      const updated = {
+        ...prev,
+        services: {
+          ...prev.services,
+          items: newOrder
+        }
+      };
+      
+      // Save to localStorage immediately
+      try {
+        localStorage.setItem('siteContent', JSON.stringify(updated));
+        console.log("Services reordered");
+        console.log("Updated content saved to localStorage:", updated);
+      } catch (error) {
+        console.error("Error saving content to localStorage:", error);
       }
-    }));
+      
+      return updated;
+    });
   };
 
   return {

@@ -20,6 +20,7 @@ const LinkManager = () => {
   // Load current links when component mounts or siteContent changes
   useEffect(() => {
     if (siteContent && siteContent.links) {
+      console.log("Loading links from siteContent:", siteContent.links);
       setLinks({
         scheduleAppointment: siteContent.links.scheduleAppointment || "",
         whatsapp: siteContent.links.whatsapp || "",
@@ -42,6 +43,7 @@ const LinkManager = () => {
       
       new URL(value); // Will throw error if not valid URL
       
+      // Update link in context
       updateLink(linkId, value);
       
       // Update local state to reflect changes
@@ -54,6 +56,8 @@ const LinkManager = () => {
         title: "Link atualizado",
         description: "A URL foi atualizada com sucesso.",
       });
+      
+      console.log(`Link ${linkId} updated to: ${value}`);
     } catch (error) {
       toast({
         variant: "destructive",

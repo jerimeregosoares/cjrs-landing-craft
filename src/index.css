@@ -56,3 +56,16 @@
   color: white;
   font-weight: 500;
 }
+
+/* Apply theme colors via CSS variables */
+:root[style*="--primary"] {
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  --tw-border-opacity: 1;
+}
+
+/* Ensure all external links open in a new tab by default */
+a[href^="http"]:not([target]) {
+  target: "_blank";
+  rel: "noopener noreferrer";
+}

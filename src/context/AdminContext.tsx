@@ -55,34 +55,65 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       const storedContent = localStorage.getItem('siteContent');
       if (storedContent) {
         const parsedContent = JSON.parse(storedContent);
-        // Ensure all required fields exist
-        const validatedContent = {
-          hero: {
-            title: parsedContent?.hero?.title || defaultContent.hero.title,
-            description: parsedContent?.hero?.description || defaultContent.hero.description
-          },
-          services: {
-            title: parsedContent?.services?.title || defaultContent.services.title,
-            items: Array.isArray(parsedContent?.services?.items) 
+        console.log("Loading content from localStorage:", parsedContent);
+        
+        // Create a deep copy of defaultContent as a base to ensure all fields exist
+        const fullContent = JSON.parse(JSON.stringify(defaultContent));
+        
+        // Merge the loaded content with the default content
+        if (parsedContent.hero) {
+          fullContent.hero = {
+            ...fullContent.hero,
+            ...parsedContent.hero
+          };
+        }
+        
+        if (parsedContent.services) {
+          fullContent.services = {
+            ...fullContent.services,
+            title: parsedContent.services.title || fullContent.services.title,
+            items: Array.isArray(parsedContent.services.items) 
               ? parsedContent.services.items 
-              : defaultContent.services.items
-          },
-          about: {
-            title: parsedContent?.about?.title || defaultContent.about.title,
-            subtitle: parsedContent?.about?.subtitle || defaultContent.about.subtitle,
-            description: Array.isArray(parsedContent?.about?.description) 
+              : fullContent.services.items
+          };
+        }
+        
+        if (parsedContent.about) {
+          fullContent.about = {
+            ...fullContent.about,
+            ...parsedContent.about,
+            description: Array.isArray(parsedContent.about.description) 
               ? parsedContent.about.description 
-              : defaultContent.about.description
-          },
-          testimonials: {
-            title: parsedContent?.testimonials?.title || defaultContent.testimonials.title
-          },
-          links: {
-            scheduleAppointment: parsedContent?.links?.scheduleAppointment || defaultContent.links.scheduleAppointment,
-            whatsapp: parsedContent?.links?.whatsapp || defaultContent.links.whatsapp
-          }
-        };
-        setSiteContent(validatedContent as SiteContent);
+              : fullContent.about.description
+          };
+        }
+        
+        if (parsedContent.testimonials) {
+          fullContent.testimonials = {
+            ...fullContent.testimonials,
+            ...parsedContent.testimonials
+          };
+        }
+        
+        if (parsedContent.links) {
+          fullContent.links = {
+            ...fullContent.links,
+            ...parsedContent.links
+          };
+        }
+        
+        if (parsedContent.theme) {
+          fullContent.theme = {
+            ...fullContent.theme,
+            ...parsedContent.theme
+          };
+        }
+        
+        setSiteContent(fullContent);
+        console.log("Merged content:", fullContent);
+        
+        // Apply theme colors immediately
+        applyThemeColors(fullContent.theme);
       }
     } catch (error) {
       console.error("Error parsing stored content:", error);
@@ -94,12 +125,40 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     fetchCarouselMedia();
   }, []);
   
+  // Function to apply theme colors to CSS variables
+  const applyThemeColors = (theme: SiteContent['theme']) => {
+    if (!theme) return;
+    
+    try {
+      document.documentElement.style.setProperty('--primary', theme.primaryColor);
+      document.documentElement.style.setProperty('--secondary', theme.secondaryColor);
+      document.documentElement.style.setProperty('--accent', theme.accentColor);
+      document.documentElement.style.setProperty('--text', theme.textColor);
+      document.documentElement.style.setProperty('--background', theme.backgroundColor);
+      
+      // Admin panel colors if in admin section
+      if (document.body.classList.contains('admin-panel')) {
+        document.documentElement.style.setProperty('--admin-primary', theme.adminPrimaryColor);
+        document.documentElement.style.setProperty('--admin-background', theme.adminBackgroundColor);
+      }
+      
+      console.log("Theme colors applied:", theme);
+    } catch (error) {
+      console.error("Error applying theme colors:", error);
+    }
+  };
+  
   // Save content whenever it changes
   useEffect(() => {
     if (isAuthenticated && siteContent) {
       try {
         localStorage.setItem('siteContent', JSON.stringify(siteContent));
-        console.log("Content saved to localStorage:", siteContent);
+        console.log("Content saved to localStorage from AdminContext:", siteContent);
+        
+        // Apply theme colors when content changes
+        if (siteContent.theme) {
+          applyThemeColors(siteContent.theme);
+        }
       } catch (error) {
         console.error("Error saving content to localStorage:", error);
       }
