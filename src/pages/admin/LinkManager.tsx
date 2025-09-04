@@ -103,22 +103,22 @@ const LinkManager = () => {
                 </p>
               </div>
               
-              <Button
-                variant="outline"
-                onClick={() => {
-                  if (links.scheduleAppointment) {
-                    window.open(links.scheduleAppointment, '_blank', 'noopener,noreferrer');
-                  } else {
-                    toast({
-                      variant: "destructive", 
-                      title: "Link não definido", 
-                      description: "Por favor, salve um link válido primeiro."
-                    });
-                  }
-                }}
-              >
-                Testar Link
-              </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (links.scheduleAppointment) {
+                      window.open(links.scheduleAppointment, '_blank', 'noopener,noreferrer');
+                    } else {
+                      toast({
+                        variant: "destructive", 
+                        title: "Link não definido", 
+                        description: "Por favor, salve um link válido primeiro."
+                      });
+                    }
+                  }}
+                >
+                  Testar Link
+                </Button>
             </div>
           </CardContent>
         </Card>
@@ -147,22 +147,22 @@ const LinkManager = () => {
                 </p>
               </div>
               
-              <Button
-                variant="outline"
-                onClick={() => {
-                  if (links.whatsapp) {
-                    window.open(links.whatsapp, '_blank', 'noopener,noreferrer');
-                  } else {
-                    toast({
-                      variant: "destructive", 
-                      title: "Link não definido", 
-                      description: "Por favor, salve um link válido primeiro."
-                    });
-                  }
-                }}
-              >
-                Testar Link
-              </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (links.whatsapp) {
+                      window.open(links.whatsapp, '_blank', 'noopener,noreferrer');
+                    } else {
+                      toast({
+                        variant: "destructive", 
+                        title: "Link não definido", 
+                        description: "Por favor, salve um link válido primeiro."
+                      });
+                    }
+                  }}
+                >
+                  Testar Link
+                </Button>
             </div>
           </CardContent>
         </Card>
@@ -191,22 +191,22 @@ const LinkManager = () => {
                 </p>
               </div>
               
-              <Button
-                variant="outline"
-                onClick={() => {
-                  if (links.bookConsultation) {
-                    window.open(links.bookConsultation, '_blank', 'noopener,noreferrer');
-                  } else {
-                    toast({
-                      variant: "destructive", 
-                      title: "Link não definido", 
-                      description: "Por favor, salve um link válido primeiro."
-                    });
-                  }
-                }}
-              >
-                Testar Link
-              </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (links.bookConsultation) {
+                      window.open(links.bookConsultation, '_blank', 'noopener,noreferrer');
+                    } else {
+                      toast({
+                        variant: "destructive", 
+                        title: "Link não definido", 
+                        description: "Por favor, salve um link válido primeiro."
+                      });
+                    }
+                  }}
+                >
+                  Testar Link
+                </Button>
             </div>
           </CardContent>
         </Card>

@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/hooks/use-toast";
+import { useThemeManager } from "@/hooks/useThemeManager";
 
 const ColorManager = () => {
   const { siteContent, updateContent } = useAdmin();
   const { toast } = useToast();
+  const { applyThemeColors } = useThemeManager();
   
   const [colors, setColors] = useState({
     primaryColor: "#4CAF50",
@@ -47,18 +49,7 @@ const ColorManager = () => {
   };
 
   const saveColors = () => {
-    // Save all colors at once to theme object
-    const theme = {
-      primaryColor: colors.primaryColor,
-      secondaryColor: colors.secondaryColor,
-      accentColor: colors.accentColor,
-      textColor: colors.textColor,
-      backgroundColor: colors.backgroundColor,
-      adminPrimaryColor: colors.adminPrimaryColor,
-      adminBackgroundColor: colors.adminBackgroundColor
-    };
-    
-    // Update the entire theme object at once
+    // Update each color property in the theme
     updateContent('theme', 'primaryColor', colors.primaryColor);
     updateContent('theme', 'secondaryColor', colors.secondaryColor);
     updateContent('theme', 'accentColor', colors.accentColor);
@@ -67,40 +58,23 @@ const ColorManager = () => {
     updateContent('theme', 'adminPrimaryColor', colors.adminPrimaryColor);
     updateContent('theme', 'adminBackgroundColor', colors.adminBackgroundColor);
     
-    // Apply colors to CSS variables
-    applyColors();
+    // Apply colors immediately using the centralized theme manager
+    applyThemeColors(colors);
     
     toast({
       title: "Cores atualizadas",
       description: "As cores do site foram atualizadas com sucesso."
     });
     
-    console.log("Colors saved:", theme);
+    console.log("Colors saved and applied:", colors);
   };
 
-  const applyColors = () => {
-    // Apply colors to CSS variables
-    document.documentElement.style.setProperty('--primary', colors.primaryColor);
-    document.documentElement.style.setProperty('--secondary', colors.secondaryColor);
-    document.documentElement.style.setProperty('--accent', colors.accentColor);
-    document.documentElement.style.setProperty('--text', colors.textColor);
-    document.documentElement.style.setProperty('--background', colors.backgroundColor);
-    
-    // Admin panel colors
-    if (document.body.classList.contains('admin-panel')) {
-      document.documentElement.style.setProperty('--admin-primary', colors.adminPrimaryColor);
-      document.documentElement.style.setProperty('--admin-background', colors.adminBackgroundColor);
-    }
-    
-    console.log("Colors applied to CSS variables:", colors);
-  };
-
-  // Apply colors on component mount
+  // Apply colors immediately when component loads
   useEffect(() => {
     if (siteContent && siteContent.theme) {
-      applyColors();
+      applyThemeColors(siteContent.theme);
     }
-  }, []);
+  }, [siteContent, applyThemeColors]);
 
   return (
     <AdminLayout>

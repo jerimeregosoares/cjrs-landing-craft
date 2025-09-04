@@ -1,31 +1,11 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SiteContent, Service } from '@/types/admin';
 
 export const useContentManagement = (initialContent: SiteContent) => {
   const [siteContent, setSiteContent] = useState<SiteContent>(initialContent);
   
-  // Load from localStorage when component mounts
-  useEffect(() => {
-    try {
-      const savedContent = localStorage.getItem('siteContent');
-      if (savedContent) {
-        // We'll parse the content but we won't immediately set the state
-        // This prevents double-loading with AdminContext
-        const parsedContent = JSON.parse(savedContent);
-        
-        // Only set the state if we didn't get this from props (initialContent)
-        if (JSON.stringify(initialContent) === JSON.stringify({ hero: {}, services: {}, about: {}, testimonials: {}, links: {} })) {
-          setSiteContent(parsedContent);
-          console.log("Content loaded from localStorage in useContentManagement:", parsedContent);
-        }
-      }
-    } catch (error) {
-      console.error("Error loading content from localStorage:", error);
-    }
-  }, []);
-  
-  // Content management functions
+  // Content management functions - removed localStorage logic to avoid conflicts with AdminContext
   const updateContent = (section: string, field: string, value: string | string[] | Service[]) => {
     setSiteContent(prev => {
       // Make sure prev is properly initialized
@@ -43,14 +23,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
       const sectionObj = updated[section as keyof SiteContent] as any;
       sectionObj[field] = value;
       
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(updated));
-        console.log(`Content updated in ${section}.${field}:`, value);
-        console.log("Updated content saved to localStorage:", updated);
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      console.log(`Content updated in ${section}.${field}:`, value);
       
       return updated;
     });
@@ -69,14 +42,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
       // Update the specific link
       updated.links[id] = newUrl;
       
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(updated));
-        console.log(`Link updated - ID: ${id}, New URL: ${newUrl}`);
-        console.log("Updated content saved to localStorage:", updated);
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      console.log(`Link updated - ID: ${id}, New URL: ${newUrl}`);
       
       return updated;
     });
@@ -96,14 +62,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
         }
       };
       
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(updated));
-        console.log("Service added:", service);
-        console.log("Updated content saved to localStorage:", updated);
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      console.log("Service added:", service);
       
       return updated;
     });
@@ -125,14 +84,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
         }
       };
       
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(updated));
-        console.log("Service updated:", id, updatedService);
-        console.log("Updated content saved to localStorage:", updated);
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      console.log("Service updated:", id, updatedService);
       
       return updated;
     });
@@ -152,14 +104,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
         }
       };
       
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(updated));
-        console.log("Service deleted:", id);
-        console.log("Updated content saved to localStorage:", updated);
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      console.log("Service deleted:", id);
       
       return updated;
     });
@@ -175,14 +120,7 @@ export const useContentManagement = (initialContent: SiteContent) => {
         }
       };
       
-      // Save to localStorage immediately
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(updated));
-        console.log("Services reordered");
-        console.log("Updated content saved to localStorage:", updated);
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      console.log("Services reordered");
       
       return updated;
     });

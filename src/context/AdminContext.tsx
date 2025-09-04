@@ -60,54 +60,54 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         // Create a deep copy of defaultContent as a base to ensure all fields exist
         const fullContent = JSON.parse(JSON.stringify(defaultContent));
         
-        // Merge the loaded content with the default content
-        if (parsedContent.hero) {
-          fullContent.hero = {
-            ...fullContent.hero,
-            ...parsedContent.hero
-          };
-        }
-        
-        if (parsedContent.services) {
-          fullContent.services = {
-            ...fullContent.services,
-            title: parsedContent.services.title || fullContent.services.title,
-            items: Array.isArray(parsedContent.services.items) 
-              ? parsedContent.services.items 
-              : fullContent.services.items
-          };
-        }
-        
-        if (parsedContent.about) {
-          fullContent.about = {
-            ...fullContent.about,
-            ...parsedContent.about,
-            description: Array.isArray(parsedContent.about.description) 
-              ? parsedContent.about.description 
-              : fullContent.about.description
-          };
-        }
-        
-        if (parsedContent.testimonials) {
-          fullContent.testimonials = {
-            ...fullContent.testimonials,
-            ...parsedContent.testimonials
-          };
-        }
-        
-        if (parsedContent.links) {
-          fullContent.links = {
-            ...fullContent.links,
-            ...parsedContent.links
-          };
-        }
-        
-        if (parsedContent.theme) {
-          fullContent.theme = {
-            ...fullContent.theme,
-            ...parsedContent.theme
-          };
-        }
+        // Merge the loaded content with the default content, ensuring all properties exist
+        Object.keys(fullContent).forEach(key => {
+          if (parsedContent[key]) {
+            if (key === 'services' && parsedContent[key]) {
+              fullContent.services = {
+                ...fullContent.services,
+                title: parsedContent.services.title || fullContent.services.title,
+                items: Array.isArray(parsedContent.services.items) 
+                  ? parsedContent.services.items 
+                  : fullContent.services.items
+              };
+            } else if (key === 'about' && parsedContent[key]) {
+              fullContent.about = {
+                ...fullContent.about,
+                ...parsedContent.about,
+                description: Array.isArray(parsedContent.about.description) 
+                  ? parsedContent.about.description 
+                  : fullContent.about.description
+              };
+            } else if (key === 'links' && parsedContent[key]) {
+              // Ensure all link properties are preserved, including bookConsultation
+              fullContent.links = {
+                scheduleAppointment: parsedContent.links.scheduleAppointment || fullContent.links.scheduleAppointment,
+                whatsapp: parsedContent.links.whatsapp || fullContent.links.whatsapp,
+                bookConsultation: parsedContent.links.bookConsultation || fullContent.links.bookConsultation,
+                ...parsedContent.links
+              };
+            } else if (key === 'theme' && parsedContent[key]) {
+              // Ensure all theme properties are preserved
+              fullContent.theme = {
+                primaryColor: parsedContent.theme.primaryColor || fullContent.theme.primaryColor,
+                secondaryColor: parsedContent.theme.secondaryColor || fullContent.theme.secondaryColor,
+                accentColor: parsedContent.theme.accentColor || fullContent.theme.accentColor,
+                textColor: parsedContent.theme.textColor || fullContent.theme.textColor,
+                backgroundColor: parsedContent.theme.backgroundColor || fullContent.theme.backgroundColor,
+                adminPrimaryColor: parsedContent.theme.adminPrimaryColor || fullContent.theme.adminPrimaryColor,
+                adminBackgroundColor: parsedContent.theme.adminBackgroundColor || fullContent.theme.adminBackgroundColor,
+                ...parsedContent.theme
+              };
+            } else {
+              // For other sections (hero, testimonials), do a simple merge
+              fullContent[key] = {
+                ...fullContent[key],
+                ...parsedContent[key]
+              };
+            }
+          }
+        });
         
         setSiteContent(fullContent);
         console.log("Merged content:", fullContent);
@@ -127,24 +127,23 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   
   // Function to apply theme colors to CSS variables
   const applyThemeColors = (theme: SiteContent['theme']) => {
-    if (!theme) return;
+    if (!theme) {
+      console.warn("No theme provided to applyThemeColors in AdminContext");
+      return;
+    }
     
     try {
-      document.documentElement.style.setProperty('--primary', theme.primaryColor);
-      document.documentElement.style.setProperty('--secondary', theme.secondaryColor);
-      document.documentElement.style.setProperty('--accent', theme.accentColor);
-      document.documentElement.style.setProperty('--text', theme.textColor);
-      document.documentElement.style.setProperty('--background', theme.backgroundColor);
+      document.documentElement.style.setProperty('--primary', theme.primaryColor || '#4CAF50');
+      document.documentElement.style.setProperty('--secondary', theme.secondaryColor || '#A5D6A7');
+      document.documentElement.style.setProperty('--accent', theme.accentColor || '#1A1A1A');
+      document.documentElement.style.setProperty('--text', theme.textColor || '#333333');
+      document.documentElement.style.setProperty('--background', theme.backgroundColor || '#FFFFFF');
+      document.documentElement.style.setProperty('--admin-primary', theme.adminPrimaryColor || '#4CAF50');
+      document.documentElement.style.setProperty('--admin-background', theme.adminBackgroundColor || '#F1F5F9');
       
-      // Admin panel colors if in admin section
-      if (document.body.classList.contains('admin-panel')) {
-        document.documentElement.style.setProperty('--admin-primary', theme.adminPrimaryColor);
-        document.documentElement.style.setProperty('--admin-background', theme.adminBackgroundColor);
-      }
-      
-      console.log("Theme colors applied:", theme);
+      console.log("Theme colors applied from AdminContext:", theme);
     } catch (error) {
-      console.error("Error applying theme colors:", error);
+      console.error("Error applying theme colors in AdminContext:", error);
     }
   };
   

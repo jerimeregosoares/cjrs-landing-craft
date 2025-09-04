@@ -10,7 +10,7 @@ import MobileNav from "@/components/MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAdmin } from "@/context/AdminContext";
 import MediaCarousel from "@/components/MediaCarousel";
-import { useEffect } from "react";
+import { useThemeEffect } from "@/hooks/useThemeManager";
 
 // Map string icon names to Lucide components
 const iconMap = {
@@ -29,16 +29,8 @@ const Index = () => {
   const services = siteContent?.services?.items || [];
   const aboutDescription = siteContent?.about?.description || [];
 
-  // Apply theme colors
-  useEffect(() => {
-    if (siteContent?.theme) {
-      document.documentElement.style.setProperty('--primary', siteContent.theme.primaryColor || "#4CAF50");
-      document.documentElement.style.setProperty('--secondary', siteContent.theme.secondaryColor || "#A5D6A7");
-      document.documentElement.style.setProperty('--accent', siteContent.theme.accentColor || "#1A1A1A");
-      document.documentElement.style.setProperty('--text', siteContent.theme.textColor || "#333333");
-      document.documentElement.style.setProperty('--background', siteContent.theme.backgroundColor || "#FFFFFF");
-    }
-  }, [siteContent]);
+  // Apply theme colors using centralized hook
+  useThemeEffect(siteContent?.theme);
   
   return <div className="min-h-screen">
       {/* Navigation */}
