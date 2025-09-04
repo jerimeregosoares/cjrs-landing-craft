@@ -43,6 +43,9 @@ const Index = () => {
           <div className="hidden md:flex space-x-6">
             <a href="#services" className="hover:text-primary py-2 px-3 transition-colors">Serviços</a>
             <a href="#about" className="hover:text-primary py-2 px-3 transition-colors">Sobre</a>
+            <Button variant="secondary" className="px-4" asChild>
+              <a href="/pacientes">Cadastro de Pacientes</a>
+            </Button>
             <Button variant="default" className="px-4" asChild>
               <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agendar WhatsApp</a>
             </Button>
@@ -65,6 +68,9 @@ const Index = () => {
               </Button>
               <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
                 <a href="#about">Sobre o Profissional</a>
+              </Button>
+              <Button variant="secondary" size={isMobile ? "default" : "lg"} className="w-full sm:w-auto" asChild>
+                <a href="/pacientes">Cadastrar Paciente</a>
               </Button>
             </div>
           </div>

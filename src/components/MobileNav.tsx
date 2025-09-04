@@ -62,11 +62,21 @@ const MobileNav = () => {
             Sobre
           </a>
           <Button 
-            variant="default" 
+            variant="secondary" 
             className="mt-4 w-full" 
             asChild
+            onClick={closeMenu}
           >
-            <a href={siteContent.links.whatsapp}>
+            <a href="/pacientes">
+              Cadastro de Pacientes
+            </a>
+          </Button>
+          <Button 
+            variant="default" 
+            className="mt-2 w-full" 
+            asChild
+          >
+            <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
               Agendar WhatsApp
             </a>
           </Button>
