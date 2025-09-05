@@ -67,7 +67,7 @@ const MobileNav = () => {
             asChild
             onClick={closeMenu}
           >
-            <a href="/pacientes">
+            <a href="http://localhost:8080/cadastro-paciente">
               Cadastro de Pacientes
             </a>
           </Button>
