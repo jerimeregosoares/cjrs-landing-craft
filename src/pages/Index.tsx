@@ -44,7 +44,7 @@ const Index = () => {
             <a href="#services" className="hover:text-primary py-2 px-3 transition-colors">Serviços</a>
             <a href="#about" className="hover:text-primary py-2 px-3 transition-colors">Sobre</a>
             <Button variant="secondary" className="px-4" asChild>
-              <a href="http://localhost:8080/cadastro-paciente">Cadastro de Pacientes</a>
+              <a href="https://pronto-jr-digital.lovable.app/cadastro-paciente">Cadastro de Pacientes</a>
             </Button>
             <Button variant="default" className="px-4" asChild>
               <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agendar WhatsApp</a>
