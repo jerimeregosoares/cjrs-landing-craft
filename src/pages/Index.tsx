@@ -70,7 +70,7 @@ const Index = () => {
                 <a href="#about">Sobre o Profissional</a>
               </Button>
               <Button variant="secondary" size={isMobile ? "default" : "lg"} className="w-full sm:w-auto" asChild>
-                <a href="https://id-preview--bf9dc1c6-b519-49a6-862a-f1100ca5424e.lovable.app/cadastro-paciente" target="_blank" rel="noopener noreferrer">Cadastro Único</a>
+                <a href="https://pronto-jr-digital.lovable.app/public/agendamento" target="_blank" rel="noopener noreferrer">Cadastro Único</a>
               </Button>
             </div>
           </div>
