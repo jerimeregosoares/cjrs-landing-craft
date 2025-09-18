@@ -50,9 +50,9 @@ export const defaultContent: SiteContent = {
     title: "Depoimentos de Pacientes"
   },
   links: {
-    scheduleAppointment: "https://painelconsult.servicoscjrs.com.br/a/jerime-r-soares",
-    whatsapp: "https://wa.me/559191953465?text=Gostaria%20de%20fazer%20um%20agendamento",
-    bookConsultation: "https://painelconsult.servicoscjrs.com.br/a/jerime-r-soares"
+    scheduleAppointment: "https://pronto-jr-digital.lovable.app/public/agendamento",
+    whatsapp: "https://pronto-jr-digital.lovable.app/public/agendamento",
+    bookConsultation: "https://pronto-jr-digital.lovable.app/public/agendamento"
   },
   theme: {
     primaryColor: "#4CAF50",
