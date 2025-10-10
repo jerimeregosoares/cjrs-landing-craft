@@ -90,7 +90,7 @@ const Index = () => {
       <section id="services" className="py-12 md:py-16 px-4 md:px-6 bg-slate-950">
         <div className="max-w-7xl mx-auto rounded-md bg-stone-950">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-orange-50">{siteContent?.services?.title || "Nossos Serviços"}</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="flex flex-col gap-6 md:gap-8">
             {services.map((service) => {
               const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Search;
               return (
