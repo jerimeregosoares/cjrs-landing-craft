@@ -5,7 +5,7 @@ import HeroImageUpload from "./HeroImageUpload";
 interface HeroSectionImageProps {
   title: string;
   description: string;
-  section: 'hero' | 'about';
+  section: 'hero' | 'about' | 'testimonial-page';
 }
 
 const HeroSectionImage = ({ title, description, section }: HeroSectionImageProps) => {

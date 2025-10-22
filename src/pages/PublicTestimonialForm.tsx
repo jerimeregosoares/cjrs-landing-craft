@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { StarRating } from "@/components/StarRating";
 import { useToast } from "@/hooks/use-toast";
 import { ChevronDown, ChevronUp, Star } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const testimonialSchema = z.object({
   author: z.string()
@@ -31,7 +32,32 @@ const PublicTestimonialForm = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [rating, setRating] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("carousel_media")
+          .select("file_path")
+          .eq("section", "testimonial-page")
+          .eq("active", true)
+          .eq("file_type", "image")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .single();
+
+        if (data && !error) {
+          setProfileImage(data.file_path);
+        }
+      } catch (error) {
+        console.error("Error fetching profile image:", error);
+      }
+    };
+
+    fetchProfileImage();
+  }, []);
 
   const {
     register,
@@ -81,6 +107,18 @@ const PublicTestimonialForm = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#2D5016] to-[#1a3d0a] flex items-center justify-center p-4">
       <div className="w-full max-w-2xl space-y-6 animate-fade-in">
+        {/* Profile Image */}
+        {profileImage && (
+          <div className="flex justify-center">
+            <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-yellow-400 shadow-2xl">
+              <AvatarImage src={profileImage} alt="Profissional" className="object-cover" />
+              <AvatarFallback className="bg-white/20 text-white text-4xl">
+                <Star className="w-16 h-16" />
+              </AvatarFallback>
+            </Avatar>
+          </div>
+        )}
+        
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold text-white">

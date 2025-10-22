@@ -9,7 +9,7 @@ import { useAdmin } from "@/context/AdminContext";
 interface HeroImageUploadProps {
   title: string;
   description: string;
-  section: 'hero' | 'about';
+  section: 'hero' | 'about' | 'testimonial-page';
 }
 
 const HeroImageUpload = ({ title, description, section }: HeroImageUploadProps) => {

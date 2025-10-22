@@ -77,7 +77,7 @@ const ImageManager = () => {
           loading={loading}
         />
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Hero Section Feature Image */}
           <HeroSectionImage 
             title="Imagem Principal (Hero)" 
@@ -90,6 +90,13 @@ const ImageManager = () => {
             title="Imagem do Profissional" 
             description="Esta imagem será mostrada diretamente na seção 'Sobre o Profissional' do site. Recomendamos usar uma foto ou vídeo profissional."
             section="about"
+          />
+          
+          {/* Testimonial Page Feature Image */}
+          <HeroSectionImage 
+            title="Foto da Página de Avaliações" 
+            description="Esta foto será exibida no topo da página pública de avaliações em formato redondo. Recomendamos uma foto profissional ou logo."
+            section="testimonial-page"
           />
         </div>
       </div>

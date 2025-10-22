@@ -59,5 +59,5 @@ export interface CarouselMedia {
   created_at: Date;
   order: number;
   active: boolean;
-  section?: 'hero' | 'about';
+  section?: 'hero' | 'about' | 'testimonial-page';
 }
