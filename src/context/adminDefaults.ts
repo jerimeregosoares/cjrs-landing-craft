@@ -52,7 +52,8 @@ export const defaultContent: SiteContent = {
   links: {
     scheduleAppointment: "https://pronto-jr-digital.lovable.app/public/agendamento",
     whatsapp: "https://pronto-jr-digital.lovable.app/public/agendamento",
-    bookConsultation: "https://pronto-jr-digital.lovable.app/public/agendamento"
+    bookConsultation: "https://pronto-jr-digital.lovable.app/public/agendamento",
+    testimonialForm: ""
   },
   theme: {
     primaryColor: "#4CAF50",

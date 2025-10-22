@@ -15,6 +15,7 @@ const LinkManager = () => {
     scheduleAppointment: "",
     whatsapp: "",
     bookConsultation: "",
+    testimonialForm: "",
   });
 
   // Load current links when component mounts or siteContent changes
@@ -25,6 +26,7 @@ const LinkManager = () => {
         scheduleAppointment: siteContent.links.scheduleAppointment || "",
         whatsapp: siteContent.links.whatsapp || "",
         bookConsultation: siteContent.links.bookConsultation || "",
+        testimonialForm: siteContent.links.testimonialForm || "",
       });
     }
   }, [siteContent]);
@@ -167,7 +169,7 @@ const LinkManager = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="mb-6">
           <CardHeader>
             <CardTitle>Agende sua Consulta</CardTitle>
           </CardHeader>
@@ -207,6 +209,61 @@ const LinkManager = () => {
                 >
                   Testar Link
                 </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Formulário Público de Avaliações</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="testimonialForm">URL Pública</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="testimonialForm"
+                    value={`${window.location.origin}/avaliacoes`}
+                    readOnly
+                    className="flex-1 bg-gray-50"
+                  />
+                  <Button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(`${window.location.origin}/avaliacoes`);
+                      toast({
+                        title: "Link copiado!",
+                        description: "O link foi copiado para a área de transferência.",
+                      });
+                    }}
+                  >
+                    Copiar Link
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  Este é o link público para pacientes enviarem avaliações. Compartilhe este link em redes sociais, WhatsApp ou e-mail.
+                </p>
+              </div>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    window.open(`${window.location.origin}/avaliacoes`, '_blank', 'noopener,noreferrer');
+                  }}
+                >
+                  Testar Link
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const message = `Deixe sua avaliação sobre nosso atendimento: ${window.location.origin}/avaliacoes`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+                  }}
+                >
+                  Compartilhar no WhatsApp
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

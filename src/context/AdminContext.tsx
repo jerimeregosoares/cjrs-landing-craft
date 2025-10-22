@@ -80,11 +80,12 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
                   : fullContent.about.description
               };
             } else if (key === 'links' && parsedContent[key]) {
-              // Ensure all link properties are preserved, including bookConsultation
+              // Ensure all link properties are preserved, including testimonialForm
               fullContent.links = {
                 scheduleAppointment: parsedContent.links.scheduleAppointment || fullContent.links.scheduleAppointment,
                 whatsapp: parsedContent.links.whatsapp || fullContent.links.whatsapp,
                 bookConsultation: parsedContent.links.bookConsultation || fullContent.links.bookConsultation,
+                testimonialForm: parsedContent.links.testimonialForm || fullContent.links.testimonialForm,
                 ...parsedContent.links
               };
             } else if (key === 'theme' && parsedContent[key]) {

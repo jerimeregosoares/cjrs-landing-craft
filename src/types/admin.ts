@@ -20,6 +20,7 @@ export interface SiteContent {
     scheduleAppointment: string;
     whatsapp: string;
     bookConsultation: string;
+    testimonialForm: string;
   };
   theme?: {
     primaryColor: string;

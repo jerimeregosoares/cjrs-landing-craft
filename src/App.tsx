@@ -18,6 +18,7 @@ import LinkManager from "./pages/admin/LinkManager";
 import ImageManager from "./pages/admin/ImageManager";
 import ColorManager from "./pages/admin/ColorManager";
 import AdminButton from "./components/AdminButton";
+import PublicTestimonialForm from "./pages/PublicTestimonialForm";
 
 const App = () => {
   // Create QueryClient inside the component
@@ -52,6 +53,7 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/avaliacoes" element={<PublicTestimonialForm />} />
 
                 <Route path="/admin/login" element={<AdminLogin />} />
                 <Route path="/admin" element={<AdminDashboard />} />
