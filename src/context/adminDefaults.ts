@@ -60,7 +60,7 @@ export const defaultContent: SiteContent = {
   buttonLabels: {
     scheduleAppointment: "Agendar Consulta",
     whatsapp: "WhatsApp Dúvidas",
-    bookConsultation: "Agende sua Consulta",
+    bookConsultation: "Agendar Consulta",
     heroSecondary: "Sobre o Profissional",
     heroTertiary: "Cadastro Único",
   },
