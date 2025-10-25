@@ -51,15 +51,15 @@ export const defaultContent: SiteContent = {
   },
   links: {
     scheduleAppointment: "https://pronto-jr-digital.lovable.app/public/agendamento",
-    whatsapp: "https://pronto-jr-digital.lovable.app/public/agendamento",
+    whatsapp: "https://wa.me/559191953465?text=Gostaria%20de%20tirar%20tirar dúvidas",
     bookConsultation: "https://pronto-jr-digital.lovable.app/public/agendamento",
     testimonialForm: "",
     heroSecondary: "#about",
     heroTertiary: "https://pronto-jr-digital.lovable.app/public/agendamento",
   },
   buttonLabels: {
-    scheduleAppointment: "Agendar Atendimento",
-    whatsapp: "Agendar WhatsApp",
+    scheduleAppointment: "Agendar Consulta",
+    whatsapp: "WhatsApp Dúvidas",
     bookConsultation: "Agende sua Consulta",
     heroSecondary: "Sobre o Profissional",
     heroTertiary: "Cadastro Único",
