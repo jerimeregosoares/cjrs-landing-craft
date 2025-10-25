@@ -53,7 +53,9 @@ export const defaultContent: SiteContent = {
     scheduleAppointment: "https://pronto-jr-digital.lovable.app/public/agendamento",
     whatsapp: "https://pronto-jr-digital.lovable.app/public/agendamento",
     bookConsultation: "https://pronto-jr-digital.lovable.app/public/agendamento",
-    testimonialForm: ""
+    testimonialForm: "",
+    heroSecondary: "#about",
+    heroTertiary: "https://pronto-jr-digital.lovable.app/public/agendamento",
   },
   buttonLabels: {
     scheduleAppointment: "Agendar Atendimento",

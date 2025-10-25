@@ -21,6 +21,8 @@ export interface SiteContent {
     whatsapp: string;
     bookConsultation: string;
     testimonialForm: string;
+    heroSecondary: string;
+    heroTertiary: string;
   };
   buttonLabels: {
     scheduleAppointment: string;

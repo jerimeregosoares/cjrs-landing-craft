@@ -73,10 +73,10 @@ const Index = () => {
                 </a>
               </Button>
               <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
-                <a href="#about">{siteContent?.buttonLabels?.heroSecondary || "Sobre o Profissional"}</a>
+                <a href={siteContent?.links?.heroSecondary || "#about"}>{siteContent?.buttonLabels?.heroSecondary || "Sobre o Profissional"}</a>
               </Button>
               <Button variant="secondary" size={isMobile ? "default" : "lg"} className="w-full sm:w-auto" asChild>
-                <a href="https://pronto-jr-digital.lovable.app/public/agendamento" target="_blank" rel="noopener noreferrer">
+                <a href={siteContent?.links?.heroTertiary || "https://pronto-jr-digital.lovable.app/public/agendamento"} target="_blank" rel="noopener noreferrer">
                   {siteContent?.buttonLabels?.heroTertiary || "Cadastro Único"}
                 </a>
               </Button>

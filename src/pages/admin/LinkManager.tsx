@@ -16,6 +16,8 @@ const LinkManager = () => {
     whatsapp: "",
     bookConsultation: "",
     testimonialForm: "",
+    heroSecondary: "",
+    heroTertiary: "",
   });
   
   const [labels, setLabels] = useState({
@@ -35,6 +37,8 @@ const LinkManager = () => {
         whatsapp: siteContent.links.whatsapp || "",
         bookConsultation: siteContent.links.bookConsultation || "",
         testimonialForm: siteContent.links.testimonialForm || "",
+        heroSecondary: siteContent.links.heroSecondary || "#about",
+        heroTertiary: siteContent.links.heroTertiary || "https://pronto-jr-digital.lovable.app/public/agendamento",
       });
     }
     
@@ -56,12 +60,14 @@ const LinkManager = () => {
         throw new Error("URL não pode estar vazia");
       }
       
-      // Check if URL starts with http:// or https://
-      if (!/^https?:\/\//i.test(value)) {
-        value = 'https://' + value;
+      // Allow anchor links (starting with #) and external URLs
+      if (!value.startsWith('#')) {
+        // Check if URL starts with http:// or https://
+        if (!/^https?:\/\//i.test(value)) {
+          value = 'https://' + value;
+        }
+        new URL(value); // Will throw error if not valid URL
       }
-      
-      new URL(value); // Will throw error if not valid URL
       
       // Update link in context
       updateLink(linkId, value);
@@ -371,7 +377,7 @@ const LinkManager = () => {
           <CardContent>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="heroSecondaryLabel">Botão Secundário (Hero)</Label>
+                <Label htmlFor="heroSecondaryLabel">Título do Botão Secundário</Label>
                 <div className="flex gap-2">
                   <Input
                     id="heroSecondaryLabel"
@@ -383,13 +389,29 @@ const LinkManager = () => {
                     Salvar
                   </Button>
                 </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="heroSecondary">URL do Botão Secundário</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="heroSecondary"
+                    value={links.heroSecondary}
+                    onChange={(e) => handleChange('heroSecondary', e.target.value)}
+                    className="flex-1"
+                    placeholder="#about ou https://exemplo.com"
+                  />
+                  <Button onClick={() => handleSave('heroSecondary', links.heroSecondary)}>
+                    Salvar
+                  </Button>
+                </div>
                 <p className="text-sm text-gray-500 mt-1">
-                  Link: #about (âncora interna para a seção Sobre)
+                  Use # para âncoras internas (ex: #about) ou URLs completas
                 </p>
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="heroTertiaryLabel">Botão Terciário (Hero)</Label>
+                <Label htmlFor="heroTertiaryLabel">Título do Botão Terciário</Label>
                 <div className="flex gap-2">
                   <Input
                     id="heroTertiaryLabel"
@@ -401,8 +423,24 @@ const LinkManager = () => {
                     Salvar
                   </Button>
                 </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="heroTertiary">URL do Botão Terciário</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="heroTertiary"
+                    value={links.heroTertiary}
+                    onChange={(e) => handleChange('heroTertiary', e.target.value)}
+                    className="flex-1"
+                    placeholder="https://exemplo.com"
+                  />
+                  <Button onClick={() => handleSave('heroTertiary', links.heroTertiary)}>
+                    Salvar
+                  </Button>
+                </div>
                 <p className="text-sm text-gray-500 mt-1">
-                  Link: https://pronto-jr-digital.lovable.app/public/agendamento
+                  URL externa para o botão terciário
                 </p>
               </div>
             </div>
