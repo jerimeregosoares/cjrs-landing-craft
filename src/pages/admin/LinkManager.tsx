@@ -9,13 +9,21 @@ import { useAdmin } from "@/context/AdminContext";
 import { useToast } from "@/hooks/use-toast";
 
 const LinkManager = () => {
-  const { siteContent, updateLink } = useAdmin();
+  const { siteContent, updateLink, updateContent } = useAdmin();
   const { toast } = useToast();
   const [links, setLinks] = useState({
     scheduleAppointment: "",
     whatsapp: "",
     bookConsultation: "",
     testimonialForm: "",
+  });
+  
+  const [labels, setLabels] = useState({
+    scheduleAppointment: "",
+    whatsapp: "",
+    bookConsultation: "",
+    heroSecondary: "",
+    heroTertiary: "",
   });
 
   // Load current links when component mounts or siteContent changes
@@ -27,6 +35,16 @@ const LinkManager = () => {
         whatsapp: siteContent.links.whatsapp || "",
         bookConsultation: siteContent.links.bookConsultation || "",
         testimonialForm: siteContent.links.testimonialForm || "",
+      });
+    }
+    
+    if (siteContent && siteContent.buttonLabels) {
+      setLabels({
+        scheduleAppointment: siteContent.buttonLabels.scheduleAppointment || "Agendar Atendimento",
+        whatsapp: siteContent.buttonLabels.whatsapp || "Agendar WhatsApp",
+        bookConsultation: siteContent.buttonLabels.bookConsultation || "Agende sua Consulta",
+        heroSecondary: siteContent.buttonLabels.heroSecondary || "Sobre o Profissional",
+        heroTertiary: siteContent.buttonLabels.heroTertiary || "Cadastro Único",
       });
     }
   }, [siteContent]);
@@ -75,6 +93,39 @@ const LinkManager = () => {
       [linkId]: value,
     }));
   };
+  
+  const handleLabelChange = (labelId: string, value: string) => {
+    setLabels((prev) => ({
+      ...prev,
+      [labelId]: value,
+    }));
+  };
+  
+  const handleSaveLabel = (labelId: string, value: string) => {
+    if (!value.trim()) {
+      toast({
+        title: "Erro",
+        description: "O título do botão não pode estar vazio.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      updateContent("buttonLabels", labelId, value.trim());
+      
+      toast({
+        title: "Sucesso!",
+        description: "Título do botão atualizado com sucesso.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível atualizar o título do botão.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <AdminLayout>
@@ -87,6 +138,21 @@ const LinkManager = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="scheduleAppointmentLabel">Título do Botão</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="scheduleAppointmentLabel"
+                    value={labels.scheduleAppointment}
+                    onChange={(e) => handleLabelChange('scheduleAppointment', e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={() => handleSaveLabel('scheduleAppointment', labels.scheduleAppointment)}>
+                    Salvar
+                  </Button>
+                </div>
+              </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="scheduleAppointment">URL</Label>
                 <div className="flex gap-2">
@@ -132,6 +198,21 @@ const LinkManager = () => {
           <CardContent>
             <div className="space-y-4">
               <div className="space-y-2">
+                <Label htmlFor="whatsappLabel">Título do Botão</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="whatsappLabel"
+                    value={labels.whatsapp}
+                    onChange={(e) => handleLabelChange('whatsapp', e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={() => handleSaveLabel('whatsapp', labels.whatsapp)}>
+                    Salvar
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
                 <Label htmlFor="whatsapp">URL</Label>
                 <div className="flex gap-2">
                   <Input
@@ -176,6 +257,21 @@ const LinkManager = () => {
           <CardContent>
             <div className="space-y-4">
               <div className="space-y-2">
+                <Label htmlFor="bookConsultationLabel">Título do Botão</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="bookConsultationLabel"
+                    value={labels.bookConsultation}
+                    onChange={(e) => handleLabelChange('bookConsultation', e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={() => handleSaveLabel('bookConsultation', labels.bookConsultation)}>
+                    Salvar
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
                 <Label htmlFor="bookConsultation">URL</Label>
                 <div className="flex gap-2">
                   <Input
@@ -213,7 +309,7 @@ const LinkManager = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="mb-6">
           <CardHeader>
             <CardTitle>Formulário Público de Avaliações</CardTitle>
           </CardHeader>
@@ -263,6 +359,51 @@ const LinkManager = () => {
                 >
                   Compartilhar no WhatsApp
                 </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Botões da Seção Hero</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="heroSecondaryLabel">Botão Secundário (Hero)</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="heroSecondaryLabel"
+                    value={labels.heroSecondary}
+                    onChange={(e) => handleLabelChange('heroSecondary', e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={() => handleSaveLabel('heroSecondary', labels.heroSecondary)}>
+                    Salvar
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  Link: #about (âncora interna para a seção Sobre)
+                </p>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="heroTertiaryLabel">Botão Terciário (Hero)</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="heroTertiaryLabel"
+                    value={labels.heroTertiary}
+                    onChange={(e) => handleLabelChange('heroTertiary', e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button onClick={() => handleSaveLabel('heroTertiary', labels.heroTertiary)}>
+                    Salvar
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  Link: https://pronto-jr-digital.lovable.app/public/agendamento
+                </p>
               </div>
             </div>
           </CardContent>

@@ -22,6 +22,13 @@ export interface SiteContent {
     bookConsultation: string;
     testimonialForm: string;
   };
+  buttonLabels: {
+    scheduleAppointment: string;
+    whatsapp: string;
+    bookConsultation: string;
+    heroSecondary: string;
+    heroTertiary: string;
+  };
   theme?: {
     primaryColor: string;
     secondaryColor: string;

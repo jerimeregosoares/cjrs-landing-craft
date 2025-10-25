@@ -44,10 +44,14 @@ const Index = () => {
             <a href="#services" className="hover:text-primary py-2 px-3 transition-colors">Serviços</a>
             <a href="#about" className="hover:text-primary py-2 px-3 transition-colors">Sobre</a>
             <Button variant="secondary" className="px-4" asChild>
-              <a href="https://pronto-jr-digital.lovable.app/cadastro-paciente">Cadastro de Pacientes</a>
+              <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">
+                {siteContent?.buttonLabels?.scheduleAppointment || "Cadastro de Pacientes"}
+              </a>
             </Button>
             <Button variant="default" className="px-4" asChild>
-              <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agendar WhatsApp</a>
+              <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
+                {siteContent?.buttonLabels?.whatsapp || "Agendar WhatsApp"}
+              </a>
             </Button>
           </div>
           
@@ -64,13 +68,17 @@ const Index = () => {
             <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">{siteContent?.hero?.description || "Descrição"}</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size={isMobile ? "default" : "lg"} className="text-zinc-50 bg-lime-800 hover:bg-lime-700 w-full sm:w-auto font-medium" asChild>
-                <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">Agendar Atendimento</a>
+                <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">
+                  {siteContent?.buttonLabels?.scheduleAppointment || "Agendar Atendimento"}
+                </a>
               </Button>
               <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
-                <a href="#about">Sobre o Profissional</a>
+                <a href="#about">{siteContent?.buttonLabels?.heroSecondary || "Sobre o Profissional"}</a>
               </Button>
               <Button variant="secondary" size={isMobile ? "default" : "lg"} className="w-full sm:w-auto" asChild>
-                <a href="https://pronto-jr-digital.lovable.app/public/agendamento" target="_blank" rel="noopener noreferrer">Cadastro Único</a>
+                <a href="https://pronto-jr-digital.lovable.app/public/agendamento" target="_blank" rel="noopener noreferrer">
+                  {siteContent?.buttonLabels?.heroTertiary || "Cadastro Único"}
+                </a>
               </Button>
             </div>
           </div>
@@ -151,7 +159,9 @@ const Index = () => {
               
               <div className="mt-6 md:mt-8">
                 <Button className="bg-green-700 hover:bg-green-600 text-white w-full sm:w-auto" asChild>
-                  <a href={siteContent?.links?.bookConsultation || siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">Agende sua Consulta</a>
+                  <a href={siteContent?.links?.bookConsultation || siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
+                    {siteContent?.buttonLabels?.bookConsultation || "Agende sua Consulta"}
+                  </a>
                 </Button>
               </div>
             </div>

@@ -55,6 +55,13 @@ export const defaultContent: SiteContent = {
     bookConsultation: "https://pronto-jr-digital.lovable.app/public/agendamento",
     testimonialForm: ""
   },
+  buttonLabels: {
+    scheduleAppointment: "Agendar Atendimento",
+    whatsapp: "Agendar WhatsApp",
+    bookConsultation: "Agende sua Consulta",
+    heroSecondary: "Sobre o Profissional",
+    heroTertiary: "Cadastro Único",
+  },
   theme: {
     primaryColor: "#4CAF50",
     secondaryColor: "#A5D6A7",
