@@ -6,6 +6,7 @@ import { useAuthManagement } from '@/hooks/useAuthManagement';
 import { useContentManagement } from '@/hooks/useContentManagement';
 import { useMediaManagement } from '@/hooks/useMediaManagement';
 import { useTestimonialManagement } from '@/hooks/useTestimonialManagement';
+import { useSiteContentDB } from '@/hooks/useSiteContentDB';
 import { supabase } from '@/integrations/supabase/client';
 
 // Define context type
@@ -14,6 +15,7 @@ interface AdminContextType {
   login: (password: string) => boolean;
   logout: () => void;
   siteContent: SiteContent;
+  setSiteContent: (content: SiteContent) => void;
   carouselMedia: CarouselMedia[];
   updateContent: (section: string, field: string, value: string | string[] | Service[]) => void;
   updateLink: (id: string, newUrl: string) => void;
@@ -41,89 +43,106 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const { siteContent, setSiteContent, updateContent, updateLink, addService, updateService, deleteService, reorderServices } = useContentManagement(defaultContent);
   const { carouselMedia, loading, fetchCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
+  const { loadContent, saveContent } = useSiteContentDB();
   
   // Load stored data on component mount
   useEffect(() => {
-    // Check if user is already logged in
-    const storedAuth = localStorage.getItem('adminAuthenticated');
-    if (storedAuth === 'true') {
-      setIsAuthenticated(true);
-    }
-    
-    // Load saved content if it exists
-    try {
-      const storedContent = localStorage.getItem('siteContent');
-      if (storedContent) {
-        const parsedContent = JSON.parse(storedContent);
-        console.log("Loading content from localStorage:", parsedContent);
-        
-        // Create a deep copy of defaultContent as a base to ensure all fields exist
-        const fullContent = JSON.parse(JSON.stringify(defaultContent));
-        
-        // Merge the loaded content with the default content, ensuring all properties exist
-        Object.keys(fullContent).forEach(key => {
-          if (parsedContent[key]) {
-            if (key === 'services' && parsedContent[key]) {
-              fullContent.services = {
-                ...fullContent.services,
-                title: parsedContent.services.title || fullContent.services.title,
-                items: Array.isArray(parsedContent.services.items) 
-                  ? parsedContent.services.items 
-                  : fullContent.services.items
-              };
-            } else if (key === 'about' && parsedContent[key]) {
-              fullContent.about = {
-                ...fullContent.about,
-                ...parsedContent.about,
-                description: Array.isArray(parsedContent.about.description) 
-                  ? parsedContent.about.description 
-                  : fullContent.about.description
-              };
-            } else if (key === 'links' && parsedContent[key]) {
-              // Ensure all link properties are preserved, including testimonialForm
-              fullContent.links = {
-                scheduleAppointment: parsedContent.links.scheduleAppointment || fullContent.links.scheduleAppointment,
-                whatsapp: parsedContent.links.whatsapp || fullContent.links.whatsapp,
-                bookConsultation: parsedContent.links.bookConsultation || fullContent.links.bookConsultation,
-                testimonialForm: parsedContent.links.testimonialForm || fullContent.links.testimonialForm,
-                ...parsedContent.links
-              };
-            } else if (key === 'theme' && parsedContent[key]) {
-              // Ensure all theme properties are preserved
-              fullContent.theme = {
-                primaryColor: parsedContent.theme.primaryColor || fullContent.theme.primaryColor,
-                secondaryColor: parsedContent.theme.secondaryColor || fullContent.theme.secondaryColor,
-                accentColor: parsedContent.theme.accentColor || fullContent.theme.accentColor,
-                textColor: parsedContent.theme.textColor || fullContent.theme.textColor,
-                backgroundColor: parsedContent.theme.backgroundColor || fullContent.theme.backgroundColor,
-                adminPrimaryColor: parsedContent.theme.adminPrimaryColor || fullContent.theme.adminPrimaryColor,
-                adminBackgroundColor: parsedContent.theme.adminBackgroundColor || fullContent.theme.adminBackgroundColor,
-                ...parsedContent.theme
-              };
-            } else {
-              // For other sections (hero, testimonials), do a simple merge
-              fullContent[key] = {
-                ...fullContent[key],
-                ...parsedContent[key]
-              };
-            }
-          }
-        });
-        
-        setSiteContent(fullContent);
-        console.log("Merged content:", fullContent);
-        
-        // Apply theme colors immediately
-        applyThemeColors(fullContent.theme);
+    const initializeContent = async () => {
+      // Check if user is already logged in
+      const storedAuth = localStorage.getItem('adminAuthenticated');
+      if (storedAuth === 'true') {
+        setIsAuthenticated(true);
       }
-    } catch (error) {
-      console.error("Error parsing stored content:", error);
-      // Use default content in case of parsing error
-      setSiteContent(defaultContent);
-    }
+      
+      // 1. Try to load from Supabase first
+      const dbContent = await loadContent();
+      
+      if (dbContent) {
+        console.log("Loading content from Supabase:", dbContent);
+        setSiteContent(dbContent);
+        applyThemeColors(dbContent.theme);
+        // Update localStorage as cache
+        localStorage.setItem('siteContent', JSON.stringify(dbContent));
+      } else {
+        // 2. Fallback to localStorage if DB is empty or fails
+        try {
+          const storedContent = localStorage.getItem('siteContent');
+          if (storedContent) {
+            const parsedContent = JSON.parse(storedContent);
+            console.log("Loading content from localStorage:", parsedContent);
+            
+            // Create a deep copy of defaultContent as a base
+            const fullContent = JSON.parse(JSON.stringify(defaultContent));
+            
+            // Merge the loaded content with defaults
+            Object.keys(fullContent).forEach(key => {
+              if (parsedContent[key]) {
+                if (key === 'services' && parsedContent[key]) {
+                  fullContent.services = {
+                    ...fullContent.services,
+                    title: parsedContent.services.title || fullContent.services.title,
+                    items: Array.isArray(parsedContent.services.items) 
+                      ? parsedContent.services.items 
+                      : fullContent.services.items
+                  };
+                } else if (key === 'about' && parsedContent[key]) {
+                  fullContent.about = {
+                    ...fullContent.about,
+                    ...parsedContent.about,
+                    description: Array.isArray(parsedContent.about.description) 
+                      ? parsedContent.about.description 
+                      : fullContent.about.description
+                  };
+                } else if (key === 'links' && parsedContent[key]) {
+                  fullContent.links = {
+                    scheduleAppointment: parsedContent.links.scheduleAppointment || fullContent.links.scheduleAppointment,
+                    whatsapp: parsedContent.links.whatsapp || fullContent.links.whatsapp,
+                    bookConsultation: parsedContent.links.bookConsultation || fullContent.links.bookConsultation,
+                    testimonialForm: parsedContent.links.testimonialForm || fullContent.links.testimonialForm,
+                    ...parsedContent.links
+                  };
+                } else if (key === 'theme' && parsedContent[key]) {
+                  fullContent.theme = {
+                    primaryColor: parsedContent.theme.primaryColor || fullContent.theme.primaryColor,
+                    secondaryColor: parsedContent.theme.secondaryColor || fullContent.theme.secondaryColor,
+                    accentColor: parsedContent.theme.accentColor || fullContent.theme.accentColor,
+                    textColor: parsedContent.theme.textColor || fullContent.theme.textColor,
+                    backgroundColor: parsedContent.theme.backgroundColor || fullContent.theme.backgroundColor,
+                    adminPrimaryColor: parsedContent.theme.adminPrimaryColor || fullContent.theme.adminPrimaryColor,
+                    adminBackgroundColor: parsedContent.theme.adminBackgroundColor || fullContent.theme.adminBackgroundColor,
+                    ...parsedContent.theme
+                  };
+                } else {
+                  fullContent[key] = {
+                    ...fullContent[key],
+                    ...parsedContent[key]
+                  };
+                }
+              }
+            });
+            
+            setSiteContent(fullContent);
+            applyThemeColors(fullContent.theme);
+            
+            // Migrate to Supabase
+            console.log("Migrating localStorage data to Supabase...");
+            await saveContent(fullContent);
+          } else {
+            // 3. Use defaults if nothing exists
+            setSiteContent(defaultContent);
+            applyThemeColors(defaultContent.theme);
+          }
+        } catch (error) {
+          console.error("Error parsing stored content:", error);
+          setSiteContent(defaultContent);
+        }
+      }
+      
+      // Load carousel media
+      fetchCarouselMedia();
+    };
     
-    // Load carousel media
-    fetchCarouselMedia();
+    initializeContent();
   }, []);
   
   // Function to apply theme colors to CSS variables
@@ -151,17 +170,27 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   // Save content whenever it changes
   useEffect(() => {
     if (isAuthenticated && siteContent) {
-      try {
-        localStorage.setItem('siteContent', JSON.stringify(siteContent));
-        console.log("Content saved to localStorage from AdminContext:", siteContent);
-        
-        // Apply theme colors when content changes
-        if (siteContent.theme) {
-          applyThemeColors(siteContent.theme);
+      const saveContentChanges = async () => {
+        try {
+          // Save to Supabase
+          const success = await saveContent(siteContent);
+          if (success) {
+            console.log("Content saved to Supabase:", siteContent);
+          }
+          
+          // Also save to localStorage as cache
+          localStorage.setItem('siteContent', JSON.stringify(siteContent));
+          
+          // Apply theme colors when content changes
+          if (siteContent.theme) {
+            applyThemeColors(siteContent.theme);
+          }
+        } catch (error) {
+          console.error("Error saving content:", error);
         }
-      } catch (error) {
-        console.error("Error saving content to localStorage:", error);
-      }
+      };
+      
+      saveContentChanges();
     }
   }, [siteContent, isAuthenticated]);
 
@@ -171,7 +200,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         isAuthenticated, 
         login, 
         logout, 
-        siteContent, 
+        siteContent,
+        setSiteContent, 
         carouselMedia,
         updateContent,
         updateLink,
