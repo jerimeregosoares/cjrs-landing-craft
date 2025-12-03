@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { SiteContent, CarouselMedia, Testimonial, Service } from '@/types/admin';
 import { defaultContent } from './adminDefaults';
 import { useAuthManagement } from '@/hooks/useAuthManagement';
@@ -45,14 +45,14 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   const { loadContent, saveContent } = useSiteContentDB();
   
+  // Track if initial load is complete to prevent saving default content
+  const isInitialized = useRef(false);
+  const [isReady, setIsReady] = useState(false);
+  
   // Load stored data on component mount
   useEffect(() => {
     const initializeContent = async () => {
-      // Check if user is already logged in
-      const storedAuth = localStorage.getItem('adminAuthenticated');
-      if (storedAuth === 'true') {
-        setIsAuthenticated(true);
-      }
+      console.log("Starting content initialization...");
       
       // 1. Try to load from Supabase first
       const dbContent = await loadContent();
@@ -140,6 +140,18 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       
       // Load carousel media
       fetchCarouselMedia();
+      
+      // Mark initialization as complete AFTER content is loaded
+      isInitialized.current = true;
+      
+      // Now check if user is already logged in
+      const storedAuth = localStorage.getItem('adminAuthenticated');
+      if (storedAuth === 'true') {
+        setIsAuthenticated(true);
+      }
+      
+      setIsReady(true);
+      console.log("Content initialization complete");
     };
     
     initializeContent();
@@ -167,31 +179,49 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
   
-  // Save content whenever it changes
+  // Save content whenever it changes - but only after initialization
   useEffect(() => {
-    if (isAuthenticated && siteContent) {
-      const saveContentChanges = async () => {
-        try {
-          // Save to Supabase
-          const success = await saveContent(siteContent);
-          if (success) {
-            console.log("Content saved to Supabase:", siteContent);
-          }
-          
-          // Also save to localStorage as cache
-          localStorage.setItem('siteContent', JSON.stringify(siteContent));
-          
-          // Apply theme colors when content changes
-          if (siteContent.theme) {
-            applyThemeColors(siteContent.theme);
-          }
-        } catch (error) {
-          console.error("Error saving content:", error);
-        }
-      };
-      
-      saveContentChanges();
+    // Skip if not initialized yet to prevent saving default content
+    if (!isInitialized.current) {
+      console.log("Skipping save - not initialized yet");
+      return;
     }
+    
+    if (!isAuthenticated) {
+      console.log("Skipping save - not authenticated");
+      return;
+    }
+    
+    if (!siteContent) {
+      console.log("Skipping save - no content");
+      return;
+    }
+    
+    const saveContentChanges = async () => {
+      try {
+        console.log("Saving content to Supabase...", siteContent);
+        
+        // Save to Supabase
+        const success = await saveContent(siteContent);
+        if (success) {
+          console.log("Content saved successfully to Supabase");
+        } else {
+          console.error("Failed to save content to Supabase");
+        }
+        
+        // Also save to localStorage as cache
+        localStorage.setItem('siteContent', JSON.stringify(siteContent));
+        
+        // Apply theme colors when content changes
+        if (siteContent.theme) {
+          applyThemeColors(siteContent.theme);
+        }
+      } catch (error) {
+        console.error("Error saving content:", error);
+      }
+    };
+    
+    saveContentChanges();
   }, [siteContent, isAuthenticated]);
 
   return (
