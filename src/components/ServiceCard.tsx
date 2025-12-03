@@ -21,7 +21,7 @@ const ServiceCard = ({
           {icon}
         </div>
         <CardTitle className="mb-2 font-bold text-lg md:text-xl text-slate-50">{title}</CardTitle>
-        <CardDescription className="font-medium text-sm md:text-base text-neutral-50">
+        <CardDescription className="font-medium text-sm md:text-base text-neutral-50 whitespace-pre-line">
           {description}
         </CardDescription>
         {price && (
