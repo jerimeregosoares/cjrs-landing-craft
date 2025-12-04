@@ -1,9 +1,10 @@
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
 import ServiceCard from "@/components/ServiceCard";
+import ServiceAccordion from "@/components/ServiceAccordion";
 import { TestimonialForm } from "@/components/TestimonialForm";
-import { Heart, Search, Syringe, Clipboard, Activity } from "lucide-react";
+import { Heart, Search, Syringe, Clipboard, Activity, ChevronDown, ChevronUp } from "lucide-react";
 import { TestimonialProvider } from "@/context/TestimonialContext";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 import MobileNav from "@/components/MobileNav";
@@ -11,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useAdmin } from "@/context/AdminContext";
 import MediaCarousel from "@/components/MediaCarousel";
 import { useThemeEffect } from "@/hooks/useThemeManager";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 // Map string icon names to Lucide components
 const iconMap = {
@@ -24,6 +26,7 @@ const iconMap = {
 const Index = () => {
   const isMobile = useIsMobile();
   const { siteContent } = useAdmin();
+  const [aboutOpen, setAboutOpen] = useState(false);
   
   // Check if siteContent or its properties are undefined and provide fallbacks
   const services = siteContent?.services?.items || [];
@@ -32,7 +35,8 @@ const Index = () => {
   // Apply theme colors using centralized hook
   useThemeEffect(siteContent?.theme);
   
-  return <div className="min-h-screen">
+  return (
+    <div className="min-h-screen">
       {/* Navigation */}
       <nav className="py-4 px-4 md:px-6 border-b sticky top-0 bg-white z-30">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -60,45 +64,157 @@ const Index = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="py-12 md:py-20 px-4 md:px-6 bg-amber-200">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          <div>
-            <h1 className="font-bold text-2xl md:text-3xl mb-4 md:mb-6">{siteContent?.hero?.title || "Título"}</h1>
-            <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">{siteContent?.hero?.description || "Descrição"}</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size={isMobile ? "default" : "lg"} className="text-zinc-50 bg-lime-800 hover:bg-lime-700 w-full sm:w-auto font-medium" asChild>
-                <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">
-                  {siteContent?.buttonLabels?.scheduleAppointment || "Agendar Atendimento"}
-                </a>
-              </Button>
-              <Button variant="outline" size={isMobile ? "default" : "lg"} className="text-stone-50 bg-red-900 hover:bg-red-800 w-full sm:w-auto" asChild>
-                <a href={siteContent?.links?.heroSecondary || "#about"}>{siteContent?.buttonLabels?.heroSecondary || "Sobre o Profissional"}</a>
-              </Button>
-              <Button variant="secondary" size={isMobile ? "default" : "lg"} className="w-full sm:w-auto" asChild>
-                <a href={siteContent?.links?.heroTertiary || "https://pronto-jr-digital.lovable.app/public/agendamento"} target="_blank" rel="noopener noreferrer">
-                  {siteContent?.buttonLabels?.heroTertiary || "Cadastro Único"}
-                </a>
-              </Button>
-            </div>
-          </div>
-          <div className="rounded-2xl overflow-hidden mt-6 md:mt-0">
+      {/* Mobile-First Hero Section */}
+      <section className="py-6 md:py-20 px-4 md:px-6 bg-amber-200">
+        <div className="max-w-7xl mx-auto">
+          {/* Image at TOP for mobile */}
+          <div className="rounded-2xl overflow-hidden mb-6 md:hidden">
             <MediaCarousel 
               section="hero" 
               fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"
-              height="h-[250px] md:h-[500px]"
+              height="h-[250px]"
               objectFit="contain"
               aspectRatio={16/9}
             />
           </div>
+
+          {/* Desktop layout */}
+          <div className="hidden md:grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div>
+              <h1 className="font-bold text-2xl md:text-3xl mb-4 md:mb-6">{siteContent?.hero?.title || "Cuidados de Enfermagem Avançados com Tecnologia POCUS"}</h1>
+              <p className="mb-6 md:mb-8 text-muted-foreground text-base md:text-xl">{siteContent?.hero?.description || "Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos."}</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button size="lg" className="text-zinc-50 bg-lime-800 hover:bg-lime-700 font-medium" asChild>
+                  <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">
+                    {siteContent?.buttonLabels?.scheduleAppointment || "Agendar Consulta"}
+                  </a>
+                </Button>
+                <Button variant="outline" size="lg" className="text-stone-50 bg-red-900 hover:bg-red-800" asChild>
+                  <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
+                    {siteContent?.buttonLabels?.whatsapp || "Agendar WhatsApp"}
+                  </a>
+                </Button>
+              </div>
+            </div>
+            <div className="rounded-2xl overflow-hidden">
+              <MediaCarousel 
+                section="hero" 
+                fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"
+                height="h-[500px]"
+                objectFit="contain"
+                aspectRatio={16/9}
+              />
+            </div>
+          </div>
+
+          {/* Mobile content below image */}
+          <div className="md:hidden">
+            <h1 className="font-bold text-xl mb-3">
+              Cuidados de Enfermagem Avançados com Tecnologia POCUS
+            </h1>
+            <p className="mb-6 text-muted-foreground text-sm">
+              Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos.
+            </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col gap-3">
+              <Button size="default" className="text-zinc-50 bg-lime-800 hover:bg-lime-700 w-full font-medium" asChild>
+                <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">
+                  Agendar Consulta
+                </a>
+              </Button>
+              <Button variant="outline" size="default" className="text-stone-50 bg-red-900 hover:bg-red-800 w-full" asChild>
+                <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
+                  Agendar WhatsApp
+                </a>
+              </Button>
+              <Button variant="secondary" size="default" className="w-full" asChild>
+                <a href={siteContent?.links?.heroTertiary || "/cadastro-paciente"} target="_blank" rel="noopener noreferrer">
+                  Cadastro Único
+                </a>
+              </Button>
+              
+              {/* Sobre o Profissional - Expandable */}
+              <Collapsible open={aboutOpen} onOpenChange={setAboutOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="outline" size="default" className="w-full bg-emerald-800 hover:bg-emerald-700 text-white border-emerald-700">
+                    <span>Sobre o Profissional</span>
+                    {aboutOpen ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-3">
+                  <div className="bg-emerald-950 rounded-lg p-4 space-y-4">
+                    <div className="rounded-lg overflow-hidden">
+                      <MediaCarousel 
+                        section="about" 
+                        fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" 
+                        height="h-[200px]"
+                        objectFit="contain"
+                        aspectRatio={4/3}
+                      />
+                    </div>
+                    <h3 className="text-lg font-bold text-green-50">
+                      {siteContent?.about?.subtitle || "Enfermeiro Especialista"}
+                    </h3>
+                    <div className="space-y-2 text-green-100 text-sm">
+                      {aboutDescription.map((paragraph, index) => (
+                        <p key={index}>{paragraph}</p>
+                      ))}
+                    </div>
+                    <Button className="bg-green-700 hover:bg-green-600 text-white w-full" asChild>
+                      <a href={siteContent?.links?.bookConsultation || siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
+                        {siteContent?.buttonLabels?.bookConsultation || "Agende sua Consulta"}
+                      </a>
+                    </Button>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Testimonials Section - Before Services on Mobile */}
+      <section className="py-12 md:py-20 px-4 md:px-6 bg-lime-900">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 text-center text-gray-50">
+            {siteContent?.testimonials?.title || "Depoimentos de Pacientes"}
+          </h2>
+          
+          <TestimonialProvider>
+            <div className="mb-8 md:mb-16">
+              <TestimonialCarousel />
+            </div>
+            
+            <div className="flex justify-center">
+              <Button 
+                variant="outline" 
+                className="bg-yellow-500 hover:bg-yellow-400 text-black border-yellow-500 font-semibold"
+                asChild
+              >
+                <a href="/avaliacoes">
+                  Inserir Avaliação
+                </a>
+              </Button>
+            </div>
+          </TestimonialProvider>
+        </div>
+      </section>
+
+      {/* Services Section - With Accordion on Mobile */}
       <section id="services" className="py-12 md:py-16 px-4 md:px-6 bg-slate-950">
         <div className="max-w-7xl mx-auto rounded-md bg-stone-950">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-orange-50">{siteContent?.services?.title || "Nossos Serviços"}</h2>
-          <div className="flex flex-col gap-6 md:gap-8">
+          <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 text-center text-orange-50">
+            {siteContent?.services?.title || "Nossos Serviços"}
+          </h2>
+          
+          {/* Mobile: Accordion */}
+          <div className="md:hidden">
+            <ServiceAccordion services={services} />
+          </div>
+          
+          {/* Desktop: Full Cards */}
+          <div className="hidden md:flex flex-col gap-6 md:gap-8">
             {services.map((service) => {
               const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Search;
               return (
@@ -115,31 +231,15 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-12 md:py-20 px-4 md:px-6 bg-lime-900">
+      {/* About Professional Section - Desktop Only (Mobile shows in collapsible) */}
+      <section id="about" className="hidden md:block py-12 md:py-20 px-4 md:px-6 bg-emerald-950">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-gray-50">{siteContent?.testimonials?.title || "Depoimentos"}</h2>
-          
-          <TestimonialProvider>
-            <div className="mb-12 md:mb-16">
-              <TestimonialCarousel />
-            </div>
-            
-            <div className="mt-12 md:mt-16">
-              <h3 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center text-gray-50">Deixe seu Depoimento</h3>
-              <TestimonialForm />
-            </div>
-          </TestimonialProvider>
-        </div>
-      </section>
-
-      {/* About Professional Section */}
-      <section id="about" className="py-12 md:py-20 px-4 md:px-6 bg-emerald-950">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-green-50">{siteContent?.about?.title || "Sobre"}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-center text-green-50">
+            {siteContent?.about?.title || "Sobre"}
+          </h2>
           
           <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div className="rounded-2xl overflow-hidden order-2 md:order-1">
+            <div className="rounded-2xl overflow-hidden">
               <MediaCarousel 
                 section="about" 
                 fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg" 
@@ -149,8 +249,10 @@ const Index = () => {
               />
             </div>
             
-            <div className="order-1 md:order-2">
-              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-50">{siteContent?.about?.subtitle || "Subtítulo"}</h3>
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-50">
+                {siteContent?.about?.subtitle || "Subtítulo"}
+              </h3>
               <div className="space-y-3 md:space-y-4 text-green-100 text-sm md:text-base">
                 {aboutDescription.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
@@ -202,6 +304,8 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
