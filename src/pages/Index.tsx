@@ -203,9 +203,12 @@ const Index = () => {
       {/* Services Section - Accordion for both Mobile and Desktop */}
       <section id="services" className="py-12 md:py-16 px-4 md:px-6 bg-slate-950">
         <div className="max-w-7xl mx-auto rounded-md bg-stone-950 p-4 md:p-8">
-          <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 text-center text-orange-50">
+          <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4 text-center text-orange-50">
             {siteContent?.services?.title || "Nossos Serviços"}
           </h2>
+          <p className="text-center text-orange-200/80 text-sm md:text-base mb-6 md:mb-10">
+            Clique no serviço para detalhar a descrição, preparação e valor
+          </p>
           
           <ServiceAccordion services={services} />
         </div>
