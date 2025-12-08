@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '@/context/AdminContext';
@@ -8,31 +7,33 @@ interface AdminGuardProps {
 }
 
 const AdminGuard = ({ children }: AdminGuardProps) => {
-  const { isAuthenticated } = useAdmin();
+  const { isAuthenticated, isAdmin, loading } = useAdmin();
   const navigate = useNavigate();
   const [isChecking, setIsChecking] = useState(true);
   
   useEffect(() => {
-    const checkAuth = () => {
-      if (!isAuthenticated) {
-        navigate('/admin/login');
-      } else {
-        setIsChecking(false);
-      }
-    };
+    // Wait for auth loading to complete
+    if (loading) {
+      return;
+    }
     
-    // Small delay to ensure context is fully loaded
-    const timer = setTimeout(checkAuth, 100);
-    return () => clearTimeout(timer);
-  }, [isAuthenticated, navigate]);
+    // Check if user is authenticated and has admin role
+    if (!isAuthenticated || !isAdmin) {
+      navigate('/admin/login');
+    } else {
+      setIsChecking(false);
+    }
+  }, [isAuthenticated, isAdmin, loading, navigate]);
   
-  if (isChecking) {
-    return <div className="flex items-center justify-center h-screen">
-      <p className="text-lg">Verificando autenticação...</p>
-    </div>;
+  if (loading || isChecking) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg">Verificando autenticação...</p>
+      </div>
+    );
   }
   
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !isAdmin) {
     return null;
   }
   

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { SiteContent, CarouselMedia, Testimonial, Service } from '@/types/admin';
 import { defaultContent } from './adminDefaults';
@@ -7,13 +6,14 @@ import { useContentManagement } from '@/hooks/useContentManagement';
 import { useMediaManagement } from '@/hooks/useMediaManagement';
 import { useTestimonialManagement } from '@/hooks/useTestimonialManagement';
 import { useSiteContentDB } from '@/hooks/useSiteContentDB';
-import { supabase } from '@/integrations/supabase/client';
 
 // Define context type
 interface AdminContextType {
   isAuthenticated: boolean;
-  login: (password: string) => boolean;
-  logout: () => void;
+  isAdmin: boolean;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
   siteContent: SiteContent;
   setSiteContent: (content: SiteContent) => void;
   carouselMedia: CarouselMedia[];
@@ -29,7 +29,6 @@ interface AdminContextType {
   updateService: (id: string, service: Partial<Service>) => void;
   deleteService: (id: string) => void;
   reorderServices: (newOrder: Service[]) => void;
-  loading: boolean;
 }
 
 // Export type references for convenience
@@ -39,9 +38,9 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   // Use custom hooks for different concerns
-  const { isAuthenticated, setIsAuthenticated, login, logout } = useAuthManagement();
+  const { isAuthenticated, isAdmin, loading: authLoading, login, logout } = useAuthManagement();
   const { siteContent, setSiteContent, updateContent, updateLink, addService, updateService, deleteService, reorderServices } = useContentManagement(defaultContent);
-  const { carouselMedia, loading, fetchCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
+  const { carouselMedia, loading: mediaLoading, fetchCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   const { loadContent, saveContent } = useSiteContentDB();
   
@@ -124,9 +123,11 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
             setSiteContent(fullContent);
             applyThemeColors(fullContent.theme);
             
-            // Migrate to Supabase
-            console.log("Migrating localStorage data to Supabase...");
-            await saveContent(fullContent);
+            // Migrate to Supabase - only if authenticated
+            if (isAuthenticated && isAdmin) {
+              console.log("Migrating localStorage data to Supabase...");
+              await saveContent(fullContent);
+            }
           } else {
             // 3. Use defaults if nothing exists
             setSiteContent(defaultContent);
@@ -143,12 +144,6 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       
       // Mark initialization as complete AFTER content is loaded
       isInitialized.current = true;
-      
-      // Now check if user is already logged in
-      const storedAuth = localStorage.getItem('adminAuthenticated');
-      if (storedAuth === 'true') {
-        setIsAuthenticated(true);
-      }
       
       setIsReady(true);
       console.log("Content initialization complete");
@@ -179,7 +174,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
   
-  // Save content whenever it changes - but only after initialization
+  // Save content whenever it changes - but only after initialization and if admin
   useEffect(() => {
     // Skip if not initialized yet to prevent saving default content
     if (!isInitialized.current) {
@@ -187,8 +182,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     
-    if (!isAuthenticated) {
-      console.log("Skipping save - not authenticated");
+    if (!isAuthenticated || !isAdmin) {
+      console.log("Skipping save - not authenticated as admin");
       return;
     }
     
@@ -222,12 +217,16 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     };
     
     saveContentChanges();
-  }, [siteContent, isAuthenticated]);
+  }, [siteContent, isAuthenticated, isAdmin]);
+
+  const loading = authLoading || mediaLoading;
 
   return (
     <AdminContext.Provider 
       value={{ 
         isAuthenticated, 
+        isAdmin,
+        loading,
         login, 
         logout, 
         siteContent,
@@ -245,7 +244,6 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         updateService,
         deleteService,
         reorderServices,
-        loading
       }}
     >
       {children}
