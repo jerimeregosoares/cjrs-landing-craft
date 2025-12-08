@@ -112,27 +112,33 @@ export type Database = {
       }
       testimonials: {
         Row: {
+          approved_by: string | null
           author: string
           content: string
           id: string
           rating: number
           role: string
+          status: string | null
           timestamp: string
         }
         Insert: {
+          approved_by?: string | null
           author: string
           content: string
           id?: string
           rating?: number
           role?: string
+          status?: string | null
           timestamp?: string
         }
         Update: {
+          approved_by?: string | null
           author?: string
           content?: string
           id?: string
           rating?: number
           role?: string
+          status?: string | null
           timestamp?: string
         }
         Relationships: []
