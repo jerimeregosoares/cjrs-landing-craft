@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
-import ServiceCard from "@/components/ServiceCard";
 import ServiceAccordion from "@/components/ServiceAccordion";
 import { TestimonialForm } from "@/components/TestimonialForm";
 import { Heart, Search, Syringe, Clipboard, Activity, ChevronDown, ChevronUp } from "lucide-react";
@@ -201,33 +200,14 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services Section - With Accordion on Mobile */}
+      {/* Services Section - Accordion for both Mobile and Desktop */}
       <section id="services" className="py-12 md:py-16 px-4 md:px-6 bg-slate-950">
-        <div className="max-w-7xl mx-auto rounded-md bg-stone-950">
+        <div className="max-w-7xl mx-auto rounded-md bg-stone-950 p-4 md:p-8">
           <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 text-center text-orange-50">
             {siteContent?.services?.title || "Nossos Serviços"}
           </h2>
           
-          {/* Mobile: Accordion */}
-          <div className="md:hidden">
-            <ServiceAccordion services={services} />
-          </div>
-          
-          {/* Desktop: Full Cards */}
-          <div className="hidden md:flex flex-col gap-6 md:gap-8">
-            {services.map((service) => {
-              const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Search;
-              return (
-                <ServiceCard 
-                  key={service.id}
-                  icon={<IconComponent className="h-6 w-6 md:h-8 md:w-8" />} 
-                  title={service.title} 
-                  description={service.description}
-                  price={service.price}
-                />
-              );
-            })}
-          </div>
+          <ServiceAccordion services={services} />
         </div>
       </section>
 
@@ -273,18 +253,10 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="bg-black text-white py-8 md:py-12 px-4 md:px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div>
             <Logo />
             <p className="mt-4 text-sm md:text-base">Cuidados de enfermagem avançados com tecnologia de ponta.</p>
-          </div>
-          <div>
-            <h3 className="font-bold mb-4 text-base md:text-lg">Serviços</h3>
-            <ul className="space-y-2 text-sm md:text-base">
-              {services.slice(0, 3).map((service) => (
-                <li key={service.id}>{service.title}</li>
-              ))}
-            </ul>
           </div>
           <div>
             <h3 className="font-bold mb-4 text-base md:text-lg">Contato</h3>
