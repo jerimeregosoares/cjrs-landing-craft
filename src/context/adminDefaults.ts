@@ -1,8 +1,4 @@
-
 import { SiteContent } from "@/types/admin";
-
-// Default admin password
-export const DEFAULT_PASSWORD = "admin123";
 
 // Initialize default content
 export const defaultContent: SiteContent = {
