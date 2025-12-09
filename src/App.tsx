@@ -18,6 +18,7 @@ import LinkManager from "./pages/admin/LinkManager";
 import ImageManager from "./pages/admin/ImageManager";
 import ColorManager from "./pages/admin/ColorManager";
 import BackupManager from "./pages/admin/BackupManager";
+import UserManager from "./pages/admin/UserManager";
 import AdminButton from "./components/AdminButton";
 import PublicTestimonialForm from "./pages/PublicTestimonialForm";
 
@@ -64,6 +65,7 @@ const App = () => {
                 <Route path="/admin/images" element={<ImageManager />} />
                 <Route path="/admin/colors" element={<ColorManager />} />
                 <Route path="/admin/backup" element={<BackupManager />} />
+                <Route path="/admin/users" element={<UserManager />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <AdminButton />
