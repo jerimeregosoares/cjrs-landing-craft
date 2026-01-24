@@ -13,12 +13,12 @@ export const useTestimonialManagement = () => {
         .from('testimonials')
         .delete()
         .eq('id', id);
-      
+
       if (error) {
         console.error('Erro ao excluir depoimento:', error);
         throw error;
       }
-      
+
       return true;
     } catch (error) {
       console.error('Erro ao excluir depoimento:', error);
@@ -27,7 +27,7 @@ export const useTestimonialManagement = () => {
       setIsLoading(false);
     }
   };
-  
+
   const addTestimonial = async (testimonial: Omit<Testimonial, 'id' | 'timestamp'>) => {
     setIsLoading(true);
     try {
@@ -41,12 +41,12 @@ export const useTestimonialManagement = () => {
         }])
         .select()
         .single();
-      
+
       if (error) {
         console.error('Erro ao adicionar depoimento:', error);
         throw error;
       }
-      
+
       return data;
     } catch (error) {
       console.error('Erro ao adicionar depoimento:', error);
@@ -55,7 +55,7 @@ export const useTestimonialManagement = () => {
       setIsLoading(false);
     }
   };
-  
+
   const editTestimonial = async (id: string, testimonialUpdate: Partial<Testimonial>) => {
     setIsLoading(true);
     try {
@@ -65,18 +65,18 @@ export const useTestimonialManagement = () => {
           content: testimonialUpdate.content,
           author: testimonialUpdate.author,
           role: testimonialUpdate.role,
-          rating: testimonialUpdate.rating
+          rating: Number(testimonialUpdate.rating)
         })
         .eq('id', id);
-      
+
       if (error) {
-        console.error('Erro ao atualizar depoimento:', error);
-        throw error;
+        console.error('ERRO SUPABASE (Update):', error.message, error.details || '', error.hint || '');
+        throw new Error(error.message || 'Erro ao atualizar no banco de dados');
       }
-      
+
       return true;
-    } catch (error) {
-      console.error('Erro ao atualizar depoimento:', error);
+    } catch (error: any) {
+      console.error('Erro ao atualizar depoimento (Catch):', error.message || error);
       throw error;
     } finally {
       setIsLoading(false);

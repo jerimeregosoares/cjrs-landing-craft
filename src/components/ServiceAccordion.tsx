@@ -4,7 +4,7 @@ import { Search, Clipboard, Syringe, Heart, Activity } from "lucide-react";
 const iconMap = {
   search: Search,
   clipboard: Clipboard,
-  syringe: Syringe, 
+  syringe: Syringe,
   heart: Heart,
   activity: Activity
 };
@@ -27,30 +27,33 @@ const ServiceAccordion = ({ services }: ServiceAccordionProps) => {
       {services.map((service) => {
         const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Search;
         return (
-          <AccordionItem 
-            key={service.id} 
+          <AccordionItem
+            key={service.id}
             value={service.id}
-            className="border-b border-slate-700"
+            className="border-slate-200 dark:border-white/10"
           >
-            <AccordionTrigger className="text-orange-50 hover:text-orange-200 hover:no-underline py-4 px-2">
-              <div className="flex items-center gap-3">
-                <IconComponent className="h-5 w-5 text-primary" />
-                <span className="font-semibold text-left">{service.title}</span>
+            <AccordionTrigger className="text-slate-900 dark:text-gray-50 hover:text-primary dark:hover:text-primary hover:no-underline py-6 px-4 transition-all group">
+              <div className="flex items-center gap-4">
+                <div className="p-2.5 rounded-xl bg-primary/10 text-primary group-hover:scale-110 transition-transform">
+                  <IconComponent className="h-6 w-6" />
+                </div>
+                <span className="font-bold text-lg text-left tracking-tight">{service.title}</span>
               </div>
             </AccordionTrigger>
-            <AccordionContent className="px-2 pb-4">
-              <div className="bg-red-950 rounded-lg p-4 space-y-3">
-                <p className="text-neutral-50 text-sm whitespace-pre-line">
+            <AccordionContent className="px-4 pb-6">
+              <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 space-y-4 border border-slate-100 dark:border-white/5 shadow-inner">
+                <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed whitespace-pre-line">
                   {service.description}
                 </p>
                 {service.price && (
-                  <div className="bg-red-900/50 p-2 rounded text-white text-sm font-medium">
-                    {service.price}
+                  <div className="inline-flex items-center bg-primary/10 px-4 py-2 rounded-full text-primary text-sm font-bold">
+                    Investimento: {service.price}
                   </div>
                 )}
               </div>
             </AccordionContent>
           </AccordionItem>
+
         );
       })}
     </Accordion>

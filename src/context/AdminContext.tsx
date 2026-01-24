@@ -43,19 +43,19 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const { carouselMedia, loading: mediaLoading, fetchCarouselMedia, addMedia, deleteMedia, reorderMedia } = useMediaManagement([]);
   const { deleteTestimonial, addTestimonial, editTestimonial } = useTestimonialManagement();
   const { loadContent, saveContent } = useSiteContentDB();
-  
+
   // Track if initial load is complete to prevent saving default content
   const isInitialized = useRef(false);
   const [isReady, setIsReady] = useState(false);
-  
+
   // Load stored data on component mount
   useEffect(() => {
     const initializeContent = async () => {
       console.log("Starting content initialization...");
-      
+
       // 1. Try to load from Supabase first
       const dbContent = await loadContent();
-      
+
       if (dbContent) {
         console.log("Loading content from Supabase:", dbContent);
         setSiteContent(dbContent);
@@ -69,10 +69,10 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
           if (storedContent) {
             const parsedContent = JSON.parse(storedContent);
             console.log("Loading content from localStorage:", parsedContent);
-            
+
             // Create a deep copy of defaultContent as a base
             const fullContent = JSON.parse(JSON.stringify(defaultContent));
-            
+
             // Merge the loaded content with defaults
             Object.keys(fullContent).forEach(key => {
               if (parsedContent[key]) {
@@ -80,16 +80,16 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
                   fullContent.services = {
                     ...fullContent.services,
                     title: parsedContent.services.title || fullContent.services.title,
-                    items: Array.isArray(parsedContent.services.items) 
-                      ? parsedContent.services.items 
+                    items: Array.isArray(parsedContent.services.items)
+                      ? parsedContent.services.items
                       : fullContent.services.items
                   };
                 } else if (key === 'about' && parsedContent[key]) {
                   fullContent.about = {
                     ...fullContent.about,
                     ...parsedContent.about,
-                    description: Array.isArray(parsedContent.about.description) 
-                      ? parsedContent.about.description 
+                    description: Array.isArray(parsedContent.about.description)
+                      ? parsedContent.about.description
                       : fullContent.about.description
                   };
                 } else if (key === 'links' && parsedContent[key]) {
@@ -119,10 +119,10 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
                 }
               }
             });
-            
+
             setSiteContent(fullContent);
             applyThemeColors(fullContent.theme);
-            
+
             // Migrate to Supabase - only if authenticated
             if (isAuthenticated && isAdmin) {
               console.log("Migrating localStorage data to Supabase...");
@@ -138,42 +138,25 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
           setSiteContent(defaultContent);
         }
       }
-      
+
       // Load carousel media
       fetchCarouselMedia();
-      
+
       // Mark initialization as complete AFTER content is loaded
       isInitialized.current = true;
-      
+
       setIsReady(true);
       console.log("Content initialization complete");
     };
-    
+
     initializeContent();
   }, []);
-  
-  // Function to apply theme colors to CSS variables
+
   const applyThemeColors = (theme: SiteContent['theme']) => {
-    if (!theme) {
-      console.warn("No theme provided to applyThemeColors in AdminContext");
-      return;
-    }
-    
-    try {
-      document.documentElement.style.setProperty('--primary', theme.primaryColor || '#4CAF50');
-      document.documentElement.style.setProperty('--secondary', theme.secondaryColor || '#A5D6A7');
-      document.documentElement.style.setProperty('--accent', theme.accentColor || '#1A1A1A');
-      document.documentElement.style.setProperty('--text', theme.textColor || '#333333');
-      document.documentElement.style.setProperty('--background', theme.backgroundColor || '#FFFFFF');
-      document.documentElement.style.setProperty('--admin-primary', theme.adminPrimaryColor || '#4CAF50');
-      document.documentElement.style.setProperty('--admin-background', theme.adminBackgroundColor || '#F1F5F9');
-      
-      console.log("Theme colors applied from AdminContext:", theme);
-    } catch (error) {
-      console.error("Error applying theme colors in AdminContext:", error);
-    }
+    // Disabled to prevent CSS conflicts with HSL variables
+    console.log("Skipping manual theme property application (avoiding HSL conflicts)");
   };
-  
+
   // Save content whenever it changes - but only after initialization and if admin
   useEffect(() => {
     // Skip if not initialized yet to prevent saving default content
@@ -181,21 +164,21 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("Skipping save - not initialized yet");
       return;
     }
-    
+
     if (!isAuthenticated || !isAdmin) {
       console.log("Skipping save - not authenticated as admin");
       return;
     }
-    
+
     if (!siteContent) {
       console.log("Skipping save - no content");
       return;
     }
-    
+
     const saveContentChanges = async () => {
       try {
         console.log("Saving content to Supabase...", siteContent);
-        
+
         // Save to Supabase
         const success = await saveContent(siteContent);
         if (success) {
@@ -203,10 +186,10 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
           console.error("Failed to save content to Supabase");
         }
-        
+
         // Also save to localStorage as cache
         localStorage.setItem('siteContent', JSON.stringify(siteContent));
-        
+
         // Apply theme colors when content changes
         if (siteContent.theme) {
           applyThemeColors(siteContent.theme);
@@ -215,22 +198,22 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
         console.error("Error saving content:", error);
       }
     };
-    
+
     saveContentChanges();
   }, [siteContent, isAuthenticated, isAdmin]);
 
   const loading = authLoading || mediaLoading;
 
   return (
-    <AdminContext.Provider 
-      value={{ 
-        isAuthenticated, 
+    <AdminContext.Provider
+      value={{
+        isAuthenticated,
         isAdmin,
         loading,
-        login, 
-        logout, 
+        login,
+        logout,
         siteContent,
-        setSiteContent, 
+        setSiteContent,
         carouselMedia,
         updateContent,
         updateLink,

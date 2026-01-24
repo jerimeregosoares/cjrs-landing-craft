@@ -22,58 +22,49 @@ import UserManager from "./pages/admin/UserManager";
 import AdminButton from "./components/AdminButton";
 import PublicTestimonialForm from "./pages/PublicTestimonialForm";
 
+import { ThemeProvider } from "./components/ThemeProvider";
+
 const App = () => {
   // Create QueryClient inside the component
   const [queryClient] = useState(() => new QueryClient());
 
-  // Apply theme colors on app load
+  // Apply theme colors removed to avoid conflicts with HSL-based Tailwind system
   useEffect(() => {
-    const siteContent = localStorage.getItem('siteContent');
-    if (siteContent) {
-      try {
-        const parsedContent = JSON.parse(siteContent);
-        if (parsedContent.theme) {
-          document.documentElement.style.setProperty('--primary', parsedContent.theme.primaryColor || "#4CAF50");
-          document.documentElement.style.setProperty('--secondary', parsedContent.theme.secondaryColor || "#A5D6A7");
-          document.documentElement.style.setProperty('--accent', parsedContent.theme.accentColor || "#1A1A1A");
-          document.documentElement.style.setProperty('--text', parsedContent.theme.textColor || "#333333");
-          document.documentElement.style.setProperty('--background', parsedContent.theme.backgroundColor || "#FFFFFF");
-        }
-      } catch (error) {
-        console.error("Error parsing theme:", error);
-      }
-    }
+    // Manual theme property setting removed to prevent CSS breakage
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AdminProvider>
-          <TestimonialProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/avaliacoes" element={<PublicTestimonialForm />} />
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <AdminProvider>
+            <TestimonialProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
 
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/admin/content" element={<ContentEditor />} />
-                <Route path="/admin/testimonials" element={<TestimonialManager />} />
-                <Route path="/admin/links" element={<LinkManager />} />
-                <Route path="/admin/images" element={<ImageManager />} />
-                <Route path="/admin/colors" element={<ColorManager />} />
-                <Route path="/admin/backup" element={<BackupManager />} />
-                <Route path="/admin/users" element={<UserManager />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              <AdminButton />
-            </BrowserRouter>
-          </TestimonialProvider>
-        </AdminProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/avaliacoes" element={<PublicTestimonialForm />} />
+
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/content" element={<ContentEditor />} />
+                  <Route path="/admin/testimonials" element={<TestimonialManager />} />
+                  <Route path="/admin/links" element={<LinkManager />} />
+                  <Route path="/admin/images" element={<ImageManager />} />
+                  <Route path="/admin/colors" element={<ColorManager />} />
+                  <Route path="/admin/backup" element={<BackupManager />} />
+                  <Route path="/admin/users" element={<UserManager />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+                <AdminButton />
+              </BrowserRouter>
+            </TestimonialProvider>
+          </AdminProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 };
 

@@ -35,7 +35,7 @@ const ContentEditor = () => {
     const newArray = [...(siteContent[section as keyof typeof siteContent][field] as string[])];
     newArray[index] = value;
     updateContent(section, field, newArray);
-    
+
     toast({
       title: "Conteúdo atualizado",
       description: "As alterações foram salvas com sucesso."
@@ -44,7 +44,7 @@ const ContentEditor = () => {
 
   const handleServiceChange = (id: string, field: keyof Service, value: string) => {
     updateService(id, { [field]: value });
-    
+
     toast({
       title: "Serviço atualizado",
       description: "As alterações foram salvas com sucesso."
@@ -63,7 +63,7 @@ const ContentEditor = () => {
 
     const id = `service-${Date.now()}`;
     addService({ ...newService, id });
-    
+
     setNewService({
       id: "",
       title: "",
@@ -71,7 +71,7 @@ const ContentEditor = () => {
       icon: "search",
       price: ""
     });
-    
+
     toast({
       title: "Serviço adicionado",
       description: "O novo serviço foi adicionado com sucesso."
@@ -80,7 +80,7 @@ const ContentEditor = () => {
 
   const handleDeleteService = (id: string) => {
     deleteService(id);
-    
+
     toast({
       title: "Serviço removido",
       description: "O serviço foi removido com sucesso."
@@ -89,20 +89,20 @@ const ContentEditor = () => {
 
   const handleMoveService = (index: number, direction: 'up' | 'down') => {
     if (
-      (direction === 'up' && index === 0) || 
+      (direction === 'up' && index === 0) ||
       (direction === 'down' && index === siteContent.services.items.length - 1)
     ) {
       return;
     }
-    
+
     const newOrder = [...siteContent.services.items];
     const newIndex = direction === 'up' ? index - 1 : index + 1;
-    
+
     // Swap positions
     [newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
-    
+
     reorderServices(newOrder);
-    
+
     toast({
       title: "Ordem atualizada",
       description: "A ordem dos serviços foi atualizada com sucesso."
@@ -114,194 +114,210 @@ const ContentEditor = () => {
 
   return (
     <AdminLayout>
-      <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">Editor de Conteúdo</h1>
-        
-        <div className="space-y-8">
+      <div className="p-8 space-y-10 animate-in fade-in duration-700">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50">Editor de Conteúdo</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Gerencie cada detalhe dos textos e informações do seu site.</p>
+          </div>
+          <Button
+            className="rounded-xl h-11 px-8 bg-primary shadow-lg shadow-primary/20 hover:scale-105 transition-all font-bold"
+            onClick={() => {
+              toast({
+                title: "Conteúdo sincronizado",
+                description: "Todas as alterações pendentes foram verificadas."
+              });
+            }}
+          >
+            Salvar Tudo
+          </Button>
+        </div>
+
+        <div className="space-y-12">
           {/* Hero Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Seção Principal (Hero)</CardTitle>
+          <Card className="border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500" />
+            <CardHeader className="p-8 border-b border-border">
+              <CardTitle className="text-2xl font-bold">Seção Principal (Hero)</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="p-8 space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="hero-title">Título</Label>
+                <Label htmlFor="hero-title" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Título de Impacto</Label>
                 <Input
                   id="hero-title"
                   value={siteContent.hero.title}
                   onChange={(e) => handleChange('hero', 'title', e.target.value)}
+                  className="h-14 rounded-2xl border-slate-200 dark:border-white/10 text-lg font-medium"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hero-description">Descrição</Label>
+                <Label htmlFor="hero-description" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Descrição Detalhada</Label>
                 <Textarea
                   id="hero-description"
                   value={siteContent.hero.description}
                   onChange={(e) => handleChange('hero', 'description', e.target.value)}
                   rows={4}
+                  className="rounded-2xl border-slate-200 dark:border-white/10 text-base resize-none"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Services Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Seção de Serviços</CardTitle>
+          <Card className="border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-500 to-teal-500" />
+            <CardHeader className="p-8 border-b border-border">
+              <CardTitle className="text-2xl font-bold">Catálogo de Serviços</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="services-title">Título da Seção</Label>
+            <CardContent className="p-8 space-y-8">
+              <div className="space-y-2 max-w-xl">
+                <Label htmlFor="services-title" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Título da Seção</Label>
                 <Input
                   id="services-title"
                   value={siteContent.services.title}
                   onChange={(e) => handleChange('services', 'title', e.target.value)}
+                  className="h-12 rounded-xl border-slate-200 dark:border-white/10"
                 />
               </div>
-              
-              <div className="border-t pt-4">
-                <h3 className="text-lg font-medium mb-4">Lista de Serviços</h3>
-                
-                {siteContent.services.items.map((service, index) => (
-                  <div key={service.id} className="mb-8 p-4 border rounded-md bg-gray-50">
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="font-medium">Serviço {index + 1}</h4>
-                      <div className="flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="icon" 
-                          onClick={() => handleMoveService(index, 'up')}
-                          disabled={index === 0}
-                        >
-                          <MoveUp className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="icon" 
-                          onClick={() => handleMoveService(index, 'down')}
-                          disabled={index === siteContent.services.items.length - 1}
-                        >
-                          <MoveDown className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="icon" 
-                          onClick={() => handleDeleteService(service.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200">Serviços Ativos</h3>
+                  <p className="text-sm text-slate-500">Arraste para reordenar (use as setas)</p>
+                </div>
+
+                <div className="grid gap-6">
+                  {siteContent.services.items.map((service, index) => (
+                    <div key={service.id} className="group relative p-6 rounded-[2rem] bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-white/5 transition-all hover:shadow-lg">
+                      <div className="flex flex-col md:flex-row gap-6">
+                        <div className="flex flex-row md:flex-col gap-2 shrink-0">
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="rounded-xl h-10 w-10 shadow-sm"
+                            onClick={() => handleMoveService(index, 'up')}
+                            disabled={index === 0}
+                          >
+                            <MoveUp className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="secondary"
+                            size="icon"
+                            className="rounded-xl h-10 w-10 shadow-sm"
+                            onClick={() => handleMoveService(index, 'down')}
+                            disabled={index === siteContent.services.items.length - 1}
+                          >
+                            <MoveDown className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="icon"
+                            className="rounded-xl h-10 w-10 shadow-sm md:mt-auto"
+                            onClick={() => handleDeleteService(service.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-2">
+                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Título do Serviço</Label>
+                            <Input
+                              value={service.title}
+                              onChange={(e) => handleServiceChange(service.id, 'title', e.target.value)}
+                              className="rounded-xl italic font-semibold border-none bg-white dark:bg-slate-900 shadow-sm"
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Investimento/Preço</Label>
+                            <Input
+                              value={service.price || ''}
+                              onChange={(e) => handleServiceChange(service.id, 'price', e.target.value)}
+                              className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm text-primary font-bold"
+                              placeholder="Ex: R$ 150,00"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2 space-y-2">
+                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Descrição</Label>
+                            <Textarea
+                              value={service.description}
+                              onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)}
+                              rows={2}
+                              className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm resize-none"
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Ícone Visual</Label>
+                            <Select
+                              value={service.icon}
+                              onValueChange={(value) => handleServiceChange(service.id, 'icon', value)}
+                            >
+                              <SelectTrigger className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm px-4">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="rounded-2xl border-none dark:bg-slate-900 shadow-2xl">
+                                {availableIcons.map((icon) => (
+                                  <SelectItem key={icon} value={icon} className="rounded-lg capitalize">{icon}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="grid gap-4">
-                      <div>
-                        <Label htmlFor={`service-title-${service.id}`}>Título</Label>
-                        <Input
-                          id={`service-title-${service.id}`}
-                          value={service.title}
-                          onChange={(e) => handleServiceChange(service.id, 'title', e.target.value)}
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor={`service-description-${service.id}`}>Descrição</Label>
-                        <Textarea
-                          id={`service-description-${service.id}`}
-                          value={service.description}
-                          onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)}
-                          rows={3}
-                        />
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor={`service-icon-${service.id}`}>Ícone</Label>
-                        <Select 
-                          value={service.icon} 
-                          onValueChange={(value) => handleServiceChange(service.id, 'icon', value)}
-                        >
-                          <SelectTrigger id={`service-icon-${service.id}`}>
-                            <SelectValue placeholder="Selecione um ícone" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {availableIcons.map((icon) => (
-                              <SelectItem key={icon} value={icon}>
-                                {icon.charAt(0).toUpperCase() + icon.slice(1)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      
-                      <div>
-                        <Label htmlFor={`service-price-${service.id}`}>Preço/Valor</Label>
-                        <Input
-                          id={`service-price-${service.id}`}
-                          value={service.price || ''}
-                          onChange={(e) => handleServiceChange(service.id, 'price', e.target.value)}
-                          placeholder="Ex: R$150 ou A partir de R$100"
-                        />
-                      </div>
+                  ))}
+                </div>
+
+                {/* Add New Service UI */}
+                <div className="mt-12 p-10 rounded-[2.5rem] border-2 border-dashed border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-slate-800/20">
+                  <div className="text-center mb-8">
+                    <div className="inline-flex p-3 rounded-2xl bg-primary/10 text-primary mb-4">
+                      <Plus className="h-6 w-6" />
                     </div>
+                    <h4 className="text-xl font-bold">Novo Serviço</h4>
+                    <p className="text-slate-500">Adicione uma nova especialidade ao seu catálogo</p>
                   </div>
-                ))}
-                
-                <div className="mt-6 p-4 border border-dashed rounded-md bg-gray-50">
-                  <h4 className="font-medium mb-4">Adicionar Novo Serviço</h4>
-                  
-                  <div className="grid gap-4">
-                    <div>
-                      <Label htmlFor="new-service-title">Título</Label>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-bold ml-1">Nome do Serviço</Label>
                       <Input
-                        id="new-service-title"
                         value={newService.title}
                         onChange={(e) => setNewService(prev => ({ ...prev, title: e.target.value }))}
-                        placeholder="Nome do serviço"
+                        className="h-12 rounded-xl bg-white dark:bg-slate-900 border-none shadow-sm"
+                        placeholder="Ex: POCUS Geriátrico"
                       />
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="new-service-description">Descrição</Label>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm font-bold ml-1">Valor Sugerido</Label>
+                      <Input
+                        value={newService.price}
+                        onChange={(e) => setNewService(prev => ({ ...prev, price: e.target.value }))}
+                        className="h-12 rounded-xl bg-white dark:bg-slate-900 border-none shadow-sm"
+                        placeholder="R$ 0,00"
+                      />
+                    </div>
+
+                    <div className="md:col-span-2 space-y-2">
+                      <Label className="text-sm font-bold ml-1">Descrição do Serviço</Label>
                       <Textarea
-                        id="new-service-description"
                         value={newService.description}
                         onChange={(e) => setNewService(prev => ({ ...prev, description: e.target.value }))}
                         rows={3}
-                        placeholder="Descrição detalhada do serviço"
+                        className="rounded-xl bg-white dark:bg-slate-900 border-none shadow-sm resize-none"
+                        placeholder="Descreva o que está incluído..."
                       />
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="new-service-icon">Ícone</Label>
-                      <Select 
-                        value={newService.icon} 
-                        onValueChange={(value) => setNewService(prev => ({ ...prev, icon: value }))}
-                      >
-                        <SelectTrigger id="new-service-icon">
-                          <SelectValue placeholder="Selecione um ícone" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {availableIcons.map((icon) => (
-                            <SelectItem key={icon} value={icon}>
-                              {icon.charAt(0).toUpperCase() + icon.slice(1)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+
+                    <div className="md:col-span-2 flex justify-center pt-4">
+                      <Button onClick={handleAddService} className="h-14 px-12 rounded-2xl font-bold bg-primary hover:bg-primary shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                        Criar Novo Serviço
+                      </Button>
                     </div>
-                    
-                    <div>
-                      <Label htmlFor="new-service-price">Preço/Valor</Label>
-                      <Input
-                        id="new-service-price"
-                        value={newService.price}
-                        onChange={(e) => setNewService(prev => ({ ...prev, price: e.target.value }))}
-                        placeholder="Ex: R$150 ou A partir de R$100"
-                      />
-                    </div>
-                    
-                    <Button onClick={handleAddService} className="mt-2 w-full">
-                      <Plus className="h-4 w-4 mr-2" /> Adicionar Serviço
-                    </Button>
                   </div>
                 </div>
               </div>
@@ -309,41 +325,48 @@ const ContentEditor = () => {
           </Card>
 
           {/* About Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Sobre o Profissional</CardTitle>
+          <Card className="border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-purple-500 to-pink-500" />
+            <CardHeader className="p-8 border-b border-border">
+              <CardTitle className="text-2xl font-bold">Perfil Profissional (Sobre)</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="about-title">Título da Seção</Label>
-                <Input
-                  id="about-title"
-                  value={siteContent.about.title}
-                  onChange={(e) => handleChange('about', 'title', e.target.value)}
-                />
+            <CardContent className="p-8 space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <Label htmlFor="about-title" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Título da Seção</Label>
+                  <Input
+                    id="about-title"
+                    value={siteContent.about.title}
+                    onChange={(e) => handleChange('about', 'title', e.target.value)}
+                    className="h-12 rounded-xl border-slate-200 dark:border-white/10"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="about-subtitle" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Nome de Exibição</Label>
+                  <Input
+                    id="about-subtitle"
+                    value={siteContent.about.subtitle}
+                    onChange={(e) => handleChange('about', 'subtitle', e.target.value)}
+                    className="h-12 rounded-xl border-slate-200 dark:border-white/10"
+                  />
+                </div>
               </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="about-subtitle">Nome do Profissional</Label>
-                <Input
-                  id="about-subtitle"
-                  value={siteContent.about.subtitle}
-                  onChange={(e) => handleChange('about', 'subtitle', e.target.value)}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Biografia</Label>
-                <div className="space-y-3">
+
+              <div className="space-y-6">
+                <Label className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1 block border-b pb-2">Biografia & Experiência</Label>
+                <div className="grid gap-6">
                   {siteContent.about.description.map((paragraph, index) => (
-                    <div key={index}>
-                      <Label htmlFor={`about-description-${index}`}>Parágrafo {index + 1}</Label>
+                    <div key={index} className="space-y-2">
+                      <div className="flex justify-between">
+                        <Label htmlFor={`about-description-${index}`} className="text-xs font-bold text-slate-400">Parágrafo {index + 1}</Label>
+                      </div>
                       <Textarea
                         id={`about-description-${index}`}
                         value={paragraph}
                         onChange={(e) => handleArrayChange('about', 'description', index, e.target.value)}
-                        rows={2}
-                        className="mt-1"
+                        rows={3}
+                        className="rounded-2xl border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-slate-800/30 resize-none hover:bg-white dark:hover:bg-slate-800 transition-colors"
                       />
                     </div>
                   ))}
@@ -353,34 +376,26 @@ const ContentEditor = () => {
           </Card>
 
           {/* Testimonials Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Seção de Depoimentos</CardTitle>
+          <Card className="border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-amber-500 to-orange-500" />
+            <CardHeader className="p-8 border-b border-border">
+              <CardTitle className="text-2xl font-bold">Feedback Social</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="testimonials-title">Título</Label>
+            <CardContent className="p-8">
+              <div className="space-y-2 max-w-xl">
+                <Label htmlFor="testimonials-title" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Título da Seção de Depoimentos</Label>
                 <Input
                   id="testimonials-title"
                   value={siteContent.testimonials.title}
                   onChange={(e) => handleChange('testimonials', 'title', e.target.value)}
+                  className="h-12 rounded-xl border-slate-200 dark:border-white/10"
                 />
               </div>
             </CardContent>
           </Card>
-          
-          <div className="py-6">
-            <Button onClick={() => {
-              toast({
-                title: "Todas as alterações foram salvas",
-                description: "O conteúdo do site foi atualizado com sucesso."
-              });
-            }}>
-              Salvar Todas as Alterações
-            </Button>
-          </div>
         </div>
       </div>
+
     </AdminLayout>
   );
 };

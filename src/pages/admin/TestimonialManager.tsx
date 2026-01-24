@@ -18,7 +18,7 @@ const TestimonialManager = () => {
   const { deleteTestimonial, editTestimonial } = useTestimonialManagement();
   const { toast } = useToast();
   const { refreshTestimonials } = useTestimonials();
-  
+
   // Dialog state
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedTestimonial, setSelectedTestimonial] = useState<Testimonial | null>(null);
@@ -41,12 +41,12 @@ const TestimonialManager = () => {
         .from('testimonials')
         .select('*')
         .order('timestamp', { ascending: false });
-        
+
       if (error) {
         console.error("Erro ao carregar depoimentos:", error);
         return;
       }
-      
+
       if (data) {
         const parsedTestimonials = data.map(item => ({
           ...item,
@@ -67,7 +67,7 @@ const TestimonialManager = () => {
       await loadTestimonials();
       // Also refresh the TestimonialContext
       await refreshTestimonials();
-      
+
       toast({
         title: "Depoimento excluído",
         description: "O depoimento foi removido com sucesso.",
@@ -101,7 +101,7 @@ const TestimonialManager = () => {
 
   const handleUpdateTestimonial = async () => {
     if (!editingTestimonial) return;
-    
+
     try {
       await editTestimonial(editingTestimonial.id, {
         content: editingTestimonial.content,
@@ -109,13 +109,13 @@ const TestimonialManager = () => {
         role: editingTestimonial.role,
         rating: editingTestimonial.rating,
       });
-      
+
       setIsEditDialogOpen(false);
       setEditingTestimonial(null);
       await loadTestimonials();
       // Also refresh the TestimonialContext
       await refreshTestimonials();
-      
+
       toast({
         title: "Depoimento atualizado",
         description: "O depoimento foi atualizado com sucesso.",
@@ -125,7 +125,7 @@ const TestimonialManager = () => {
       toast({
         variant: "destructive",
         title: "Erro ao atualizar depoimento",
-        description: "Ocorreu um erro ao tentar atualizar o depoimento.",
+        description: error instanceof Error ? error.message : "Ocorreu um erro técnico ao tentar salvar as alterações.",
       });
     }
   };
@@ -135,21 +135,21 @@ const TestimonialManager = () => {
       <div className="container mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6">Gerenciar Depoimentos</h1>
 
-        <AddTestimonialForm 
+        <AddTestimonialForm
           onTestimonialAdded={async () => {
             await loadTestimonials();
             await refreshTestimonials();
-          }} 
+          }}
         />
 
-        <TestimonialList 
+        <TestimonialList
           testimonials={testimonials}
           loading={loading}
           onEdit={handleEditClick}
           onDelete={handleDelete}
         />
-        
-        <EditTestimonialDialog 
+
+        <EditTestimonialDialog
           isOpen={isEditDialogOpen}
           onClose={handleCloseEditDialog}
           testimonial={selectedTestimonial}
