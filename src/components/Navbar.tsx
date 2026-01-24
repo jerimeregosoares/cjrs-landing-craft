@@ -3,6 +3,7 @@ import React from 'react';
 import Logo from "./Logo";
 import { Button } from "./ui/button";
 import { ThemeToggle } from "./ThemeToggle";
+import MobileNav from "./MobileNav";
 import { useAdmin } from "@/context/AdminContext";
 import { Link } from "react-router-dom";
 
