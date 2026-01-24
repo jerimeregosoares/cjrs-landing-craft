@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ServiceAccordion from "@/components/ServiceAccordion";
@@ -49,13 +50,13 @@ const Index = () => {
 
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Image at TOP for mobile */}
-          <div className="rounded-3xl overflow-hidden mb-8 md:hidden shadow-2xl animate-in fade-in zoom-in-95 duration-1000">
+          <div className="rounded-3xl overflow-hidden mb-8 md:hidden shadow-2xl animate-in fade-in zoom-in-95 duration-1000 bg-slate-900/50 backdrop-blur-sm">
             <MediaCarousel
               section="hero"
               fallbackImageSrc="/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"
-              height="h-[300px]"
-              objectFit="cover"
-              aspectRatio={16 / 9}
+              height="h-[400px]"
+              objectFit="contain"
+              aspectRatio={1}
             />
           </div>
 
@@ -94,37 +95,47 @@ const Index = () => {
 
           {/* Mobile content below image */}
           <div className="md:hidden animate-in fade-in slide-in-from-bottom-5 duration-700">
-            <h1 className="font-bold text-3xl mb-4 leading-tight">
+            <h1 className="font-bold text-3xl mb-4 leading-tight text-foreground">
               {siteContent?.hero?.title || "Cuidados de Enfermagem Avançados com Tecnologia POCUS"}
             </h1>
             <p className="mb-8 text-muted-foreground text-base leading-relaxed">
               {siteContent?.hero?.description || "Consultas e procedimentos de enfermagem especializados utilizando tecnologia de ultrassom POCUS (point-of-care) de última geração para diagnóstico e tratamento precisos."}
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col gap-4">
-              <Button size="lg" className="h-14 text-white bg-lime-800 hover:bg-lime-700 w-full font-bold rounded-2xl shadow-lg transition-all" asChild>
+            {/* CTA & Navigation Buttons Group - Mobile */}
+            <div className="flex flex-col gap-4 mb-8">
+              <Button size="lg" className="h-16 text-white bg-lime-800 hover:bg-lime-700 w-full font-bold rounded-2xl shadow-lg transition-all text-xl" asChild>
                 <a href={siteContent?.links?.scheduleAppointment || "#"} target="_blank" rel="noopener noreferrer">
                   Agendar Consulta
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="h-14 text-white bg-red-900 hover:bg-red-800 w-full font-bold rounded-2xl shadow-lg border-none transition-all" asChild>
+              <Button variant="outline" size="lg" className="h-16 text-white bg-red-900 hover:bg-red-800 w-full font-bold rounded-2xl shadow-lg border-none transition-all text-xl" asChild>
                 <a href={siteContent?.links?.whatsapp || "#"} target="_blank" rel="noopener noreferrer">
                   Agendar WhatsApp
                 </a>
               </Button>
-              <Button variant="secondary" size="lg" className="h-14 w-full rounded-2xl font-bold transition-all" asChild>
+              <Button variant="secondary" size="lg" className="h-16 w-full bg-emerald-950/80 hover:bg-emerald-900 text-white rounded-2xl font-bold shadow-lg transition-all text-xl border border-white/5" asChild>
                 <a href={siteContent?.links?.heroTertiary || "/cadastro-paciente"} target="_blank" rel="noopener noreferrer">
                   Cadastro Único
                 </a>
               </Button>
+              <Button variant="outline" size="lg" className="h-16 w-full bg-slate-800 hover:bg-slate-700 text-white border-none rounded-2xl font-bold shadow-md transition-all text-xl" asChild>
+                <a href="#services">
+                  Nossos Serviços
+                </a>
+              </Button>
+              <Button variant="outline" size="lg" className="h-16 w-full bg-slate-800 hover:bg-slate-700 text-white border-none rounded-2xl font-bold shadow-md transition-all text-xl" asChild>
+                <a href="#location">
+                  Nossa Localização
+                </a>
+              </Button>
 
               {/* Sobre o Profissional - Expandable */}
-              <Collapsible open={aboutOpen} onOpenChange={setAboutOpen} className="mt-4">
+              <Collapsible open={aboutOpen} onOpenChange={setAboutOpen} className="mt-2">
                 <CollapsibleTrigger asChild>
-                  <Button variant="outline" size="lg" className="w-full h-14 bg-emerald-800 hover:bg-emerald-700 text-white border-emerald-700 rounded-2xl font-bold shadow-md">
+                  <Button variant="outline" size="lg" className="w-full h-16 bg-emerald-800 hover:bg-emerald-700 text-white border-emerald-700 rounded-2xl font-bold shadow-md text-xl">
                     <span>Sobre o Profissional</span>
-                    {aboutOpen ? <ChevronUp className="ml-2 h-5 w-5" /> : <ChevronDown className="ml-2 h-5 w-5" />}
+                    {aboutOpen ? <ChevronUp className="ml-2 h-6 w-6" /> : <ChevronDown className="ml-2 h-6 w-6" />}
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
