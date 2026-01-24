@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useAdmin } from "@/context/AdminContext";
-import { 
+import {
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -19,14 +19,16 @@ interface MediaCarouselProps {
   height?: string;
   objectFit?: "cover" | "contain" | "fill" | "scale-down";
   aspectRatio?: number; // Aspect ratio for the container (width/height)
+  objectPosition?: string; // CSS object-position (e.g., "top", "center", "bottom")
 }
 
-export const MediaCarousel = ({ 
-  section, 
-  fallbackImageSrc, 
-  height = "h-[250px] md:h-[500px]", 
-  objectFit = "contain", 
-  aspectRatio = 16/9 
+export const MediaCarousel = ({
+  section,
+  fallbackImageSrc,
+  height = "h-[250px] md:h-[500px]",
+  objectFit = "contain",
+  aspectRatio = 16 / 9,
+  objectPosition = "center"
 }: MediaCarouselProps) => {
   const { carouselMedia } = useAdmin();
   const [isPaused, setIsPaused] = useState(false);
@@ -36,49 +38,49 @@ export const MediaCarousel = ({
   const [api, setApi] = useState<any | null>(null);
 
   // Filter media by section
-  const filteredMedia = carouselMedia.filter(media => 
+  const filteredMedia = carouselMedia.filter(media =>
     media.active && (media.section === section || (!media.section && section === 'hero'))
   );
   const orderedMedia = [...filteredMedia].sort((a, b) => a.order - b.order);
-  
+
   // Function to advance to the next slide
   const advanceSlide = () => {
     if (!api) return;
-    
+
     if (currentIndex >= orderedMedia.length - 1) {
       api.scrollTo(0);
     } else {
       api.scrollNext();
     }
   };
-  
+
   // Update current index when carousel changes
   useEffect(() => {
     if (!api) return;
-    
+
     const handleSelect = () => {
       setCurrentIndex(api.selectedScrollSnap());
     };
-    
+
     api.on("select", handleSelect);
-    
+
     return () => {
       api.off("select", handleSelect);
     };
   }, [api]);
-  
+
   // Auto-rotate media every 7 seconds
   useEffect(() => {
     if (!api || isPaused || orderedMedia.length <= 1) return;
-    
+
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
-    
+
     intervalRef.current = window.setInterval(() => {
       advanceSlide();
     }, 7000); // 7 seconds interval
-    
+
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -93,11 +95,12 @@ export const MediaCarousel = ({
   // Return default image if no media
   if (orderedMedia.length === 0) {
     return (
-      <div className={`w-full ${height} overflow-hidden rounded-2xl`}>
+      <div className={`w-full ${height} overflow-hidden rounded-2xl bg-slate-900/50`}>
         <AspectRatio ratio={aspectRatio} className="w-full h-full">
-          <img 
-            alt="Imagem padrão" 
-            className="w-full h-full object-contain"
+          <img
+            alt="Imagem padrão"
+            className={`w-full h-full object-${objectFit}`}
+            style={{ objectPosition }}
             src={fallbackImageSrc || "/lovable-uploads/aafcb339-7f9d-4085-abae-6009f9dac93a.jpg"}
           />
         </AspectRatio>
@@ -106,32 +109,32 @@ export const MediaCarousel = ({
   }
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden">
+    <div className="relative w-full rounded-2xl overflow-hidden bg-slate-900/50">
       <Carousel setApi={setApi} className="w-full">
         <CarouselContent>
           {orderedMedia.map((media) => (
             <CarouselItem key={media.id} className="overflow-hidden">
-              <div className={`w-full ${height}`}>
-                <AspectRatio ratio={aspectRatio} className="w-full h-full">
-                  {media.file_type === 'image' ? (
-                    <img 
-                      src={media.file_path}
-                      alt={media.file_name}
-                      className={`w-full h-full object-${objectFit}`}
-                    />
-                  ) : (
-                    <video 
-                      className={`w-full h-full object-${objectFit}`}
-                      autoPlay={!isPaused}
-                      muted
-                      loop
-                      playsInline
-                    >
-                      <source src={media.file_path} type="video/mp4" />
-                      Seu navegador não suporta vídeos.
-                    </video>
-                  )}
-                </AspectRatio>
+              <div className={`w-full ${height} relative`}>
+                {media.file_type === 'image' ? (
+                  <img
+                    src={media.file_path}
+                    alt={media.file_name}
+                    className={`w-full h-full object-${objectFit}`}
+                    style={{ objectPosition }}
+                  />
+                ) : (
+                  <video
+                    className={`w-full h-full object-${objectFit}`}
+                    style={{ objectPosition }}
+                    autoPlay={!isPaused}
+                    muted
+                    loop
+                    playsInline
+                  >
+                    <source src={media.file_path} type="video/mp4" />
+                    Seu navegador não suporta vídeos.
+                  </video>
+                )}
               </div>
             </CarouselItem>
           ))}
@@ -139,9 +142,9 @@ export const MediaCarousel = ({
         <CarouselPrevious className={isMobile ? "-left-3 h-8 w-8 opacity-70" : "left-0"} />
         <CarouselNext className={isMobile ? "-right-3 h-8 w-8 opacity-70" : "right-0"} />
       </Carousel>
-      
-      <Button 
-        variant="outline" 
+
+      <Button
+        variant="outline"
         size="icon"
         onClick={togglePause}
         className={`absolute ${isMobile ? 'bottom-1 right-1 h-8 w-8' : 'bottom-0 right-0'} bg-transparent border-none hover:bg-slate-800/30 text-white`}
