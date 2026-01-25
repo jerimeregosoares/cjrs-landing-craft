@@ -73,7 +73,7 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
             </div>
             <div>
               <h2 className="text-sm font-black tracking-widest text-slate-900 dark:text-white uppercase leading-none">Admin</h2>
-              <p className="text-[10px] font-bold text-primary uppercase mt-1 tracking-tighter">Core Engine v2.0</p>
+              <p className="text-[10px] font-bold text-primary uppercase mt-1 tracking-tighter">Motor Principal v2.0</p>
             </div>
           </div>
           {isMobile && onClose && (
@@ -86,27 +86,27 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
         <div className="flex-1 p-6 space-y-6 overflow-y-auto custom-scrollbar">
           <div className="space-y-1">
             <div className="px-3 mb-3 flex items-center justify-between">
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Navigation</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Navegação</p>
               <div className="h-[1px] w-8 bg-slate-200 dark:bg-slate-800" />
             </div>
             <NavItem
               to="/admin"
               icon={<Settings className="h-4 w-4" />}
-              label="Overview"
+              label="Visão Geral"
               isActive={location.pathname === "/admin"}
             />
           </div>
 
           <div className="space-y-1">
             <div className="px-3 mb-3 flex items-center justify-between">
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Modules</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Módulos</p>
               <div className="h-[1px] w-8 bg-slate-200 dark:bg-slate-800" />
             </div>
             <div className="space-y-1">
               <NavItem
                 to="/admin/content"
                 icon={<FileText className="h-4 w-4" />}
-                label="Content"
+                label="Conteúdo"
                 isActive={location.pathname === "/admin/content"}
               />
               <NavItem
@@ -118,7 +118,7 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
               <NavItem
                 to="/admin/images"
                 icon={<Image className="h-4 w-4" />}
-                label="Assets"
+                label="Mídia"
                 isActive={location.pathname === "/admin/images"}
               />
             </div>
@@ -126,32 +126,32 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
 
           <div className="space-y-1">
             <div className="px-3 mb-3 flex items-center justify-between">
-              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Settings</p>
+              <p className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Configurações</p>
               <div className="h-[1px] w-8 bg-slate-200 dark:bg-slate-800" />
             </div>
             <div className="space-y-1">
               <NavItem
                 to="/admin/colors"
                 icon={<Palette className="h-4 w-4" />}
-                label="Branding"
+                label="Identidade"
                 isActive={location.pathname === "/admin/colors"}
               />
               <NavItem
                 to="/admin/links"
                 icon={<LinkIcon className="h-4 w-4" />}
-                label="Network"
+                label="Rede & Contato"
                 isActive={location.pathname === "/admin/links"}
               />
               <NavItem
                 to="/admin/backup"
                 icon={<Database className="h-4 w-4" />}
-                label="Storage"
+                label="Armazenamento"
                 isActive={location.pathname === "/admin/backup"}
               />
               <NavItem
                 to="/admin/users"
                 icon={<Users className="h-4 w-4" />}
-                label="Security"
+                label="Segurança"
                 isActive={location.pathname === "/admin/users"}
               />
             </div>
@@ -160,7 +160,7 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
 
         <div className="p-6 mt-auto border-t border-border/50 space-y-4 bg-slate-50/50 dark:bg-slate-900/10">
           <div className="flex items-center justify-between px-2 bg-slate-900/5 dark:bg-white/5 p-2 rounded-xl border border-slate-200/50 dark:border-white/5">
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Flux Interface</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Interface de Fluxo</span>
             <ThemeToggle />
           </div>
           <Button
@@ -170,7 +170,7 @@ const AdminSidebar = ({ isMobile, isOpen = true, onClose }: AdminSidebarProps) =
               logout();
             }}
           >
-            System Shutdown
+            Encerrar Sistema
           </Button>
         </div>
       </div>

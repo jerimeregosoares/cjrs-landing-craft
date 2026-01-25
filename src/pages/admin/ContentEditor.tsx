@@ -183,7 +183,7 @@ const ContentEditor = () => {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200">Serviços Ativos</h3>
-                  <p className="text-sm text-slate-500">Arraste para reordenar (use as setas)</p>
+                  <p className="text-sm text-slate-500">Ajuste técnico de ordem e prioridade</p>
                 </div>
 
                 <div className="grid gap-6">

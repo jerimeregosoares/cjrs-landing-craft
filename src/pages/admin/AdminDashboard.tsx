@@ -46,8 +46,8 @@ const AdminDashboard = () => {
       <div className="p-8 space-y-10 animate-in fade-in duration-700">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50">Dashboard</h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Visão geral do seu consultório digital.</p>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50 uppercase italic">Visão Geral</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Central de comando do seu ecossistema digital.</p>
           </div>
           <Button variant="outline" onClick={() => navigate("/")} className="rounded-xl h-11 px-6 border-primary/20 hover:bg-primary/5 transition-all">
             Visualizar Site
@@ -127,8 +127,8 @@ const AdminDashboard = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="text-xl font-black uppercase tracking-tight mb-1">Imagens</div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Biblioteca de assets</p>
+              <div className="text-xl font-black uppercase tracking-tight mb-1">Mídia</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Biblioteca de ativos do site</p>
               <Button
                 variant="ghost"
                 className="w-full mt-6 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/10 group-hover:bg-purple-500 group-hover:text-white transition-all duration-500"

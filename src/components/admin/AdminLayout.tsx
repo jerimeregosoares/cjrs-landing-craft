@@ -55,7 +55,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 </Button>
                 <div className="ml-4">
                   <h1 className="text-lg font-black tracking-tighter text-primary uppercase leading-tight">Painel</h1>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Management System</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Sistema de Gestão</p>
                 </div>
               </div>
               <div className="h-8 w-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">

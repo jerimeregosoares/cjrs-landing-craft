@@ -47,7 +47,7 @@ const ImageManager = () => {
       <div className="p-8 space-y-10 animate-in fade-in duration-700">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50 uppercase italic">Assets & Media</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50 uppercase italic">Mídia & Galeria</h1>
             <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Biblioteca de alta performance para controle visual.</p>
           </div>
         </div>
