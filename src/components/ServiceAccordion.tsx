@@ -33,11 +33,18 @@ const ServiceAccordion = ({ services }: ServiceAccordionProps) => {
             className="border-slate-200 dark:border-white/10"
           >
             <AccordionTrigger className="text-slate-900 dark:text-gray-50 hover:text-primary dark:hover:text-primary hover:no-underline py-6 px-4 transition-all group">
-              <div className="flex items-center gap-4">
-                <div className="p-2.5 rounded-xl bg-primary/10 text-primary group-hover:scale-110 transition-transform">
-                  <IconComponent className="h-6 w-6" />
+              <div className="flex flex-1 items-center justify-between gap-4 mr-4">
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 rounded-xl bg-primary/10 text-primary group-hover:scale-110 transition-transform shrink-0">
+                    <IconComponent className="h-6 w-6" />
+                  </div>
+                  <span className="font-bold text-lg text-left tracking-tight">{service.title}</span>
                 </div>
-                <span className="font-bold text-lg text-left tracking-tight">{service.title}</span>
+                {service.price && (
+                  <span className="font-bold whitespace-nowrap text-sm sm:text-lg transition-colors group-hover:text-primary">
+                    {service.price}
+                  </span>
+                )}
               </div>
             </AccordionTrigger>
             <AccordionContent className="px-4 pb-6">
