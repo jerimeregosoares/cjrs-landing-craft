@@ -327,8 +327,9 @@ const UserManager = () => {
                     ))}
                   </TableBody>
                 </Table>
+              </div>
             )}
-              </CardContent>
+          </CardContent>
         </Card>
 
         {/* Instructions */}
