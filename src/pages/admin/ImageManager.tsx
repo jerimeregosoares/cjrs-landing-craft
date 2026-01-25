@@ -11,16 +11,16 @@ const ImageManager = () => {
   const { toast } = useToast();
   const { carouselMedia, deleteMedia, reorderMedia, loading } = useAdmin();
   const { uploading, uploadProgress, handleCarouselImageUpload, handleCarouselVideoUpload } = useMediaUploadHandler();
-  
+
   // Filter media by section
   const heroMedia = carouselMedia.filter(media => media.section === 'hero' || !media.section);
   const aboutMedia = carouselMedia.filter(media => media.section === 'about');
-  
+
   const heroImages = heroMedia.filter(media => media.file_type === 'image');
   const heroVideos = heroMedia.filter(media => media.file_type === 'video');
   const aboutImages = aboutMedia.filter(media => media.file_type === 'image');
   const aboutVideos = aboutMedia.filter(media => media.file_type === 'video');
-  
+
   const handleDeleteMedia = (id: string, type: string) => {
     deleteMedia(id);
     toast({
@@ -28,15 +28,15 @@ const ImageManager = () => {
       description: `${type === 'image' ? 'Imagem' : 'Vídeo'} removido do carrossel.`
     });
   };
-  
+
   const handleMoveMedia = (id: string, direction: 'up' | 'down') => {
     const mediaIndex = carouselMedia.findIndex(m => m.id === id);
     if (mediaIndex === -1) return;
-    
-    const newIndex = direction === 'up' 
-      ? Math.max(0, mediaIndex - 1) 
+
+    const newIndex = direction === 'up'
+      ? Math.max(0, mediaIndex - 1)
       : Math.min(carouselMedia.length - 1, mediaIndex + 1);
-      
+
     if (newIndex !== mediaIndex) {
       reorderMedia(id, newIndex);
     }
@@ -44,11 +44,16 @@ const ImageManager = () => {
 
   return (
     <AdminLayout>
-      <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">Gerenciar Imagens e Vídeos</h1>
-        
+      <div className="p-8 space-y-10 animate-in fade-in duration-700">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50 uppercase italic">Assets & Media</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Biblioteca de alta performance para controle visual.</p>
+          </div>
+        </div>
+
         {/* Hero Section Media */}
-        <MediaSection 
+        <MediaSection
           title="Carrossel Principal (Hero)"
           description="Gerenciar imagens e vídeos que aparecem no carrossel da seção principal da página inicial"
           section="hero"
@@ -61,9 +66,9 @@ const ImageManager = () => {
           onMoveMedia={handleMoveMedia}
           loading={loading}
         />
-        
+
         {/* About Section Media */}
-        <MediaSection 
+        <MediaSection
           title="Carrossel da Seção &quot;Sobre o Profissional&quot;"
           description="Gerenciar imagens e vídeos que aparecem no carrossel da seção &quot;Sobre o Profissional&quot;"
           section="about"
@@ -76,25 +81,25 @@ const ImageManager = () => {
           onMoveMedia={handleMoveMedia}
           loading={loading}
         />
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Hero Section Feature Image */}
-          <HeroSectionImage 
-            title="Imagem Principal (Hero)" 
+          <HeroSectionImage
+            title="Imagem Principal (Hero)"
             description="Esta imagem será mostrada diretamente na seção principal do site. Recomendamos uma imagem ou vídeo de alta qualidade."
             section="hero"
           />
-          
+
           {/* About Section Feature Image */}
-          <HeroSectionImage 
-            title="Imagem do Profissional" 
+          <HeroSectionImage
+            title="Imagem do Profissional"
             description="Esta imagem será mostrada diretamente na seção 'Sobre o Profissional' do site. Recomendamos usar uma foto ou vídeo profissional."
             section="about"
           />
-          
+
           {/* Testimonial Page Feature Image */}
-          <HeroSectionImage 
-            title="Foto da Página de Avaliações" 
+          <HeroSectionImage
+            title="Foto da Página de Avaliações"
             description="Esta foto será exibida no topo da página pública de avaliações em formato redondo. Recomendamos uma foto profissional ou logo."
             section="testimonial-page"
           />

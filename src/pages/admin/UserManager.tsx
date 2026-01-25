@@ -174,150 +174,161 @@ const UserManager = () => {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Gerenciar Administradores</h1>
-          <p className="text-muted-foreground">Adicione ou remova usuários administradores do sistema.</p>
+      <div className="p-8 space-y-10 animate-in fade-in duration-700">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-gray-50 uppercase italic">Acesso & Segurança</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-lg">Controle de privilégios e operadores do sistema.</p>
+          </div>
         </div>
 
         {/* Create New Admin */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5" />
-              Criar Novo Administrador
+        <Card className="border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-emerald-500" />
+          <CardHeader className="p-8 border-b border-border">
+            <CardTitle className="text-2xl font-bold flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-primary/10 text-primary">
+                <UserPlus className="h-6 w-6" />
+              </div>
+              Provisionar Operador
             </CardTitle>
-            <CardDescription>
-              Crie uma conta de administrador com email e senha. O usuário receberá um email de confirmação.
-            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
+          <CardContent className="p-8 space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="technical-label">Email de Acesso</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="admin@exemplo.com"
                   value={newUserEmail}
                   onChange={(e) => setNewUserEmail(e.target.value)}
+                  className="h-12 rounded-xl technical-input"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
+                <Label htmlFor="password" className="technical-label">Senha Criptografada</Label>
                 <Input
                   id="password"
                   type="password"
                   placeholder="Mínimo 6 caracteres"
                   value={newUserPassword}
                   onChange={(e) => setNewUserPassword(e.target.value)}
+                  className="h-12 rounded-xl technical-input"
                 />
               </div>
             </div>
-            <Button onClick={handleCreateAdmin} disabled={creating}>
-              {creating ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Criando...
-                </>
-              ) : (
-                <>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Criar Administrador
-                </>
-              )}
-            </Button>
+            <div className="flex justify-end pt-4">
+              <Button
+                onClick={handleCreateAdmin}
+                className="h-12 px-8 rounded-xl font-bold bg-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+                disabled={creating}
+              >
+                {creating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Provisionando...
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Gerar Acesso Admin
+                  </>
+                )}
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
         {/* Admin Users List */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield className="h-5 w-5" />
-              Administradores Ativos
+        <Card className="border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 to-indigo-500 opacity-50" />
+          <CardHeader className="p-8 border-b border-border">
+            <CardTitle className="text-2xl font-bold flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-500">
+                <Shield className="h-6 w-6" />
+              </div>
+              Operadores Ativos
             </CardTitle>
-            <CardDescription>
-              Lista de todos os usuários com permissão de administrador.
-            </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-8">
             {loading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-10 w-10 animate-spin text-primary opacity-50" />
               </div>
             ) : adminUsers.length === 0 ? (
-              <p className="text-muted-foreground text-center py-8">
-                Nenhum administrador encontrado.
-              </p>
+              <div className="text-center py-12 bg-slate-50 dark:bg-slate-800/20 rounded-2xl border border-dashed border-slate-200 dark:border-white/5">
+                <p className="text-slate-500 font-medium">Nenhum administrador encontrado no banco de dados.</p>
+              </div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>User ID</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Criado em</TableHead>
-                    <TableHead className="text-right">Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {adminUsers.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell className="font-mono text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="truncate max-w-[200px]" title={user.user_id}>
-                            {user.user_id}
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6"
-                            onClick={() => copyToClipboard(user.user_id)}
-                          >
-                            {copiedId === user.user_id ? (
-                              <Check className="h-3 w-3 text-green-500" />
-                            ) : (
-                              <Copy className="h-3 w-3" />
-                            )}
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">
-                          {user.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{formatDate(user.created_at)}</TableCell>
-                      <TableCell className="text-right">
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button variant="destructive" size="sm">
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Remover Administrador?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Esta ação removerá as permissões de administrador deste usuário.
-                                O usuário ainda existirá no sistema, mas não terá mais acesso ao painel admin.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleRemoveAdmin(user.user_id)}>
-                                Remover
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </TableCell>
+              <div className="overflow-hidden border border-border/50 rounded-2xl">
+                <Table>
+                  <TableHeader className="bg-slate-50 dark:bg-slate-800/50">
+                    <TableRow className="hover:bg-transparent border-b border-border/50">
+                      <TableHead className="technical-label py-4 px-6">Identificador do Operador</TableHead>
+                      <TableHead className="technical-label py-4">Nível</TableHead>
+                      <TableHead className="technical-label py-4">Registro do Sistema</TableHead>
+                      <TableHead className="text-right technical-label py-4 px-6">Comandos</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {adminUsers.map((user) => (
+                      <TableRow key={user.id}>
+                        <TableCell className="font-mono text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate max-w-[200px]" title={user.user_id}>
+                              {user.user_id}
+                            </span>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6"
+                              onClick={() => copyToClipboard(user.user_id)}
+                            >
+                              {copiedId === user.user_id ? (
+                                <Check className="h-3 w-3 text-green-500" />
+                              ) : (
+                                <Copy className="h-3 w-3" />
+                              )}
+                            </Button>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">
+                            {user.role}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{formatDate(user.created_at)}</TableCell>
+                        <TableCell className="text-right">
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="destructive" size="sm">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Remover Administrador?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Esta ação removerá as permissões de administrador deste usuário.
+                                  O usuário ainda existirá no sistema, mas não terá mais acesso ao painel admin.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleRemoveAdmin(user.user_id)}>
+                                  Remover
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
             )}
-          </CardContent>
+              </CardContent>
         </Card>
 
         {/* Instructions */}

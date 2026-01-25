@@ -70,12 +70,45 @@
 
   body.admin-panel {
     background-color: hsl(var(--admin-background));
+    --admin-card: var(--card);
+    --admin-border: var(--border);
+    --admin-accent: var(--primary);
+  }
+
+  .dark body.admin-panel {
+    --admin-background: 240 10% 4%;
+    --admin-card: 240 10% 6%;
+    --admin-border: 240 5% 15%;
+    --admin-accent: 142 70% 50%;
   }
 
   .admin-panel .bg-slate-800,
   .admin-panel .bg-slate-900 {
-    background-color: hsl(var(--admin-primary));
+    @apply dark:bg-slate-900/80;
   }
+}
+
+/* High-Tech Admin Elements */
+.admin-card-glow {
+  position: relative;
+}
+
+.admin-card-glow::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(45deg, transparent, hsl(var(--primary)/20), transparent);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.technical-label {
+  @apply text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500 dark:text-slate-400;
+}
+
+.technical-input {
+  @apply bg-white dark:bg-slate-950 border-slate-200 dark:border-white/10 focus:ring-primary/30 transition-all duration-300;
 }
 
 .gradient-text {

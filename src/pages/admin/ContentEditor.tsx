@@ -142,22 +142,22 @@ const ContentEditor = () => {
             </CardHeader>
             <CardContent className="p-8 space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="hero-title" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Título de Impacto</Label>
+                <Label htmlFor="hero-title" className="technical-label">Título de Impacto</Label>
                 <Input
                   id="hero-title"
                   value={siteContent.hero.title}
                   onChange={(e) => handleChange('hero', 'title', e.target.value)}
-                  className="h-14 rounded-2xl border-slate-200 dark:border-white/10 text-lg font-medium"
+                  className="h-14 rounded-2xl border-slate-200 dark:border-white/10 text-lg font-medium technical-input"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hero-description" className="text-sm font-bold uppercase tracking-wider text-slate-500 ml-1">Descrição Detalhada</Label>
+                <Label htmlFor="hero-description" className="technical-label">Descrição Detalhada</Label>
                 <Textarea
                   id="hero-description"
                   value={siteContent.hero.description}
                   onChange={(e) => handleChange('hero', 'description', e.target.value)}
                   rows={4}
-                  className="rounded-2xl border-slate-200 dark:border-white/10 text-base resize-none"
+                  className="rounded-2xl border-slate-200 dark:border-white/10 text-base resize-none technical-input"
                 />
               </div>
             </CardContent>
@@ -221,41 +221,41 @@ const ContentEditor = () => {
 
                         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div className="space-y-2">
-                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Título do Serviço</Label>
+                            <Label className="technical-label">Título do Serviço</Label>
                             <Input
                               value={service.title}
                               onChange={(e) => handleServiceChange(service.id, 'title', e.target.value)}
-                              className="rounded-xl italic font-semibold border-none bg-white dark:bg-slate-900 shadow-sm"
+                              className="rounded-xl italic font-semibold border-none bg-white dark:bg-slate-900 shadow-sm technical-input"
                             />
                           </div>
 
                           <div className="space-y-2">
-                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Investimento/Preço</Label>
+                            <Label className="technical-label">Investimento/Preço</Label>
                             <Input
                               value={service.price || ''}
                               onChange={(e) => handleServiceChange(service.id, 'price', e.target.value)}
-                              className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm text-primary font-bold"
+                              className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm text-primary font-bold dark:text-emerald-400 technical-input"
                               placeholder="Ex: R$ 150,00"
                             />
                           </div>
 
                           <div className="md:col-span-2 space-y-2">
-                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Descrição</Label>
+                            <Label className="technical-label">Descrição</Label>
                             <Textarea
                               value={service.description}
                               onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)}
                               rows={2}
-                              className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm resize-none"
+                              className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm resize-none technical-input"
                             />
                           </div>
 
                           <div className="space-y-2">
-                            <Label className="text-xs font-bold text-slate-400 uppercase tracking-tighter">Ícone Visual</Label>
+                            <Label className="technical-label">Ícone Visual</Label>
                             <Select
                               value={service.icon}
                               onValueChange={(value) => handleServiceChange(service.id, 'icon', value)}
                             >
-                              <SelectTrigger className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm px-4">
+                              <SelectTrigger className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm px-4 technical-input">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent className="rounded-2xl border-none dark:bg-slate-900 shadow-2xl">

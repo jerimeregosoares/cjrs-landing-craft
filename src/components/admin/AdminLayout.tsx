@@ -25,33 +25,46 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-background text-foreground transition-colors duration-500">
+      <div className="flex min-h-screen bg-background text-foreground transition-colors duration-500 selection:bg-primary/20">
+        {/* Technical Background Element */}
+        <div className="fixed inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.05] z-0">
+          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
+        </div>
+
         {!isMobile && <AdminSidebar isMobile={false} />}
 
         {isMobile && isSidebarOpen && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity" onClick={() => setIsSidebarOpen(false)} />
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-40 transition-all duration-500 animate-in fade-in" onClick={() => setIsSidebarOpen(false)} />
         )}
 
         {isMobile && isSidebarOpen && (
           <AdminSidebar isMobile={true} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         )}
 
-        <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        <div className="flex-1 flex flex-col h-screen overflow-hidden relative z-10">
           {isMobile && (
-            <div className="bg-background/80 backdrop-blur-md p-4 border-b border-border flex items-center shadow-sm z-30">
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-xl border-primary/20 hover:bg-primary/10 transition-all"
-                onClick={() => setIsSidebarOpen(true)}
-              >
-                <Menu className="h-5 w-5 text-primary" />
-              </Button>
-              <h1 className="text-xl font-bold ml-4 tracking-tight text-primary">Painel Admin</h1>
+            <div className="bg-background/40 backdrop-blur-xl p-4 border-b border-border/50 flex items-center justify-between shadow-lg shadow-black/5 z-30">
+              <div className="flex items-center">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-xl hover:bg-primary/10 transition-all"
+                  onClick={() => setIsSidebarOpen(true)}
+                >
+                  <Menu className="h-6 w-6 text-primary" />
+                </Button>
+                <div className="ml-4">
+                  <h1 className="text-lg font-black tracking-tighter text-primary uppercase leading-tight">Painel</h1>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Management System</p>
+                </div>
+              </div>
+              <div className="h-8 w-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <span className="text-[10px] font-bold text-primary">AJ</span>
+              </div>
             </div>
           )}
-          <main className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-transparent">
-            <div className="max-w-7xl mx-auto">
+          <main className="flex-1 overflow-y-auto bg-slate-50/30 dark:bg-transparent custom-scrollbar">
+            <div className="max-w-7xl mx-auto pb-20">
               {children}
             </div>
           </main>

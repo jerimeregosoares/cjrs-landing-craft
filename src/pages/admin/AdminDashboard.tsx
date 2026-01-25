@@ -55,86 +55,86 @@ const AdminDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500" />
+          <Card className="group hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] hover:-translate-y-1 transition-all duration-500 border border-transparent hover:border-blue-500/20 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-blue-500 opacity-20 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-500">Conteúdo</CardTitle>
-              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500">
+              <CardTitle className="technical-label">Conteúdo</CardTitle>
+              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 group-hover:scale-110 transition-transform">
                 <FileText className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="text-2xl font-bold mb-1">Textos</div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Edite todas as cópias do site</p>
+              <div className="text-xl font-black uppercase tracking-tight mb-1">Textos</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Configuração de cópias</p>
               <Button
                 variant="ghost"
-                className="w-full mt-6 rounded-xl group-hover:bg-blue-50 dark:group-hover:bg-blue-500/10 group-hover:text-blue-500 transition-colors"
+                className="w-full mt-6 rounded-lg text-[10px] font-black uppercase tracking-widest border border-blue-500/10 group-hover:bg-blue-500 group-hover:text-white transition-all duration-500"
                 onClick={() => navigate("/admin/content")}
               >
-                Editar Agora
+                Acessar Módulo
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500" />
+          <Card className="group hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:-translate-y-1 transition-all duration-500 border border-transparent hover:border-emerald-500/20 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-emerald-500 opacity-20 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-500">Social</CardTitle>
-              <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500">
+              <CardTitle className="technical-label">Social</CardTitle>
+              <div className="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 group-hover:scale-110 transition-transform">
                 <MessageSquare className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="text-2xl font-bold mb-1">Feedback</div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Gerencie depoimentos reais</p>
+              <div className="text-xl font-black uppercase tracking-tight mb-1">Feedback</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Gestão de depoimentos</p>
               <Button
                 variant="ghost"
-                className="w-full mt-6 rounded-xl group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10 group-hover:text-emerald-500 transition-colors"
+                className="w-full mt-6 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-500/10 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-500"
                 onClick={() => navigate("/admin/testimonials")}
               >
-                Gerenciar
+                Acessar Módulo
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-amber-500" />
+          <Card className="group hover:shadow-[0_0_30px_rgba(245,158,11,0.15)] hover:-translate-y-1 transition-all duration-500 border border-transparent hover:border-amber-500/20 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-amber-500 opacity-20 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-500">Contatos</CardTitle>
-              <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-500">
+              <CardTitle className="technical-label">Contatos</CardTitle>
+              <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-500 group-hover:scale-110 transition-transform">
                 <Link className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="text-2xl font-bold mb-1">URLs e Links</div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Configure agendamentos</p>
+              <div className="text-xl font-black uppercase tracking-tight mb-1">Canais</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Links e agendamentos</p>
               <Button
                 variant="ghost"
-                className="w-full mt-6 rounded-xl group-hover:bg-amber-50 dark:group-hover:bg-amber-500/10 group-hover:text-amber-500 transition-colors"
+                className="w-full mt-6 rounded-lg text-[10px] font-black uppercase tracking-widest border border-amber-500/10 group-hover:bg-amber-500 group-hover:text-white transition-all duration-500"
                 onClick={() => navigate("/admin/links")}
               >
-                Configurar
+                Acessar Módulo
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 border-none bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-1 h-full bg-purple-500" />
+          <Card className="group hover:shadow-[0_0_30px_rgba(139,92,246,0.15)] hover:-translate-y-1 transition-all duration-500 border border-transparent hover:border-purple-500/20 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-purple-500 opacity-20 group-hover:opacity-100 transition-opacity" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase tracking-wider text-slate-500">Mídia</CardTitle>
-              <div className="p-2 rounded-lg bg-purple-50 dark:bg-purple-500/10 text-purple-500">
+              <CardTitle className="technical-label">Mídia</CardTitle>
+              <div className="p-2 rounded-lg bg-purple-50 dark:bg-purple-500/10 text-purple-500 group-hover:scale-110 transition-transform">
                 <Image className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="text-2xl font-bold mb-1">Imagens</div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Atualize as imagens do site</p>
+              <div className="text-xl font-black uppercase tracking-tight mb-1">Imagens</div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Biblioteca de assets</p>
               <Button
                 variant="ghost"
-                className="w-full mt-6 rounded-xl group-hover:bg-purple-50 dark:group-hover:bg-purple-500/10 group-hover:text-purple-500 transition-colors"
+                className="w-full mt-6 rounded-lg text-[10px] font-black uppercase tracking-widest border border-purple-500/10 group-hover:bg-purple-500 group-hover:text-white transition-all duration-500"
                 onClick={() => navigate("/admin/images")}
               >
-                Biblioteca
+                Acessar Módulo
               </Button>
             </CardContent>
           </Card>
