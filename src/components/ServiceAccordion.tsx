@@ -15,6 +15,7 @@ interface Service {
   description: string;
   icon: string;
   price?: string;
+  available?: boolean;
 }
 
 interface ServiceAccordionProps {
@@ -39,6 +40,11 @@ const ServiceAccordion = ({ services }: ServiceAccordionProps) => {
                     <IconComponent className="h-6 w-6" />
                   </div>
                   <span className="font-bold text-lg text-left tracking-tight">{service.title}</span>
+                  {service.available === false ? (
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-destructive/10 text-destructive shrink-0">Indisponível</span>
+                  ) : (
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">Disponível</span>
+                  )}
                 </div>
                 {service.price && (
                   <span className="font-bold whitespace-nowrap text-sm sm:text-lg transition-colors group-hover:text-primary">

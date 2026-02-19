@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Service } from "@/types/admin";
 import { Trash2, MoveUp, MoveDown, Plus } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ContentEditor = () => {
@@ -42,7 +43,7 @@ const ContentEditor = () => {
     });
   };
 
-  const handleServiceChange = (id: string, field: keyof Service, value: string) => {
+  const handleServiceChange = (id: string, field: keyof Service, value: string | boolean) => {
     updateService(id, { [field]: value });
 
     toast({
@@ -247,6 +248,19 @@ const ContentEditor = () => {
                               rows={2}
                               className="rounded-xl border-none bg-white dark:bg-slate-900 shadow-sm resize-none technical-input"
                             />
+                          </div>
+
+                          <div className="flex items-center gap-4">
+                            <Label className="technical-label">Disponibilidade</Label>
+                            <div className="flex items-center gap-2">
+                              <Switch
+                                checked={service.available !== false}
+                                onCheckedChange={(checked) => handleServiceChange(service.id, 'available' as any, checked as any)}
+                              />
+                              <span className={`text-sm font-bold ${service.available !== false ? 'text-emerald-600 dark:text-emerald-400' : 'text-destructive'}`}>
+                                {service.available !== false ? 'Disponível' : 'Indisponível'}
+                              </span>
+                            </div>
                           </div>
 
                           <div className="space-y-2">
