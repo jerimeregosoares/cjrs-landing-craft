@@ -48,6 +48,7 @@ export interface Service {
   description: string;
   icon: string;
   price?: string;
+  available?: boolean;
 }
 
 export interface Testimonial {

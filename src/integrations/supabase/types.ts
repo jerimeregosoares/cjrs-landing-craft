@@ -120,6 +120,7 @@ export type Database = {
           role: string
           status: string | null
           timestamp: string
+          updated_at: string | null
         }
         Insert: {
           approved_by?: string | null
@@ -130,6 +131,7 @@ export type Database = {
           role?: string
           status?: string | null
           timestamp?: string
+          updated_at?: string | null
         }
         Update: {
           approved_by?: string | null
@@ -140,6 +142,7 @@ export type Database = {
           role?: string
           status?: string | null
           timestamp?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
