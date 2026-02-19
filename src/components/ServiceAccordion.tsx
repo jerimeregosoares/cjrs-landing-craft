@@ -41,9 +41,13 @@ const ServiceAccordion = ({ services }: ServiceAccordionProps) => {
                   </div>
                   <span className="font-bold text-lg text-left tracking-tight">{service.title}</span>
                   {service.available === false ? (
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-destructive/10 text-destructive shrink-0">Indisponível</span>
+                    <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-red-500/15 text-red-600 dark:bg-red-500/20 dark:text-red-400 shrink-0 animate-pulse ring-1 ring-red-500/20 dark:ring-red-400/30">
+                      ● Indisponível
+                    </span>
                   ) : (
-                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">Disponível</span>
+                    <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300 shrink-0 animate-pulse ring-1 ring-emerald-500/20 dark:ring-emerald-400/30">
+                      ● Disponível
+                    </span>
                   )}
                 </div>
                 {service.price && (
